@@ -10,37 +10,83 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" UseLayoutRounding="True">
 
-	<common:LayoutAwarePage.Resources>
-		<Style TargetType="ListView">
-			<Setter Property="IsTabStop" Value="False"/>
-			<Setter Property="TabNavigation" Value="Once"/>
-			<Setter Property="IsSwipeEnabled" Value="False"/>
-			<Setter Property="ItemContainerTransitions">
-				<Setter.Value>
-					<TransitionCollection>
-						<AddDeleteThemeTransition/>
-						<ContentThemeTransition/>
-						<ReorderThemeTransition/>
-						<EntranceThemeTransition IsStaggeringEnabled="False"/>
-					</TransitionCollection>
-				</Setter.Value>
-			</Setter>
+	<Page.Resources>
+        <Style x:Key="NormalItemStyle" TargetType="ListViewItem">
+            <Setter Property="Padding" Value="3" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border Name="Border" Padding="{TemplateBinding Padding}" Background="Transparent" RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform x:Name="Scale" />
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup>
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <DoubleAnimation To="1" Duration="0:0:0.100" Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleX" />
+                                            <DoubleAnimation To="1" Duration="0:0:0.100" Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleY" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3896fa" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3896fa" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation To="0.95" Duration="0:0:0.100" Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleX" />
+                                            <DoubleAnimation To="0.95" Duration="0:0:0.100" Storyboard.TargetName="Scale" Storyboard.TargetProperty="ScaleY" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FavoriteItemStyle" TargetType="ListViewItem" BasedOn="{StaticResource NormalItemStyle}">
+            <Setter Property="Width" Value="436" />
+            <Setter Property="Height" Value="118" />
+            <Setter Property="Margin" Value="0,0,21,8" />
+        </Style>
+
+        <Style x:Key="RadioItemStyle" TargetType="ListViewItem" BasedOn="{StaticResource NormalItemStyle}">
+            <Setter Property="Width" Value="124" />
+            <Setter Property="Height" Value="124" />
+            <Setter Property="Margin" Value="0,0,11,11" />
+        </Style>
+
+        <Style TargetType="ListView">
+			<Setter Property="IsTabStop" Value="False" />
+			<Setter Property="TabNavigation" Value="Once" />
+			<Setter Property="IsSwipeEnabled" Value="False" />
 			<Setter Property="ItemsPanel">
 				<Setter.Value>
 					<ItemsPanelTemplate>
-						<WrapGrid/>
+						<WrapGrid />
 					</ItemsPanelTemplate>
 				</Setter.Value>
 			</Setter>
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="ListView">
-						<ItemsPresenter HeaderTemplate="{TemplateBinding HeaderTemplate}" Header="{TemplateBinding Header}" HeaderTransitions="{TemplateBinding HeaderTransitions}" Padding="{TemplateBinding Padding}"/>
+						<ItemsPresenter />
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
 		</Style>
-	</common:LayoutAwarePage.Resources>
+	</Page.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -79,6 +125,11 @@
                     </GradientStopCollection>
                 </LinearGradientBrush>
             </Grid.Background>
+            <!-- Background -->
+            <Border BorderThickness="0,0,0,5" BorderBrush="#444444">
+                <Image Source="../Assets/Spectrum.png" Stretch="None" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+            </Border>
+            <!-- Items -->
             <SemanticZoom Padding="0">
                 <SemanticZoom.ZoomedInView>
                     <GridView>
@@ -106,7 +157,7 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="Favorite Channels" Foreground="White" FontSize="20" FontWeight="Light" />
-                                <ListView Grid.Row="1">
+                                <ListView Grid.Row="1" ItemContainerStyle="{StaticResource FavoriteItemStyle}">
                                     <ListView.Items>
                                         <TextBlock />
                                         <TextBlock />
@@ -130,34 +181,6 @@
                                             </Grid>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
-                                    <ListView.ItemContainerStyle>
-                                        <Style TargetType="ListViewItem">
-                                            <Setter Property="Width" Value="436" />
-                                            <Setter Property="Height" Value="118" />
-                                            <Setter Property="Margin" Value="0,0,21,8" />
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="ListViewItem">
-                                                        <Border Name="Border" Padding="3" Background="Transparent">
-                                                            <VisualStateManager.VisualStateGroups>
-                                                                <VisualStateGroup>
-                                                                    <VisualState x:Name="Normal" />
-                                                                    <VisualState x:Name="PointerOver">
-                                                                        <Storyboard>
-                                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background">
-                                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3896fa" />
-                                                                            </ObjectAnimationUsingKeyFrames>
-                                                                        </Storyboard>
-                                                                    </VisualState>
-                                                                </VisualStateGroup>
-                                                            </VisualStateManager.VisualStateGroups>
-                                                            <ContentPresenter />
-                                                        </Border>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ListView.ItemContainerStyle>
                                 </ListView>
                             </Grid>
                             <!-- Advertisment -->
@@ -176,7 +199,7 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="All Radio Channels" Foreground="White" FontSize="20" FontWeight="Light" />
-                                <ListView Grid.Row="1">
+                                <ListView Grid.Row="1" ItemContainerStyle="{StaticResource RadioItemStyle}">
                                     <ListView.Items>
                                         <TextBlock />
                                         <TextBlock />
@@ -232,34 +255,6 @@
                                             </Grid>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
-                                    <ListView.ItemContainerStyle>
-                                        <Style TargetType="ListViewItem">
-                                            <Setter Property="Width" Value="124" />
-                                            <Setter Property="Height" Value="124" />
-                                            <Setter Property="Margin" Value="0,0,11,11" />
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="ListViewItem">
-                                                        <Border Name="Border" Padding="3" Background="Transparent">
-                                                            <VisualStateManager.VisualStateGroups>
-                                                                <VisualStateGroup>
-                                                                    <VisualState x:Name="Normal" />
-                                                                    <VisualState x:Name="PointerOver">
-                                                                        <Storyboard>
-                                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background">
-                                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3896fa" />
-                                                                            </ObjectAnimationUsingKeyFrames>
-                                                                        </Storyboard>
-                                                                    </VisualState>
-                                                                </VisualStateGroup>
-                                                            </VisualStateManager.VisualStateGroups>
-                                                            <ContentPresenter />
-                                                        </Border>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ListView.ItemContainerStyle>
                                 </ListView>
                             </Grid>
                         </GridView.Items>
@@ -309,7 +304,7 @@
                                                         <VisualState x:Name="PointerOver">
                                                             <Storyboard>
                                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#3896fa" />
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#3186e0" />
                                                                 </ObjectAnimationUsingKeyFrames>
                                                             </Storyboard>
                                                         </VisualState>
