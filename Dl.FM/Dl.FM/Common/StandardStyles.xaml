@@ -1817,7 +1817,7 @@
     <!-- Page layout roots typically use entrance animations and a theme-appropriate background color -->
 
     <Style x:Key="LayoutRootStyle" TargetType="Panel">
-        <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
+        <!--<Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>-->
         <Setter Property="ChildrenTransitions">
             <Setter.Value>
                 <TransitionCollection>

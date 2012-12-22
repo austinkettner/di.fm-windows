@@ -8,7 +8,48 @@
     xmlns:common="using:Dl.FM.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" UseLayoutRounding="True">
+
+	<common:LayoutAwarePage.Resources>
+		<Style TargetType="ListView">
+			<Setter Property="IsTabStop" Value="False"/>
+			<Setter Property="TabNavigation" Value="Once"/>
+			<Setter Property="IsSwipeEnabled" Value="True"/>
+			<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+			<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+			<Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+			<Setter Property="ScrollViewer.IsHorizontalRailEnabled" Value="False"/>
+			<Setter Property="ScrollViewer.VerticalScrollMode" Value="Enabled"/>
+			<Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="False"/>
+			<Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
+			<Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False"/>
+			<Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True"/>
+			<Setter Property="ItemContainerTransitions">
+				<Setter.Value>
+					<TransitionCollection>
+						<AddDeleteThemeTransition/>
+						<ContentThemeTransition/>
+						<ReorderThemeTransition/>
+						<EntranceThemeTransition IsStaggeringEnabled="False"/>
+					</TransitionCollection>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="ItemsPanel">
+				<Setter.Value>
+					<ItemsPanelTemplate>
+						<WrapGrid/>
+					</ItemsPanelTemplate>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ListView">
+						<ItemsPresenter HeaderTemplate="{TemplateBinding HeaderTemplate}" Header="{TemplateBinding Header}" HeaderTransitions="{TemplateBinding HeaderTransitions}" Padding="{TemplateBinding Padding}"/>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</common:LayoutAwarePage.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -17,7 +58,7 @@
         </Grid.RowDefinitions>
 
         <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
-            <Grid Margin="117,0,56,0">
+            <Grid Margin="117,0,56,0" Style="{StaticResource LayoutRootStyle}">
                 <Grid HorizontalAlignment="Left">
                     <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
                 </Grid>
@@ -39,11 +80,272 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Row="1" Background="#414141">
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStopCollection>
+                        <GradientStop Color="#424242" Offset="0" />
+                        <GradientStop Color="#303030" Offset="1" />
+                    </GradientStopCollection>
+                </LinearGradientBrush>
+            </Grid.Background>
             <SemanticZoom Padding="0">
                 <SemanticZoom.ZoomedInView>
                     <GridView>
-                        
+                        <GridView.Items>
+                            <!-- Now Playing -->
+                            <Grid Width="366">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="38" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Now Playing" Foreground="White" FontSize="20" FontWeight="Light" />
+                                <Grid Grid.Row="1">
+                                    <StackPanel>
+                                        <Image Margin="0,0,0,23" Source="http://cdn.breitbart.com/mediaserver/Breitbart/Big-Hollywood/2012/09/06/lady-gaga/ladygaga.jpg" />
+                                        <TextBlock Margin="0,0,0,5" Text="VOCAL TRANCE" Foreground="White" FontSize="16" FontWeight="Bold" TextWrapping="Wrap" />
+                                        <TextBlock Margin="0,0,0,2" Text="Matt Cerf Envio Feat Jaren - Walk Away (Vocal Mix)" Foreground="White" FontSize="20" FontWeight="Light" TextWrapping="Wrap" />
+                                        <TextBlock Text="8:16" Foreground="White" FontSize="17" FontWeight="Light" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <!-- Favorite Channels -->
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Favorite Channels" Foreground="White" FontSize="20" FontWeight="Light" />
+                                <!--<VariableSizedWrapGrid Grid.Row="1" x:Name="FavoriteChannels">
+                                    <VariableSizedWrapGrid.Resources>
+                                        <Style TargetType="GridViewItem">
+                                            <Setter Property="Width" Value="436" />
+                                            <Setter Property="Height" Value="118" />
+                                            <Setter Property="Margin" Value="0,0,21,8" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="GridViewItem">
+                                                        <Border Name="Border" Padding="3" Background="Transparent">
+                                                            <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroup>
+                                                                    <VisualState x:Name="Normal" />
+                                                                    <VisualState x:Name="PointerOver">
+                                                                        <Storyboard>
+                                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background">
+                                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3896fa" />
+                                                                            </ObjectAnimationUsingKeyFrames>
+                                                                        </Storyboard>
+                                                                    </VisualState>
+                                                                </VisualStateGroup>
+                                                            </VisualStateManager.VisualStateGroups>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="112" />
+                                                                    <ColumnDefinition />
+                                                                </Grid.ColumnDefinitions>
+                                                                <Image Source="http://cdn.breitbart.com/mediaserver/Breitbart/Big-Hollywood/2012/09/06/lady-gaga/ladygaga.jpg" Stretch="UniformToFill" />
+                                                                <TextBlock Grid.Column="1" Margin="10,25,10,10" Foreground="White" TextWrapping="Wrap">
+                                                                    <Run Text="NOW PLAYING" FontSize="16" FontWeight="Bold" />
+                                                                    <LineBreak />
+                                                                    <Run Text="Fish Finger Dread Foxx - Foud Raisers" FontSize="16" FontWeight="Light" />
+                                                                </TextBlock>
+                                                            </Grid>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </VariableSizedWrapGrid.Resources>
+                                    <GridViewItem />
+                                    <GridViewItem />
+                                    <GridViewItem />
+                                    <GridViewItem />
+                                    <GridViewItem />
+                                    <GridViewItem />
+                                </VariableSizedWrapGrid>-->
+                                <ListView Grid.Row="1">
+                                    <ListView.Items>
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                    </ListView.Items>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="112" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="http://cdn.breitbart.com/mediaserver/Breitbart/Big-Hollywood/2012/09/06/lady-gaga/ladygaga.jpg" Stretch="UniformToFill" />
+                                                <TextBlock Grid.Column="1" Margin="10,25,10,10" Foreground="White" TextWrapping="Wrap">
+                                                        <Run Text="NOW PLAYING" FontSize="16" FontWeight="Bold" />
+                                                        <LineBreak />
+                                                        <Run Text="Fish Finger Dread Foxx - Foud Raisers" FontSize="16" FontWeight="Light" />
+                                                </TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="Width" Value="436" />
+                                            <Setter Property="Height" Value="118" />
+                                            <Setter Property="Margin" Value="0,0,21,8" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListViewItem">
+                                                        <Border Name="Border" Padding="3" Background="Transparent">
+                                                            <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroup>
+                                                                    <VisualState x:Name="Normal" />
+                                                                    <VisualState x:Name="PointerOver">
+                                                                        <Storyboard>
+                                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background">
+                                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3896fa" />
+                                                                            </ObjectAnimationUsingKeyFrames>
+                                                                        </Storyboard>
+                                                                    </VisualState>
+                                                                </VisualStateGroup>
+                                                            </VisualStateManager.VisualStateGroups>
+                                                            <ContentPresenter />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                </ListView>
+                            </Grid>
+                            <!-- Advertisment -->
+                            <Grid Width="238">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="38" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Advertisment" Foreground="White" FontSize="20" FontWeight="Light" />
+                                <Rectangle Margin="0,0,0,17" Grid.Row="1" Fill="Black" />
+                            </Grid>
+                            <!-- All Radio Channels -->
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="All Radio Channels" Foreground="White" FontSize="20" FontWeight="Light" />
+                                <ListView Grid.Row="1">
+                                    <ListView.Items>
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                        <TextBlock />
+                                    </ListView.Items>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Image Source="http://cdn.breitbart.com/mediaserver/Breitbart/Big-Hollywood/2012/09/06/lady-gaga/ladygaga.jpg" Stretch="UniformToFill" />
+                                                <Border Padding="6,3" VerticalAlignment="Bottom">
+                                                    <Border.Background>
+                                                        <SolidColorBrush Color="Black" Opacity="0.6" />
+                                                    </Border.Background>
+                                                    <TextBlock Text="Tech House" Foreground="White" FontSize="15" FontWeight="Light" TextWrapping="NoWrap" TextTrimming="WordEllipsis" />
+                                                </Border>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="Width" Value="118" />
+                                            <Setter Property="Height" Value="118" />
+                                            <Setter Property="Margin" Value="0,0,14,14" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListViewItem">
+                                                        <Border Name="Border" Padding="3" Background="Transparent">
+                                                            <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroup>
+                                                                    <VisualState x:Name="Normal" />
+                                                                    <VisualState x:Name="PointerOver">
+                                                                        <Storyboard>
+                                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="Background">
+                                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3896fa" />
+                                                                            </ObjectAnimationUsingKeyFrames>
+                                                                        </Storyboard>
+                                                                    </VisualState>
+                                                                </VisualStateGroup>
+                                                            </VisualStateManager.VisualStateGroups>
+                                                            <ContentPresenter />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                </ListView>
+                            </Grid>
+                        </GridView.Items>
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="Margin" Value="0,0,65,0" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="GridViewItem">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Margin="117,25,0,30" Orientation="Horizontal" VerticalAlignment="Top" />
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
                     </GridView>
                 </SemanticZoom.ZoomedInView>
             </SemanticZoom>

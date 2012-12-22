@@ -24,6 +24,10 @@ namespace Dl.FM.View
         public MainPage()
         {
             this.InitializeComponent();
+
+            var list = new List<string>();
+            for (int i = 0; i < 10; i++) list.Add(i.ToString());
+            
         }
 
         /// <summary>
