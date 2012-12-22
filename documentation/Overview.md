@@ -1,7 +1,7 @@
 # DI.FM
 ## A Digital Imported Radio App for Windows 8
 
-![Loading](http://quixby.github.com/DI.FM/img/loading_5.png)
+<img src="http://quixby.github.com/DI.FM/img/loading_5.png" height="350px">
 
 DI.FM is an application that streams radio's available on [Digitally Imported Radio](http://www.di.fm/).
 
@@ -22,16 +22,16 @@ Simple Heirarchy View
 ### Main View
 Users start in DI.FM on the Main View. Which is a WrapPanel type layout, spanning out to the right, past the user's initial visibility. This main view is distributed into a few sections 'Now Playing', 'Favorite Channels', and 'All Radio Channels'.
 
-http://quixby.github.com/DI.FM/img/main_4.png
+<img src="http://quixby.github.com/DI.FM/img/main_4.png" height="350px">
 
-	- Now Playing showcases whatever is the currently playing channel in DI.FM. When no channel is currently active, then this should show the most recently played channel. This lists the Channel Name, and Currently playing song title under the Album Art.
-	- Favorite Channels lists out all of the channels the user has designated as a 'favorite' (stored in their cloud profile). The display of these channels are in the form of a rectangle with the currently playing song on that channel listed as well. main_6 to main_11 desmontrate the UI implementation further.
-	-All Radio Channels provides a Grid list of all of the Radio Channels currently available, each channel's Album Art acts the Entire Square image, with the Channel Title Listed on the bottom of the Tile with a semi-transparent black bar behind the text.
+1. Now Playing showcases whatever is the currently playing channel in DI.FM. When no channel is currently active, then this should show the most recently played channel. This lists the Channel Name, and Currently playing song title under the Album Art.
+2. Favorite Channels lists out all of the channels the user has designated as a 'favorite' (stored in their cloud profile). The display of these channels are in the form of a rectangle with the currently playing song on that channel listed as well. main_6 to main_11 desmontrate the UI implementation further.
+3. All Radio Channels provides a Grid list of all of the Radio Channels currently available, each channel's Album Art acts the Entire Square image, with the Channel Title Listed on the bottom of the Tile with a semi-transparent black bar behind the text.
 
 ### Channel View
 Upon clicking any tile, such as favorite or one of the tile's under 'All Radio Channels', the user switches to the Channel View. In this view, they are greeted with a highly emersive view of the that specific channel only.
 
-http://quixby.github.com/DI.FM/img/channel_5.png
+<img src="http://quixby.github.com/DI.FM/img/channel_5.png" height="350px">
 
 1. Now Playing Area showcases the currently playing song, and a Play/Pause button
 2. Under Now Playing are two buttons providing the user the ability to view other channels near Vocal Trance, this is alphabetically determined currently, but may evolve into a more dynamic/smarter system.
@@ -43,7 +43,7 @@ Each Channel View will have a custom background image, and some possible variati
 ### Snap View
 At any given time the user should be able to load a Snap View of DI.FM. This is simple a constrained view of the Channel and Main View, but should not limit functionality.
 
-http://quixby.github.com/DI.FM/img/snap_11.png
+<img src="http://quixby.github.com/DI.FM/img/snap_10.png" height="350px">
 
 No example is available for the Main View yet, however all content in any snap view should Scroll vertically only, never horizontally. The Channel Snap View however has no srolling whatsoever. The heavy scrolling situation present in the Main View (due to the list of the radio channels) is acceptable due to Favorites, and previous example cases on Windows Phone show a non-negative user experience.
 
