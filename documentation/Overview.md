@@ -17,12 +17,10 @@ DI.FM is an application that streams radio's available on [Digitally Imported Ra
 
 ## App Workflow and Details
 
-Simple Heirarchy View
-
 ### Main View
 Users start in DI.FM on the Main View. Which is a WrapPanel type layout, spanning out to the right, past the user's initial visibility. This main view is distributed into a few sections 'Now Playing', 'Favorite Channels', and 'All Radio Channels'.
 
-<img src="http://quixby.github.com/DI.FM/img/main_4.png" height="350px">
+<img src="http://quixby.github.com/DI.FM/img/main_4.png" height="175px">
 
 1. Now Playing showcases whatever is the currently playing channel in DI.FM. When no channel is currently active, then this should show the most recently played channel. This lists the Channel Name, and Currently playing song title under the Album Art.
 2. Favorite Channels lists out all of the channels the user has designated as a 'favorite' (stored in their cloud profile). The display of these channels are in the form of a rectangle with the currently playing song on that channel listed as well. main_6 to main_11 desmontrate the UI implementation further.
@@ -45,5 +43,5 @@ At any given time the user should be able to load a Snap View of DI.FM. This is 
 
 <img src="http://quixby.github.com/DI.FM/img/snap_10.png" height="350px">
 
-No example is available for the Main View yet, however all content in any snap view should Scroll vertically only, never horizontally. The Channel Snap View however has no srolling whatsoever. The heavy scrolling situation present in the Main View (due to the list of the radio channels) is acceptable due to Favorites, and previous example cases on Windows Phone show a non-negative user experience.
+No example is available for the Main View Snap View yet, however all content in any snap view should Scroll vertically only, never horizontally. The Channel Snap View however has no srolling whatsoever. The heavy scrolling situation present in the Main View (due to the list of the radio channels) is acceptable due to Favorites, and previous example cases on Windows Phone show a non-negative user experience.
 
