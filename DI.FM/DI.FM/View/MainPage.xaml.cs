@@ -1,24 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+using Windows.ApplicationModel.Search;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
-namespace Dl.FM.View
+namespace DI.FM.View
 {
-    public sealed partial class MainPage : Dl.FM.Common.LayoutAwarePage
+    public sealed partial class MainPage : DI.FM.Common.LayoutAwarePage
     {
         public MainPage()
         {
             this.InitializeComponent();
+
+            var search = SearchPane.GetForCurrentView();
+            search.VisibilityChanged += search_VisibilityChanged;
+            search.QueryChanged += MainPage_QueryChanged;
+        }
+
+        private void search_VisibilityChanged(SearchPane sender, SearchPaneVisibilityChangedEventArgs args)
+        {
+            //args.Visible
+        }
+
+        private void MainPage_QueryChanged(SearchPane sender, SearchPaneQueryChangedEventArgs args)
+        {
+
         }
 
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)

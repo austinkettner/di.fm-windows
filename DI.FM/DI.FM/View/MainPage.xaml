@@ -1,16 +1,16 @@
 ﻿<common:LayoutAwarePage
     x:Name="pageRoot"
-    x:Class="Dl.FM.View.MainPage"
+    x:Class="DI.FM.View.MainPage"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Dl.FM.View"
-    xmlns:common="using:Dl.FM.Common"
+    xmlns:local="using:DI.FM.View"
+    xmlns:common="using:DI.FM.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" UseLayoutRounding="True">
 
-	<Page.Resources>
+    <Page.Resources>
         <Style x:Key="NormalItemStyle" TargetType="ListViewItem">
             <Setter Property="Template">
                 <Setter.Value>
@@ -69,25 +69,25 @@
         </Style>
 
         <Style TargetType="ListView">
-			<Setter Property="IsTabStop" Value="False" />
-			<Setter Property="TabNavigation" Value="Once" />
-			<Setter Property="IsSwipeEnabled" Value="False" />
-			<Setter Property="ItemsPanel">
-				<Setter.Value>
-					<ItemsPanelTemplate>
-						<WrapGrid />
-					</ItemsPanelTemplate>
-				</Setter.Value>
-			</Setter>
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="ListView">
-						<ItemsPresenter />
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-        
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="TabNavigation" Value="Once" />
+            <Setter Property="IsSwipeEnabled" Value="False" />
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <WrapGrid />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListView">
+                        <ItemsPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="GroupButtonStyle" TargetType="Button">
             <Setter Property="Foreground" Value="White" />
             <Setter Property="FontSize" Value="18.67" />
@@ -108,8 +108,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-	</Page.Resources>
-    
+    </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="109" />
@@ -134,7 +134,7 @@
                 </Grid>
             </Grid>
         </Border>
-        
+
         <Grid Grid.Row="1">
             <Grid.Background>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
@@ -339,7 +339,7 @@
                 </SemanticZoom.ZoomedOutView>
             </SemanticZoom>
         </Grid>
-        
+
     </Grid>
-    
+
 </common:LayoutAwarePage>

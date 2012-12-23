@@ -1,4 +1,4 @@
-﻿using Dl.FM.View;
+﻿using DI.FM.View;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
-namespace Dl.FM
+namespace DI.FM
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

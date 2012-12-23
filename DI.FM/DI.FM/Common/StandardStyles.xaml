@@ -406,7 +406,7 @@
         Uncomment any style you reference (as not all may be required).
     -->
 
-    
+    <!--
     
     <Style x:Key="SkipBackAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="SkipBackAppBarButton"/>
@@ -518,9 +518,9 @@
         <Setter Property="AutomationProperties.Name" Value="Settings"/>
         <Setter Property="Content" Value="&#xE115;"/>
     </Style>
-    
+    -->
 
-    
+    <!--
     <Style x:Key="VideoAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="VideoAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Video"/>
@@ -611,8 +611,8 @@
         <Setter Property="AutomationProperties.Name" Value="Open Pane"/>
         <Setter Property="Content" Value="&#xE127;"/>
     </Style>
-    
-    
+    -->
+
     <!--
     <Style x:Key="WorldAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="WorldAppBarButton"/>
@@ -1817,7 +1817,6 @@
     <!-- Page layout roots typically use entrance animations and a theme-appropriate background color -->
 
     <Style x:Key="LayoutRootStyle" TargetType="Panel">
-        <!--<Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>-->
         <Setter Property="ChildrenTransitions">
             <Setter.Value>
                 <TransitionCollection>
@@ -1826,8 +1825,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    
+
     <!-- Custom styles -->
 
     <Style x:Key="IconButtonStyle" TargetType="ButtonBase">
@@ -1959,11 +1957,11 @@
     <Style x:Key="PauseIconButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource IconButtonStyle}">
         <Setter Property="Content" Value="&#xE103;"/>
     </Style>
-    
+
     <Style x:Key="SearchIconButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource IconButtonStyle}">
         <Setter Property="Content" Value="&#xE11A;"/>
     </Style>
-
-
-
+    
+    
+    
 </ResourceDictionary>

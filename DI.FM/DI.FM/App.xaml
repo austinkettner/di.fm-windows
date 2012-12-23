@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="Dl.FM.App"
+    x:Class="DI.FM.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Dl.FM">
+    xmlns:local="using:DI.FM">
 
     <Application.Resources>
         <ResourceDictionary>
