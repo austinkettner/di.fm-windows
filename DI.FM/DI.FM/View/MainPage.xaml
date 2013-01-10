@@ -1,7 +1,6 @@
 ﻿<common:LayoutAwarePage
     x:Name="pageRoot"
     x:Class="DI.FM.View.MainPage"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DI.FM.View"
@@ -9,6 +8,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" UseLayoutRounding="True">
+    
+    <Page.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="Main" />
+    </Page.DataContext>
 
     <Page.Resources>
         <Style x:Key="NormalItemStyle" TargetType="ListViewItem">
@@ -176,15 +179,7 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" />
-                                <ListView Grid.Row="1" ItemContainerStyle="{StaticResource FavoriteItemStyle}">
-                                    <ListView.Items>
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                    </ListView.Items>
+                                <ListView Grid.Row="1" ItemsSource="{Binding FavoriteChannels}" ItemContainerStyle="{StaticResource FavoriteItemStyle}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
@@ -193,17 +188,17 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid>
-                                                    <Image Source="http://cdn.breitbart.com/mediaserver/Breitbart/Big-Hollywood/2012/09/06/lady-gaga/ladygaga.jpg" Stretch="UniformToFill" />
+                                                    <Image Source="{Binding ImageUrl}" Stretch="UniformToFill" />
                                                     <Border Padding="6,3" VerticalAlignment="Bottom">
                                                         <Border.Background>
                                                             <SolidColorBrush Color="Black" Opacity="0.75" />
                                                         </Border.Background>
-                                                        <TextBlock Text="Liquid Dubstep" Foreground="White" FontSize="14.67" FontWeight="SemiLight" TextTrimming="WordEllipsis" />
+                                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14.67" FontWeight="SemiLight" TextTrimming="WordEllipsis" />
                                                     </Border>
                                                 </Grid>
                                                 <StackPanel Grid.Column="1" Margin="10,25,10,10">
                                                     <TextBlock Text="NOW PLAYING" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
-                                                    <TextBlock Text="Fish Finger Dread Foxx - Foud Raisers" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" />
+                                                    <TextBlock Text="{Binding NowPlaying}" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" />
                                                 </StackPanel>
                                             </Grid>
                                         </DataTemplate>
@@ -225,45 +220,16 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Button Content="All Radio Channels" Style="{StaticResource GroupButtonStyle}" />
-                                <ListView Grid.Row="1" ItemContainerStyle="{StaticResource RadioItemStyle}">
-                                    <ListView.Items>
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                        <TextBlock />
-                                    </ListView.Items>
+                                <ListView Grid.Row="1" ItemsSource="{Binding AllChannels}" ItemContainerStyle="{StaticResource RadioItemStyle}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
-                                                <Image Source="http://cdn.breitbart.com/mediaserver/Breitbart/Big-Hollywood/2012/09/06/lady-gaga/ladygaga.jpg" Stretch="UniformToFill" />
+                                                <Image Source="{Binding ImageUrl}" Stretch="UniformToFill" />
                                                 <Border Padding="6,3" VerticalAlignment="Bottom">
                                                     <Border.Background>
                                                         <SolidColorBrush Color="Black" Opacity="0.6" />
                                                     </Border.Background>
-                                                    <TextBlock Text="Tech House" Foreground="White" FontSize="15" FontWeight="Light" TextWrapping="NoWrap" TextTrimming="WordEllipsis" />
+                                                    <TextBlock Text="{Binding Name}" Foreground="White" FontSize="15" FontWeight="Light" TextWrapping="NoWrap" TextTrimming="None" />
                                                 </Border>
                                             </Grid>
                                         </DataTemplate>
