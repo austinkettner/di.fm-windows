@@ -1,15 +1,21 @@
 using GalaSoft.MvvmLight;
-using HtmlAgilityPack;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Net;
+using System.Net.Http.Headers;
+using System;
+using Newtonsoft.Json;
 
 namespace DI.FM.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private const string MAIN_URL = "http://www.di.fm/";
+        private const string SOURCE_URL = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3";
+        private const string TRACK_URL = "http://api.audioaddict.com/v1/di/track_history/channel/";
+        private const string USER = "ephemeron";
+        private const string PASS = "dayeiph0ne@pp";
 
         private ObservableCollection<ChannelItem> _allChannels;
         public ObservableCollection<ChannelItem> AllChannels
@@ -35,6 +41,17 @@ namespace DI.FM.ViewModel
 
         public class ChannelItem : ObservableObject
         {
+            private int _id;
+            public int ID
+            {
+                get { return _id; }
+                set
+                {
+                    _id = value;
+                    RaisePropertyChanged("ID");
+                }
+            }
+
             private string _name;
             public string Name
             {
@@ -43,6 +60,17 @@ namespace DI.FM.ViewModel
                 {
                     _name = value;
                     RaisePropertyChanged("Name");
+                }
+            }
+
+            private string _description;
+            public string Description
+            {
+                get { return _description; }
+                set
+                {
+                    _description = value;
+                    RaisePropertyChanged("Description");
                 }
             }
 
@@ -78,30 +106,51 @@ namespace DI.FM.ViewModel
 
         private async void LoadAllChannels()
         {
-            var html = await DownloadHtml();
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            var items = doc.GetElementbyId("channels").Descendants("li");
+            var data = await DownloadJson(SOURCE_URL);
 
-            foreach (var item in items)
+            var json = JsonConvert.DeserializeObject(data) as dynamic;
+            var channels = json["channel_filters"][0]["channels"];
+            foreach (var channel in channels)
             {
-                var channel = new ChannelItem();
-                channel.ImageUrl = item.Descendants("a").FirstOrDefault().Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
-                channel.Name = item.Descendants("p").Where(tr => tr.GetAttributeValue("class", "").Equals("channel")).FirstOrDefault().InnerText;
-                //var x = item.Descendants("p").Where(tr => tr.GetAttributeValue("class", "").Equals("track")).FirstOrDefault();
-                AllChannels.Add(channel);
-            }
-
-            for (int i = 0; i < 5; i++)
-            {
-                FavoriteChannels.Add(AllChannels[i]);
+                var item = new ChannelItem()
+                {
+                    ID = channel["id"],
+                    Name = channel["name"],
+                    Description = channel["description"],
+                    ImageUrl = channel["asset_url"]
+                };
+                LoadChannelInfo(item);
+                AllChannels.Add(item);
+                FavoriteChannels.Add(item);
             }
         }
 
-        private async Task<string> DownloadHtml()
+        private async void LoadChannelInfo(ChannelItem channel)
+        {
+            var data = await DownloadJson(TRACK_URL + channel.ID + ".json");
+
+            var tracks = JsonConvert.DeserializeObject(data) as dynamic;
+            foreach (var track in tracks)
+            {
+                if (track["type"] == "track")
+                {
+                    channel.NowPlaying = track["track"];
+                    break;
+                }
+            }
+        }
+
+        private async Task<string> DownloadJson(string url)
         {
             var client = new HttpClient();
-            return await client.GetStringAsync(MAIN_URL);
+            client.DefaultRequestHeaders.Authorization = CreateBasicHeader(USER, PASS);
+            return await client.GetStringAsync(url);
+        }
+
+        public AuthenticationHeaderValue CreateBasicHeader(string username, string password)
+        {
+            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(username + ":" + password);
+            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
         }
     }
 }
