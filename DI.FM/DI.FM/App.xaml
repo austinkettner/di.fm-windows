@@ -7,16 +7,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:DI.FM.ViewModel"
              mc:Ignorable="d">
-  <Application.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <!-- 
-                    Styles that define common aspects of the platform look and feel
-                    Required by Visual Studio project and item templates
-                 -->
-        <ResourceDictionary Source="Common/StandardStyles.xaml" />
-      </ResourceDictionary.MergedDictionaries>
-      <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
-    </ResourceDictionary>
-  </Application.Resources>
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Common/StandardStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+            <Style x:Key="RootFrameStyle" TargetType="Frame">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Frame">
+                            <Grid>
+                                <MediaElement x:Name="MediaPlayer" AudioCategory="BackgroundCapableMedia" AutoPlay="True"  />
+                                <ContentPresenter />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

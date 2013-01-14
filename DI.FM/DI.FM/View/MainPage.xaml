@@ -7,13 +7,17 @@
     xmlns:common="using:DI.FM.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" UseLayoutRounding="True">
+    mc:Ignorable="d" NavigationCacheMode="Enabled">
     
     <Page.DataContext>
         <Binding Source="{StaticResource Locator}" Path="Main" />
     </Page.DataContext>
 
     <Page.Resources>
+
+        <common:DurationConverter x:Key="DurationConverter" />
+        <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+        
         <Style x:Key="NormalItemStyle" TargetType="ListViewItem">
             <Setter Property="Template">
                 <Setter.Value>
@@ -118,24 +122,24 @@
             <RowDefinition Height="109" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
-        <MediaElement x:Name="MediaPlayer" AudioCategory="BackgroundCapableMedia" />
+
+        <!--<MediaElement x:Name="MediaPlayer" AudioCategory="BackgroundCapableMedia" Source="http://pub3.di.fm:80/di_deeptech" />-->
 
         <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
             <Grid Margin="117,0,56,0" Style="{StaticResource LayoutRootStyle}">
                 <Grid HorizontalAlignment="Left">
                     <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
                 </Grid>
-                <Grid HorizontalAlignment="Right">
+                <Grid HorizontalAlignment="Right" Visibility="{Binding Path=NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <StackPanel Margin="0,0,34,0"  VerticalAlignment="Center">
                         <TextBlock Margin="0,0,0,6" Text="NOW LISTENING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
-                        <TextBlock Text="Matt Cerf Envio Feat Jaren - Walk Away (Vocal Mix)" Foreground="White" FontSize="21.33" FontWeight="Light" />
+                        <TextBlock Text="{Binding NowPlayingItem.TrackHistory[0].Track}" Foreground="White" FontSize="21.33" FontWeight="Light" />
                     </StackPanel>
-                    <Button Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource PauseIconButtonStyle}" />
+                    <Button Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource PauseIconButtonStyle}" Click="ButtonPlayPause_Click" />
                 </Grid>
             </Grid>
         </Border>
@@ -159,7 +163,7 @@
                     <GridView>
                         <GridView.Items>
                             <!-- Now Playing -->
-                            <Grid Margin="0,0,61,0" Width="366">
+                            <Grid Margin="0,0,61,0" Width="366" Visibility="{Binding Path=NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="38" />
                                     <RowDefinition />
@@ -167,10 +171,10 @@
                                 <Button Content="Now Playing" Style="{StaticResource GroupButtonStyle}" />
                                 <Grid Grid.Row="1">
                                     <StackPanel>
-                                        <Image Margin="0,0,0,23" Source="http://cdn.breitbart.com/mediaserver/Breitbart/Big-Hollywood/2012/09/06/lady-gaga/ladygaga.jpg" />
-                                        <TextBlock Margin="0,0,0,5" Text="VOCAL TRANCE" Foreground="White" FontSize="16" FontWeight="Bold" />
-                                        <TextBlock Margin="0,0,0,2" Text="Matt Cerf Envio Feat Jaren - Walk Away (Vocal Mix)" Foreground="White" FontSize="18.67" FontWeight="SemiLight" TextWrapping="Wrap" />
-                                        <TextBlock Text="8:16" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                        <Image Margin="0,0,0,23" Source="{Binding NowPlayingItem.ImageUrl}" />
+                                        <TextBlock Margin="0,0,0,5" Text="{Binding NowPlayingItem.Name}" Foreground="White" FontSize="16" FontWeight="Bold" />
+                                        <TextBlock Margin="0,0,0,2" Text="{Binding NowPlayingItem.TrackHistory[0].Track}" Foreground="White" FontSize="18.67" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding Path=NowPlayingItem.TrackHistory[0].Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -200,7 +204,7 @@
                                                 </Grid>
                                                 <StackPanel Grid.Column="1" Margin="10,25,10,10">
                                                     <TextBlock Text="NOW PLAYING" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
-                                                    <TextBlock Text="{Binding NowPlaying}" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" />
+                                                    <TextBlock Text="{Binding TrackHistory[0].Track}" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" />
                                                 </StackPanel>
                                             </Grid>
                                         </DataTemplate>

@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -28,11 +29,44 @@ namespace DI.FM
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
+        ///
+
         public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            MediaControl.PlayPressed += MediaControl_PlayPressed;
+            MediaControl.PausePressed += MediaControl_PausePressed;
+            MediaControl.PlayPauseTogglePressed += MediaControl_PlayPauseTogglePressed;
+            MediaControl.StopPressed += MediaControl_StopPressed;
         }
+
+
+        
+
+        void MediaControl_PlayPressed(object sender, object e)
+        {
+            //MediaPlayer.Play();
+        }
+
+        void MediaControl_PausePressed(object sender, object e)
+        {
+           // MediaPlayer.Pause();
+        }
+
+        void MediaControl_PlayPauseTogglePressed(object sender, object e)
+        {
+            /*if (MediaPlayer.CurrentState == MediaElementState.Playing) MediaPlayer.Pause();
+            else MediaPlayer.Play();*/
+        }
+
+        void MediaControl_StopPressed(object sender, object e)
+        {
+            //MediaPlayer.Stop();
+        }
+
+        public static MediaElement MediaPlayer;
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -59,6 +93,9 @@ namespace DI.FM
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
+
+            // create the media element for background audio
+            rootFrame.Style = Resources["RootFrameStyle"] as Style;
 
             if (rootFrame.Content == null)
             {

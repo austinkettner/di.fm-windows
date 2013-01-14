@@ -26,14 +26,14 @@ namespace DI.FM.ViewModel
 
 
 
-        private bool _isNowPlaying;
-        public bool IsNowPlaying
+        private ChannelItem _nowPlayingItem;
+        public ChannelItem NowPlayingItem
         {
-            get { return _isNowPlaying; }
+            get { return _nowPlayingItem; }
             set
             {
-                _isNowPlaying = value;
-                RaisePropertyChanged("IsNowPlaying");
+                _nowPlayingItem = value;
+                RaisePropertyChanged("NowPlayingItem");
             }
         }
 
@@ -61,6 +61,31 @@ namespace DI.FM.ViewModel
             {
                 _favoriteChannels = value;
                 RaisePropertyChanged("FavoriteChannels");
+            }
+        }
+
+        public class TrackItem : ObservableObject
+        {
+            private string _track;
+            public string Track
+            {
+                get { return _track; }
+                set
+                {
+                    _track = value;
+                    RaisePropertyChanged("Track");
+                }
+            }
+
+            private int _duration;
+            public int Duration
+            {
+                get { return _duration; }
+                set
+                {
+                    _duration = value;
+                    RaisePropertyChanged("Duration");
+                }
             }
         }
 
@@ -124,6 +149,17 @@ namespace DI.FM.ViewModel
                 }
             }
 
+            private ObservableCollection<TrackItem> _trackHistory;
+            public ObservableCollection<TrackItem> TrackHistory
+            {
+                get { return _trackHistory; }
+                set
+                {
+                    _trackHistory = value;
+                    RaisePropertyChanged("TrackHistory");
+                }
+            }
+
             private List<string> _streams;
             public List<string> Streams
             {
@@ -153,6 +189,7 @@ namespace DI.FM.ViewModel
 
         public MainViewModel()
         {
+            if (IsInDesignMode) return;
             AllChannels = new ObservableCollection<ChannelItem>();
             FavoriteChannels = new ObservableCollection<ChannelItem>();
             LoadAllChannels();
@@ -176,7 +213,7 @@ namespace DI.FM.ViewModel
                 LoadChannelInfo(item);
                 LoadChannelPl(item, json);
                 AllChannels.Add(item);
-                FavoriteChannels.Add(item);
+                //FavoriteChannels.Add(item);
             }
         }
 
@@ -200,14 +237,19 @@ namespace DI.FM.ViewModel
         private async void LoadChannelInfo(ChannelItem channel)
         {
             var data = await DownloadJson(string.Format(TRACK_URL, channel.ID));
-
+            channel.TrackHistory = new ObservableCollection<TrackItem>();
             var tracks = JsonConvert.DeserializeObject(data) as dynamic;
             foreach (var track in tracks)
             {
                 if (track["type"] == "track")
                 {
+                    channel.TrackHistory.Add(new TrackItem()
+                    {
+                        Track = track["track"],
+                        Duration = track["duration"]
+                    });
                     channel.NowPlaying = track["track"];
-                    break;
+                    
                 }
             }
         }
