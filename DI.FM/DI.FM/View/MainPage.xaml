@@ -118,6 +118,8 @@
             <RowDefinition Height="109" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        
+        <MediaElement x:Name="MediaPlayer" AudioCategory="BackgroundCapableMedia" />
 
         <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
             <Grid Margin="117,0,56,0" Style="{StaticResource LayoutRootStyle}">
@@ -220,7 +222,7 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Button Content="All Radio Channels" Style="{StaticResource GroupButtonStyle}" />
-                                <ListView Grid.Row="1" ItemsSource="{Binding AllChannels}" ItemContainerStyle="{StaticResource RadioItemStyle}">
+                                <ListView Grid.Row="1" ItemsSource="{Binding AllChannels}" ItemContainerStyle="{StaticResource RadioItemStyle}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick_1">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>

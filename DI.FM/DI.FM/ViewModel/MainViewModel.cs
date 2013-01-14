@@ -7,15 +7,40 @@ using System.Net;
 using System.Net.Http.Headers;
 using System;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using Windows.UI.Xaml.Controls;
+using System.IO;
+using Windows.Storage;
+using Windows.Networking.BackgroundTransfer;
 
 namespace DI.FM.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
         private const string SOURCE_URL = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3";
-        private const string TRACK_URL = "http://api.audioaddict.com/v1/di/track_history/channel/";
+        private const string TRACK_URL = "http://api.audioaddict.com/v1/di/track_history/channel/{0}.json";
         private const string USER = "ephemeron";
         private const string PASS = "dayeiph0ne@pp";
+
+        
+
+
+
+        private bool _isNowPlaying;
+        public bool IsNowPlaying
+        {
+            get { return _isNowPlaying; }
+            set
+            {
+                _isNowPlaying = value;
+                RaisePropertyChanged("IsNowPlaying");
+            }
+        }
+
+
+
+
+
 
         private ObservableCollection<ChannelItem> _allChannels;
         public ObservableCollection<ChannelItem> AllChannels
@@ -82,6 +107,9 @@ namespace DI.FM.ViewModel
                 {
                     _imageUrl = value;
                     RaisePropertyChanged("ImageUrl");
+
+
+                    SaveAsync(new Uri(_imageUrl), ApplicationData.Current.LocalFolder, Name + ".jpg");
                 }
             }
 
@@ -93,6 +121,32 @@ namespace DI.FM.ViewModel
                 {
                     _nowPlaying = value;
                     RaisePropertyChanged("NowPlaying");
+                }
+            }
+
+            private List<string> _streams;
+            public List<string> Streams
+            {
+                get { return _streams; }
+                set
+                {
+                    _streams = value;
+                    RaisePropertyChanged("Streams");
+                }
+            }
+
+
+            public async static void SaveAsync(Uri fileUri, StorageFolder folder, string fileName)
+            {
+                try
+                {
+                    var file = await folder.CreateFileAsync(fileName, CreationCollisionOption.FailIfExists);
+                    var downloader = new BackgroundDownloader();
+                    var download = downloader.CreateDownload(fileUri, file);
+                    var res = await download.StartAsync();
+                }
+                catch
+                {
                 }
             }
         }
@@ -120,14 +174,32 @@ namespace DI.FM.ViewModel
                     ImageUrl = channel["asset_url"]
                 };
                 LoadChannelInfo(item);
+                LoadChannelPl(item, json);
                 AllChannels.Add(item);
                 FavoriteChannels.Add(item);
             }
         }
 
+        private void LoadChannelPl(ChannelItem channel, dynamic json)
+        {
+            channel.Streams = new List<string>();
+            var channels = json["streamlists"]["public3"]["channels"];
+            foreach (var c in channels)
+            {
+                if (c["id"] == channel.ID)
+                {
+                    foreach(var st in c["streams"])
+                    {
+                        channel.Streams.Add(st["url"].ToString());
+                    }
+                    return;
+                }
+            }
+        }
+
         private async void LoadChannelInfo(ChannelItem channel)
         {
-            var data = await DownloadJson(TRACK_URL + channel.ID + ".json");
+            var data = await DownloadJson(string.Format(TRACK_URL, channel.ID));
 
             var tracks = JsonConvert.DeserializeObject(data) as dynamic;
             foreach (var track in tracks)
