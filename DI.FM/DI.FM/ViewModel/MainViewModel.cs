@@ -22,7 +22,7 @@ namespace DI.FM.ViewModel
         private const string USER = "ephemeron";
         private const string PASS = "dayeiph0ne@pp";
 
-        
+
 
 
 
@@ -74,6 +74,21 @@ namespace DI.FM.ViewModel
                 {
                     _track = value;
                     RaisePropertyChanged("Track");
+                }
+            }
+
+            private long _started;
+            public long Started
+            {
+                get { return _started; }
+                set
+                {
+                    _started = value;
+
+                  /*  var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                    dtDateTime = dtDateTime.AddSeconds(_started).ToLocalTime();*/
+
+                    RaisePropertyChanged("Started");
                 }
             }
 
@@ -225,7 +240,7 @@ namespace DI.FM.ViewModel
             {
                 if (c["id"] == channel.ID)
                 {
-                    foreach(var st in c["streams"])
+                    foreach (var st in c["streams"])
                     {
                         channel.Streams.Add(st["url"].ToString());
                     }
@@ -246,10 +261,30 @@ namespace DI.FM.ViewModel
                     channel.TrackHistory.Add(new TrackItem()
                     {
                         Track = track["track"],
+                        Started = track["started"],
                         Duration = track["duration"]
                     });
                     channel.NowPlaying = track["track"];
-                    
+
+                }
+            }
+        }
+
+        public async Task LoadNowPlaying()
+        {
+            var data = await DownloadJson(string.Format(TRACK_URL, NowPlayingItem.ID));
+            NowPlayingItem.TrackHistory.Clear();
+            var tracks = JsonConvert.DeserializeObject(data) as dynamic;
+            foreach (var track in tracks)
+            {
+                if (track["type"] == "track")
+                {
+                    NowPlayingItem.TrackHistory.Add(new TrackItem()
+                    {
+                        Track = track["track"],
+                        Started = track["started"],
+                        Duration = track["duration"]
+                    });
                 }
             }
         }

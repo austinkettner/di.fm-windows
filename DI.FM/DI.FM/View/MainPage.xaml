@@ -171,7 +171,9 @@
                                 <Button Content="Now Playing" Style="{StaticResource GroupButtonStyle}" />
                                 <Grid Grid.Row="1">
                                     <StackPanel>
-                                        <Image Margin="0,0,0,23" Source="{Binding NowPlayingItem.ImageUrl}" />
+                                        <Image Source="{Binding NowPlayingItem.ImageUrl}" />
+                                        <ProgressBar x:Name="pro" Margin="0,0,0,23" Maximum="100" Height="5" />
+                                        <TextBlock x:Name="Dr" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
                                         <TextBlock Margin="0,0,0,5" Text="{Binding NowPlayingItem.Name}" Foreground="White" FontSize="16" FontWeight="Bold" />
                                         <TextBlock Margin="0,0,0,2" Text="{Binding NowPlayingItem.TrackHistory[0].Track}" Foreground="White" FontSize="18.67" FontWeight="SemiLight" TextWrapping="Wrap" />
                                         <TextBlock Text="{Binding Path=NowPlayingItem.TrackHistory[0].Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
