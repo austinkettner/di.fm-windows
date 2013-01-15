@@ -9,6 +9,25 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" NavigationCacheMode="Enabled">
     
+    <Page.BottomAppBar>
+        <AppBar BorderBrush="{x:Null}">
+            <AppBar.Background>
+                <SolidColorBrush Color="#0fa7ff" Opacity="0.9" />
+            </AppBar.Background>
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Style="{StaticResource SkipBackAppBarButtonStyle}" AutomationProperties.Name="Prev" />
+                    <Button Style="{StaticResource SkipAheadAppBarButtonStyle}" AutomationProperties.Name="Next" />
+                    <Button Style="{StaticResource ShuffleAppBarButtonStyle}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource VolumeAppBarButtonStyle}" />
+                    <Button Style="{StaticResource RefreshAppBarButtonStyle}" />
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </Page.BottomAppBar>
+    
     <Page.DataContext>
         <Binding Source="{StaticResource Locator}" Path="Main" />
     </Page.DataContext>

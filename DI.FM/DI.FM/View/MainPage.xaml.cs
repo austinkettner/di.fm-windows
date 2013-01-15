@@ -30,7 +30,7 @@ namespace DI.FM.View
                 {
                     var rootGrid = VisualTreeHelper.GetChild(Window.Current.Content, 0);
                     App.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
-                    App.MediaPlayer.AudioCategory = AudioCategory.BackgroundCapableMedia;
+                    App.MediaPlayer.RealTimePlayback = true;
                     App.MediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
                     App.MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
                     App.MediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
@@ -39,7 +39,7 @@ namespace DI.FM.View
 
 
 
-            
+
         }
 
         void MediaPlayer_MediaFailed(object sender, ExceptionRoutedEventArgs e)
@@ -56,8 +56,8 @@ namespace DI.FM.View
         {
             bpp.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
         }
-           
-      
+
+
         private void search_VisibilityChanged(SearchPane sender, SearchPaneVisibilityChangedEventArgs args)
         {
             //args.Visible
@@ -100,12 +100,12 @@ namespace DI.FM.View
             if (App.MediaPlayer.CurrentState == MediaElementState.Playing)
             {
                 btn.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
-                App.MediaPlayer.Stop();
+                App.MediaPlayer.Source = null;
             }
             else
             {
                 btn.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
-                App.MediaPlayer.Play();
+                App.MediaPlayer.Source = new Uri(this.Model.NowPlayingItem.Streams[0]);
             }
         }
     }

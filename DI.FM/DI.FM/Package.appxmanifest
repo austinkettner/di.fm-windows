@@ -17,7 +17,7 @@
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="DI.FM.App">
       <VisualElements DisplayName="DI.FM" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="DI.FM" ForegroundText="light" BackgroundColor="#464646">
         <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="Assets\SplashScreen.png" />
+        <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#333333" />
       </VisualElements>
       <Extensions>
         <Extension Category="windows.search" EntryPoint="MainPage.xaml" />

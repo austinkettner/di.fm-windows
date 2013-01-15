@@ -1,41 +1,54 @@
 using GalaSoft.MvvmLight;
-using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Net;
-using System.Net.Http.Headers;
-using System;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Windows.UI.Xaml.Controls;
+using System.Collections.ObjectModel;
 using System.IO;
-using Windows.Storage;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Windows.Networking.BackgroundTransfer;
+using Windows.Storage;
 using Windows.UI.Xaml;
 
 namespace DI.FM.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        #region Constants
+
         private const string SOURCE_URL = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3";
         private const string TRACK_URL = "http://api.audioaddict.com/v1/di/track_history/channel/{0}.json";
         private const string USER = "ephemeron";
         private const string PASS = "dayeiph0ne@pp";
 
-        private DispatcherTimer nowPlayingRefresh;
+        #endregion
 
+        #region Variables
 
-
-        private double GetSeconds(long seconds)
+        private ObservableCollection<ChannelItem> _allChannels;
+        public ObservableCollection<ChannelItem> AllChannels
         {
-            var unixTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            unixTime = unixTime.AddSeconds(seconds).ToLocalTime();
-            return DateTime.Now.Subtract(unixTime).TotalSeconds;
+            get { return _allChannels; }
+            set
+            {
+                _allChannels = value;
+                RaisePropertyChanged("AllChannels");
+            }
         }
 
+        private ObservableCollection<ChannelItem> _favoriteChannels;
+        public ObservableCollection<ChannelItem> FavoriteChannels
+        {
+            get { return _favoriteChannels; }
+            set
+            {
+                _favoriteChannels = value;
+                RaisePropertyChanged("FavoriteChannels");
+            }
+        }
 
-
+        private DispatcherTimer nowPlayingRefresh;
 
         private ChannelItem _nowPlayingItem;
         public ChannelItem NowPlayingItem
@@ -73,32 +86,9 @@ namespace DI.FM.ViewModel
             }
         }
 
+        #endregion
 
-
-
-
-
-        private ObservableCollection<ChannelItem> _allChannels;
-        public ObservableCollection<ChannelItem> AllChannels
-        {
-            get { return _allChannels; }
-            set
-            {
-                _allChannels = value;
-                RaisePropertyChanged("AllChannels");
-            }
-        }
-
-        private ObservableCollection<ChannelItem> _favoriteChannels;
-        public ObservableCollection<ChannelItem> FavoriteChannels
-        {
-            get { return _favoriteChannels; }
-            set
-            {
-                _favoriteChannels = value;
-                RaisePropertyChanged("FavoriteChannels");
-            }
-        }
+        #region Classes
 
         public class TrackItem : ObservableObject
         {
@@ -120,10 +110,6 @@ namespace DI.FM.ViewModel
                 set
                 {
                     _started = value;
-
-                  /*  var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-                    dtDateTime = dtDateTime.AddSeconds(_started).ToLocalTime();*/
-
                     RaisePropertyChanged("Started");
                 }
             }
@@ -231,34 +217,53 @@ namespace DI.FM.ViewModel
                 }
                 catch
                 {
-                    
+
                 }
 
                 RaisePropertyChanged("ImageUrl");
             }
         }
 
+        #endregion
+
+        #region Constructor
+
         public MainViewModel()
         {
-            if (IsInDesignMode) return;
-            AllChannels = new ObservableCollection<ChannelItem>();
-            FavoriteChannels = new ObservableCollection<ChannelItem>();
-            LoadAllChannels();
-
-
-
-            nowPlayingRefresh = new DispatcherTimer();
-            nowPlayingRefresh.Interval = TimeSpan.FromSeconds(1);
-            nowPlayingRefresh.Tick += nowPlayingRefresh_Tick;
+            if (!IsInDesignMode)
+            {
+                // Init the arrays
+                AllChannels = new ObservableCollection<ChannelItem>();
+                FavoriteChannels = new ObservableCollection<ChannelItem>();
+                // Init the timer
+                nowPlayingRefresh = new DispatcherTimer();
+                nowPlayingRefresh.Interval = TimeSpan.FromSeconds(1);
+                nowPlayingRefresh.Tick += nowPlayingRefresh_Tick;
+                // Load the channels
+                LoadAllChannels();
+            }
         }
+
+        #endregion
+
+
+
+
+        private double ConvertFromUnixTime(long seconds)
+        {
+            var unixTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            unixTime = unixTime.AddSeconds(seconds).ToLocalTime();
+            return DateTime.Now.Subtract(unixTime).TotalSeconds;
+        }
+
 
         void nowPlayingRefresh_Tick(object sender, object e)
         {
-            var currentPosition = GetSeconds(NowPlayingItem.NowPlaying.Started);
+            var currentPosition = ConvertFromUnixTime(NowPlayingItem.NowPlaying.Started);
             if (currentPosition > NowPlayingItem.NowPlaying.Duration)
             {
                 //refresh
-                LoadChannelInfo(NowPlayingItem);
+                LoadTrackHistory(NowPlayingItem);
                 currentPosition = 0;
             }
             NowPlayingPosition = currentPosition;
@@ -266,10 +271,31 @@ namespace DI.FM.ViewModel
 
         private async void LoadAllChannels()
         {
-            var data = await DownloadJson(SOURCE_URL);
+            StorageFile file = null;
+            try { file = await ApplicationData.Current.LocalFolder.GetFileAsync("channels.json"); }
+            catch { }
+
+            var data = "";
+
+
+            if (file == null)
+            {
+                data = await DownloadJson(SOURCE_URL);
+                file = await ApplicationData.Current.LocalFolder.CreateFileAsync("channels.json");
+                var writer = new StreamWriter(await file.OpenStreamForWriteAsync());
+                await writer.WriteAsync(data);
+                writer.Dispose();
+            }
+            else
+            {
+                var reader = new StreamReader(await file.OpenStreamForReadAsync());
+                data = await reader.ReadToEndAsync();
+                reader.Dispose();
+            }
 
             var json = JsonConvert.DeserializeObject(data) as dynamic;
             var channels = json["channel_filters"][0]["channels"];
+
             foreach (var channel in channels)
             {
                 var item = new ChannelItem()
@@ -279,17 +305,18 @@ namespace DI.FM.ViewModel
                     Description = channel["description"],
                     ImageUrl = channel["asset_url"]
                 };
-                LoadChannelInfo(item);
-                LoadChannelPl(item, json);
+                LoadTrackHistory(item);
+                LoadChannelStreams(item, json);
                 AllChannels.Add(item);
                 //FavoriteChannels.Add(item);
             }
         }
 
-        private void LoadChannelPl(ChannelItem channel, dynamic json)
+        private void LoadChannelStreams(ChannelItem channel, dynamic json)
         {
             channel.Streams = new List<string>();
             var channels = json["streamlists"]["public3"]["channels"];
+
             foreach (var c in channels)
             {
                 if (c["id"] == channel.ID)
@@ -303,7 +330,7 @@ namespace DI.FM.ViewModel
             }
         }
 
-        private async void LoadChannelInfo(ChannelItem channel)
+        private async void LoadTrackHistory(ChannelItem channel)
         {
             var data = await DownloadJson(string.Format(TRACK_URL, channel.ID));
 
