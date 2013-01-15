@@ -37,42 +37,14 @@ namespace DI.FM.View
 
 
 
-
-            dt.Interval = TimeSpan.FromSeconds(1);
-            dt.Tick += dt_Tick;
             
         }
 
         void MediaPlayer_MediaOpened(object sender, RoutedEventArgs e)
         {
-            
-            pro.Value = DateTime.Now.Subtract(tot).TotalSeconds;
-            dt.Start();
         }
-
-        void dt_Tick(object sender, object e)
-        {
-            pro.Value++;
-            Dr.Text = 100 * pro.Value / (double)pro.Maximum + "%";
-            if (pro.Value == pro.Maximum)
-            {
-                a();
-                pro.Value = 0;
-                dt.Stop();
-            }
-        }
-
-        async void a()
-        {
-            await this.Model.LoadNowPlaying();
-            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            tot = dtDateTime.AddSeconds(this.Model.NowPlayingItem.TrackHistory[0].Started);
-            pro.Maximum = this.Model.NowPlayingItem.TrackHistory[0].Duration;
-            dt.Start();
-        }
-
-        DispatcherTimer dt = new DispatcherTimer();
-
+           
+      
         private void search_VisibilityChanged(SearchPane sender, SearchPaneVisibilityChangedEventArgs args)
         {
             //args.Visible
@@ -96,8 +68,6 @@ namespace DI.FM.View
             }
         }
 
-        DateTime tot;
-
         private void ListView_ItemClick_1(object sender, ItemClickEventArgs e)
         {
             var data = e.ClickedItem as DI.FM.ViewModel.MainViewModel.ChannelItem;
@@ -105,17 +75,9 @@ namespace DI.FM.View
             {
                 //this.Frame.Navigate(typeof(ChannelPage), data);
                 MediaControl.AlbumArt = new Uri("ms-appdata:///local/" + data.Name + ".jpg");
-                MediaControl.TrackName = data.NowPlaying;
+                MediaControl.TrackName = data.NowPlaying.Track;
                 App.MediaPlayer.Source = new Uri(data.Streams[0]);
                 this.Model.NowPlayingItem = data;
-
-
-                var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-                tot = dtDateTime.AddSeconds(data.TrackHistory[0].Started).ToLocalTime();
-                //tot = dtDateTime.AddSeconds(data.TrackHistory[0].Duration);
-
-                pro.Maximum = data.TrackHistory[0].Duration;
-                dt.Stop();
             }
         }
 
@@ -125,12 +87,11 @@ namespace DI.FM.View
             if (App.MediaPlayer.CurrentState == MediaElementState.Playing)
             {
                 btn.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
-                if (App.MediaPlayer.CanPause) App.MediaPlayer.Pause();
-                else App.MediaPlayer.Stop();
+                App.MediaPlayer.Stop();
             }
             else
             {
-                btn.Style = App.Current.Resources["PauseIconButtonStyle"] as Style;
+                btn.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
                 App.MediaPlayer.Play();
             }
         }

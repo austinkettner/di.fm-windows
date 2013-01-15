@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Controls;
 using System.IO;
 using Windows.Storage;
 using Windows.Networking.BackgroundTransfer;
+using Windows.UI.Xaml;
 
 namespace DI.FM.ViewModel
 {
@@ -22,6 +23,16 @@ namespace DI.FM.ViewModel
         private const string USER = "ephemeron";
         private const string PASS = "dayeiph0ne@pp";
 
+        private DispatcherTimer nowPlayingRefresh;
+
+
+
+        private double GetSeconds(long seconds)
+        {
+            var unixTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            unixTime = unixTime.AddSeconds(seconds).ToLocalTime();
+            return DateTime.Now.Subtract(unixTime).TotalSeconds;
+        }
 
 
 
@@ -33,7 +44,32 @@ namespace DI.FM.ViewModel
             set
             {
                 _nowPlayingItem = value;
+
+
+                if (_nowPlayingItem != null)
+                {
+                    nowPlayingRefresh.Start();
+                    NowPlayingPosition = 0;
+                }
+                else
+                {
+                    nowPlayingRefresh.Stop();
+                }
+
+
+
                 RaisePropertyChanged("NowPlayingItem");
+            }
+        }
+
+        private double _nowPlayingPosition;
+        public double NowPlayingPosition
+        {
+            get { return _nowPlayingPosition; }
+            set
+            {
+                _nowPlayingPosition = value;
+                RaisePropertyChanged("NowPlayingPosition");
             }
         }
 
@@ -153,8 +189,8 @@ namespace DI.FM.ViewModel
                 }
             }
 
-            private string _nowPlaying;
-            public string NowPlaying
+            private TrackItem _nowPlaying;
+            public TrackItem NowPlaying
             {
                 get { return _nowPlaying; }
                 set
@@ -208,6 +244,24 @@ namespace DI.FM.ViewModel
             AllChannels = new ObservableCollection<ChannelItem>();
             FavoriteChannels = new ObservableCollection<ChannelItem>();
             LoadAllChannels();
+
+
+
+            nowPlayingRefresh = new DispatcherTimer();
+            nowPlayingRefresh.Interval = TimeSpan.FromSeconds(1);
+            nowPlayingRefresh.Tick += nowPlayingRefresh_Tick;
+        }
+
+        void nowPlayingRefresh_Tick(object sender, object e)
+        {
+            var currentPosition = GetSeconds(NowPlayingItem.NowPlaying.Started);
+            if (currentPosition > NowPlayingItem.NowPlaying.Duration)
+            {
+                //refresh
+                LoadChannelInfo(NowPlayingItem);
+                currentPosition = 0;
+            }
+            NowPlayingPosition = currentPosition;
         }
 
         private async void LoadAllChannels()
@@ -252,7 +306,10 @@ namespace DI.FM.ViewModel
         private async void LoadChannelInfo(ChannelItem channel)
         {
             var data = await DownloadJson(string.Format(TRACK_URL, channel.ID));
-            channel.TrackHistory = new ObservableCollection<TrackItem>();
+
+            if (channel.TrackHistory == null) channel.TrackHistory = new ObservableCollection<TrackItem>();
+            else channel.TrackHistory.Clear();
+
             var tracks = JsonConvert.DeserializeObject(data) as dynamic;
             foreach (var track in tracks)
             {
@@ -264,27 +321,7 @@ namespace DI.FM.ViewModel
                         Started = track["started"],
                         Duration = track["duration"]
                     });
-                    channel.NowPlaying = track["track"];
-
-                }
-            }
-        }
-
-        public async Task LoadNowPlaying()
-        {
-            var data = await DownloadJson(string.Format(TRACK_URL, NowPlayingItem.ID));
-            NowPlayingItem.TrackHistory.Clear();
-            var tracks = JsonConvert.DeserializeObject(data) as dynamic;
-            foreach (var track in tracks)
-            {
-                if (track["type"] == "track")
-                {
-                    NowPlayingItem.TrackHistory.Add(new TrackItem()
-                    {
-                        Track = track["track"],
-                        Started = track["started"],
-                        Duration = track["duration"]
-                    });
+                    channel.NowPlaying = channel.TrackHistory[0];
                 }
             }
         }

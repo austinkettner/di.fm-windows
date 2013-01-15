@@ -12,8 +12,21 @@ namespace DI.FM.Common
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var duration = (int)value;
-            return new DateTime(TimeSpan.FromSeconds(duration).Ticks).ToString("HH:mm:ss");
+            var duration = double.Parse(value.ToString());
+            var time = TimeSpan.FromSeconds(duration);
+
+            string min = time.Minutes.ToString();
+            string sec = time.Seconds.ToString();
+
+            if (min.Length == 1) min = "0" + min;
+            if (sec.Length == 1) sec = "0" + sec;
+
+            if (time.Hours == 0) return string.Format("{0}:{1}", min, sec);
+
+            string hours = time.Hours.ToString();
+            if (hours.Length == 1) hours = "0" + hours;
+
+            return string.Format("{0}:{1}:{2}", hours, min, sec);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

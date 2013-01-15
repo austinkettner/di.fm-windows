@@ -1954,8 +1954,13 @@
     <Style x:Key="PlayIconButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource IconButtonStyle}">
         <Setter Property="Content" Value="&#xE102;"/>
     </Style>
+    
     <Style x:Key="PauseIconButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource IconButtonStyle}">
         <Setter Property="Content" Value="&#xE103;"/>
+    </Style>
+
+    <Style x:Key="StopIconButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource IconButtonStyle}">
+        <Setter Property="Content" Value="&#xE15B;"/>
     </Style>
 
     <Style x:Key="SearchIconButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource IconButtonStyle}">
