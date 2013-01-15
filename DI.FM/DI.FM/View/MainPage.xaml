@@ -139,7 +139,7 @@
                         <TextBlock Margin="0,0,0,6" Text="NOW LISTENING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
                         <TextBlock Text="{Binding NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21.33" FontWeight="Light" />
                     </StackPanel>
-                    <Button Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource StopIconButtonStyle}" Click="ButtonPlayPause_Click" />
+                    <Button x:Name="bpp" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource StopIconButtonStyle}" Click="ButtonPlayPause_Click" />
                 </Grid>
             </Grid>
         </Border>

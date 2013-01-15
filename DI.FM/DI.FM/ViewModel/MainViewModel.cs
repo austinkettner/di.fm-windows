@@ -181,11 +181,8 @@ namespace DI.FM.ViewModel
                 get { return _imageUrl; }
                 set
                 {
-                    _imageUrl = value;
-                    RaisePropertyChanged("ImageUrl");
-
-
-                    SaveAsync(new Uri(_imageUrl), ApplicationData.Current.LocalFolder, Name + ".jpg");
+                    _imageUrl = "ms-appdata:///local/" + Name + ".jpg";
+                    SaveAsync(new Uri(value), ApplicationData.Current.LocalFolder, Name + ".jpg");
                 }
             }
 
@@ -223,7 +220,7 @@ namespace DI.FM.ViewModel
             }
 
 
-            public async static void SaveAsync(Uri fileUri, StorageFolder folder, string fileName)
+            public async void SaveAsync(Uri fileUri, StorageFolder folder, string fileName)
             {
                 try
                 {
@@ -234,7 +231,10 @@ namespace DI.FM.ViewModel
                 }
                 catch
                 {
+                    
                 }
+
+                RaisePropertyChanged("ImageUrl");
             }
         }
 

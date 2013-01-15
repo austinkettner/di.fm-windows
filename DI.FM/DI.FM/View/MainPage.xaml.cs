@@ -32,6 +32,8 @@ namespace DI.FM.View
                     App.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
                     App.MediaPlayer.AudioCategory = AudioCategory.BackgroundCapableMedia;
                     App.MediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
+                    App.MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
+                    App.MediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
                 }
             };
 
@@ -40,8 +42,19 @@ namespace DI.FM.View
             
         }
 
+        void MediaPlayer_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            bpp.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
+        }
+
+        void MediaPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            bpp.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
+        }
+
         void MediaPlayer_MediaOpened(object sender, RoutedEventArgs e)
         {
+            bpp.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
         }
            
       
@@ -74,7 +87,7 @@ namespace DI.FM.View
             if (data != null)
             {
                 //this.Frame.Navigate(typeof(ChannelPage), data);
-                MediaControl.AlbumArt = new Uri("ms-appdata:///local/" + data.Name + ".jpg");
+                MediaControl.AlbumArt = new Uri(data.ImageUrl);
                 MediaControl.TrackName = data.NowPlaying.Track;
                 App.MediaPlayer.Source = new Uri(data.Streams[0]);
                 this.Model.NowPlayingItem = data;
