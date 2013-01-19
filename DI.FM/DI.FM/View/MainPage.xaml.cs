@@ -83,14 +83,15 @@ namespace DI.FM.View
 
         private void ListView_ItemClick_1(object sender, ItemClickEventArgs e)
         {
-            var data = e.ClickedItem as DI.FM.ViewModel.MainViewModel.ChannelItem;
+            var data = e.ClickedItem as MainViewModel.ChannelItem;
             if (data != null)
             {
-                //this.Frame.Navigate(typeof(ChannelPage), data);
-                MediaControl.AlbumArt = new Uri(data.ImageUrl);
+                this.Frame.Navigate(typeof(ChannelPage), this.Model);
+                this.Model.NowPlayingItem = data;
+                /*MediaControl.AlbumArt = new Uri(data.ImageUrl);
                 MediaControl.TrackName = data.NowPlaying.Track;
                 App.MediaPlayer.Source = new Uri(data.Streams[0]);
-                this.Model.NowPlayingItem = data;
+                this.Model.NowPlayingItem = data;*/
             }
         }
 

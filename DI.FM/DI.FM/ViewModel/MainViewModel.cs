@@ -24,7 +24,7 @@ namespace DI.FM.ViewModel
 
         #endregion
 
-        #region Variables
+        #region Properties
 
         private ObservableCollection<ChannelItem> _allChannels;
         public ObservableCollection<ChannelItem> AllChannels
@@ -56,20 +56,19 @@ namespace DI.FM.ViewModel
             get { return _nowPlayingItem; }
             set
             {
-                _nowPlayingItem = value;
-
-
-                if (_nowPlayingItem != null)
+                if (value != null)
                 {
-                    nowPlayingRefresh.Start();
-                    NowPlayingPosition = 0;
+                    if (_nowPlayingItem != value)
+                    {
+                        _nowPlayingItem = value;
+                        nowPlayingRefresh.Start();
+                        NowPlayingPosition = 0;
+                    }
                 }
                 else
                 {
                     nowPlayingRefresh.Stop();
                 }
-
-
 
                 RaisePropertyChanged("NowPlayingItem");
             }
@@ -92,6 +91,17 @@ namespace DI.FM.ViewModel
 
         public class TrackItem : ObservableObject
         {
+            private int _index;
+            public int Index
+            {
+                get { return _index; }
+                set
+                {
+                    _index = value;
+                    RaisePropertyChanged("Index");
+                }
+            }
+
             private string _track;
             public string Track
             {
@@ -215,12 +225,31 @@ namespace DI.FM.ViewModel
                     var download = downloader.CreateDownload(fileUri, file);
                     var res = await download.StartAsync();
                 }
-                catch
-                {
-
-                }
+                catch { }
 
                 RaisePropertyChanged("ImageUrl");
+            }
+
+            private ChannelItem _prev;
+            public ChannelItem Prev
+            {
+                get { return _prev; }
+                set
+                {
+                    _prev = value;
+                    RaisePropertyChanged("Prev");
+                }
+            }
+
+            private ChannelItem _next;
+            public ChannelItem Next
+            {
+                get { return _next; }
+                set
+                {
+                    _next = value;
+                    RaisePropertyChanged("Next");
+                }
             }
         }
 
@@ -310,6 +339,18 @@ namespace DI.FM.ViewModel
                 AllChannels.Add(item);
                 //FavoriteChannels.Add(item);
             }
+
+            if (AllChannels.Count > 2)
+            {
+                AllChannels[0].Next = AllChannels[1];
+                AllChannels[AllChannels.Count - 1].Prev = AllChannels[AllChannels.Count - 2];
+            }
+
+            for (int i = 1; i < AllChannels.Count - 1; i++)
+            {
+                AllChannels[i].Prev = AllChannels[i - 1];
+                AllChannels[i].Next = AllChannels[i + 1];
+            }
         }
 
         private void LoadChannelStreams(ChannelItem channel, dynamic json)
@@ -337,6 +378,7 @@ namespace DI.FM.ViewModel
             if (channel.TrackHistory == null) channel.TrackHistory = new ObservableCollection<TrackItem>();
             else channel.TrackHistory.Clear();
 
+            var index = 0;
             var tracks = JsonConvert.DeserializeObject(data) as dynamic;
             foreach (var track in tracks)
             {
@@ -344,11 +386,14 @@ namespace DI.FM.ViewModel
                 {
                     channel.TrackHistory.Add(new TrackItem()
                     {
+                        Index = index + 1,
                         Track = track["track"],
                         Started = track["started"],
                         Duration = track["duration"]
                     });
-                    channel.NowPlaying = channel.TrackHistory[0];
+                    if(index == 0) channel.NowPlaying = channel.TrackHistory[0];
+                    if (index == 4) break;
+                    index++;
                 }
             }
         }

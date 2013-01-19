@@ -139,6 +139,7 @@
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\TopArt.png" />
     <Content Include="Common\ReadMe.txt" />
     <Content Include="MVVMLight.Nuget.Readme.txt" />
   </ItemGroup>

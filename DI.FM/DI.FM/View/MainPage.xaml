@@ -141,9 +141,7 @@
             <RowDefinition Height="109" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
-        <!--<MediaElement x:Name="MediaPlayer" AudioCategory="BackgroundCapableMedia" Source="http://pub3.di.fm:80/di_deeptech" />-->
-
+        
         <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
             <Grid Margin="117,0,56,0" Style="{StaticResource LayoutRootStyle}">
                 <Grid HorizontalAlignment="Left">

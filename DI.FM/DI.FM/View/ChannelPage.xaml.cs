@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -13,15 +14,12 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
-
 namespace DI.FM.View
 {
-    /// <summary>
-    /// A basic page that provides characteristics common to most applications.
-    /// </summary>
     public sealed partial class ChannelPage : DI.FM.Common.LayoutAwarePage
     {
+        public MainViewModel Model;
+
         public ChannelPage()
         {
             this.InitializeComponent();
@@ -29,8 +27,25 @@ namespace DI.FM.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var data = e.Parameter as MainViewModel.ChannelItem;
-            this.DataContext = data;
+            Model = e.Parameter as MainViewModel;
+            this.DataContext = Model;
+        }
+
+        private void ButtonPlay_Click(object sender, RoutedEventArgs e)
+        {
+            MediaControl.AlbumArt = new Uri(Model.NowPlayingItem.ImageUrl);
+            MediaControl.TrackName = Model.NowPlayingItem.NowPlaying.Track;
+            App.MediaPlayer.Source = new Uri(Model.NowPlayingItem.Streams[0]);
+        }
+
+        private void ButtonPrev_Click(object sender, RoutedEventArgs e)
+        {
+            Model.NowPlayingItem = Model.NowPlayingItem.Prev;
+        }
+
+        private void ButtonNext_Click(object sender, RoutedEventArgs e)
+        {
+            Model.NowPlayingItem = Model.NowPlayingItem.Next;
         }
     }
 }
