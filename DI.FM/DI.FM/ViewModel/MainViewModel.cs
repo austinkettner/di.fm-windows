@@ -60,7 +60,6 @@ namespace DI.FM.ViewModel
                 {
                     if (_nowPlayingItem != value)
                     {
-                        _nowPlayingItem = value;
                         nowPlayingRefresh.Start();
                         NowPlayingPosition = 0;
                     }
@@ -70,6 +69,7 @@ namespace DI.FM.ViewModel
                     nowPlayingRefresh.Stop();
                 }
 
+                _nowPlayingItem = value;
                 RaisePropertyChanged("NowPlayingItem");
             }
         }

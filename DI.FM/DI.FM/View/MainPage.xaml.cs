@@ -36,10 +36,11 @@ namespace DI.FM.View
                     App.MediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
                 }
             };
+        }
 
-
-
-
+        protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        {
+            this.Model.NowPlayingItem = App.PlayingItem;
         }
 
         void MediaPlayer_MediaFailed(object sender, ExceptionRoutedEventArgs e)

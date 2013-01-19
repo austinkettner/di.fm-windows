@@ -36,6 +36,7 @@ namespace DI.FM.View
             MediaControl.AlbumArt = new Uri(Model.NowPlayingItem.ImageUrl);
             MediaControl.TrackName = Model.NowPlayingItem.NowPlaying.Track;
             App.MediaPlayer.Source = new Uri(Model.NowPlayingItem.Streams[0]);
+            App.PlayingItem = Model.NowPlayingItem;
         }
 
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using DI.FM.View;
+using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,20 +17,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
-
 namespace DI.FM
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
     sealed partial class App : Application
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-        ///
 
         public App()
         {
@@ -41,9 +32,6 @@ namespace DI.FM
             MediaControl.PlayPauseTogglePressed += MediaControl_PlayPauseTogglePressed;
             MediaControl.StopPressed += MediaControl_StopPressed;
         }
-
-
-        
 
         void MediaControl_PlayPressed(object sender, object e)
         {
@@ -67,6 +55,7 @@ namespace DI.FM
         }
 
         public static MediaElement MediaPlayer;
+        public static MainViewModel.ChannelItem PlayingItem;
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
