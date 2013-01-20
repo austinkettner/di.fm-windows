@@ -1,4 +1,5 @@
-﻿using DI.FM.ViewModel;
+﻿using DI.FM.Common;
+using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Search;
@@ -9,7 +10,7 @@ using Windows.UI.Xaml.Media;
 
 namespace DI.FM.View
 {
-    public sealed partial class MainPage : DI.FM.Common.LayoutAwarePage
+    public sealed partial class MainPage : LayoutAwarePage
     {
         public MainViewModel Model
         {
