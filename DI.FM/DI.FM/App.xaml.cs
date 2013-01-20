@@ -21,96 +21,100 @@ namespace DI.FM
 {
     sealed partial class App : Application
     {
+        public static MediaElement MediaPlayer;
+
+        private static MainViewModel.ChannelItem _playingItem;
+        public static MainViewModel.ChannelItem PlayingItem
+        {
+            get { return _playingItem; }
+            set
+            {
+                _playingItem = value;
+                if (_playingItem != null)
+                {
+                    MediaControl.AlbumArt = new Uri("ms-appx:///" + _playingItem.Image.Substring(3));
+                    MediaControl.TrackName = _playingItem.Name;
+                    MediaControl.ArtistName = _playingItem.Description;
+                }
+            }
+        }
 
         public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-
+            // Init the windows 8 player buttons
             MediaControl.PlayPressed += MediaControl_PlayPressed;
             MediaControl.PausePressed += MediaControl_PausePressed;
-            MediaControl.PlayPauseTogglePressed += MediaControl_PlayPauseTogglePressed;
             MediaControl.StopPressed += MediaControl_StopPressed;
+            MediaControl.PlayPauseTogglePressed += MediaControl_PlayPauseTogglePressed;
         }
 
-        void MediaControl_PlayPressed(object sender, object e)
+        private async void MediaControl_PlayPauseTogglePressed(object sender, object e)
         {
-            //MediaPlayer.Play();
+            await MediaPlayer.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (MediaPlayer.CurrentState == MediaElementState.Playing) MediaControl_PausePressed(sender, e);
+                else MediaControl_PlayPressed(sender, e);
+            });
         }
 
-        void MediaControl_PausePressed(object sender, object e)
+        private async void MediaControl_PlayPressed(object sender, object e)
         {
-           // MediaPlayer.Pause();
+            await MediaPlayer.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                MediaPlayer.Source = new Uri(PlayingItem.Streams[0]);
+            });
         }
 
-        void MediaControl_PlayPauseTogglePressed(object sender, object e)
+        private async void MediaControl_PausePressed(object sender, object e)
         {
-            /*if (MediaPlayer.CurrentState == MediaElementState.Playing) MediaPlayer.Pause();
-            else MediaPlayer.Play();*/
+            await MediaPlayer.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                MediaPlayer.Source = null;
+            });
         }
 
-        void MediaControl_StopPressed(object sender, object e)
+        private async void MediaControl_StopPressed(object sender, object e)
         {
-            //MediaPlayer.Stop();
+            await MediaPlayer.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                MediaPlayer.Source = null;
+            });
         }
 
-        public static MediaElement MediaPlayer;
-        public static MainViewModel.ChannelItem PlayingItem;
-
-        /// <summary>
-        /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used when the application is launched to open a specific file, to display
-        /// search results, and so forth.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            var rootFrame = Window.Current.Content as Frame;
 
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
             if (rootFrame == null)
             {
-                // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
                 if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: Load state from previously suspended application
                 }
-
-                // Place the frame in the current Window
+                
                 Window.Current.Content = rootFrame;
             }
 
-            // create the media element for background audio
             rootFrame.Style = Resources["RootFrameStyle"] as Style;
 
             if (rootFrame.Content == null)
             {
-                // When the navigation stack isn't restored navigate to the first page,
-                // configuring the new page by passing required information as a navigation
-                // parameter
                 if (!rootFrame.Navigate(typeof(MainPage), args.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
                 }
             }
-            // Ensure the current window is active
+            
             Window.Current.Activate();
         }
 
-        /// <summary>
-        /// Invoked when application execution is being suspended.  Application state is saved
-        /// without knowing whether the application will be terminated or resumed with the contents
-        /// of memory still intact.
-        /// </summary>
-        /// <param name="sender">The source of the suspend request.</param>
-        /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
     }

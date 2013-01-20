@@ -90,10 +90,6 @@ namespace DI.FM.View
             {
                 this.Model.NowPlayingItem = data;
                 this.Frame.Navigate(typeof(ChannelPage), this.Model);
-                /*MediaControl.AlbumArt = new Uri(data.ImageUrl);
-                MediaControl.TrackName = data.NowPlaying.Track;
-                App.MediaPlayer.Source = new Uri(data.Streams[0]);
-                this.Model.NowPlayingItem = data;*/
             }
         }
 

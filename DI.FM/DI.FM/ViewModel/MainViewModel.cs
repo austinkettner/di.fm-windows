@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
@@ -18,13 +17,7 @@ namespace DI.FM.ViewModel
         #region Constants
 
         private const string CHANNELS_URL = "http://listen.di.fm/public3";
-
-        //private const string SOURCE_URL = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3";
-
         private const string TRACK_URL = "http://api.v2.audioaddict.com/v1/di/track_history/channel/{0}.json";
-
-        //private const string USER = "ephemeron";
-        //private const string PASS = "dayeiph0ne@pp";
 
         #endregion
 
@@ -391,7 +384,8 @@ namespace DI.FM.ViewModel
                 LoadTrackHistory(item);
                 LoadChannelStreams(item);
                 AllChannels.Add(item);
-                //FavoriteChannels.Add(item);
+
+                if(FavoriteChannels.Count < 5) FavoriteChannels.Add(item);
             }
 
             if (AllChannels.Count > 2)
@@ -439,7 +433,7 @@ namespace DI.FM.ViewModel
                         Started = track["started"],
                         Duration = track["duration"]
                     });
-                    if(index == 0) channel.NowPlaying = channel.TrackHistory[0];
+                    if (index == 0) channel.NowPlaying = channel.TrackHistory[0];
                     if (index == 4) break;
                     index++;
                 }
@@ -448,15 +442,8 @@ namespace DI.FM.ViewModel
 
         private async Task<string> DownloadJson(string url)
         {
-            var client = new HttpClient();
-            //client.DefaultRequestHeaders.Authorization = CreateBasicHeader(USER, PASS);
+            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
             return await client.GetStringAsync(url);
-        }
-
-        public AuthenticationHeaderValue CreateBasicHeader(string username, string password)
-        {
-            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(username + ":" + password);
-            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
         }
     }
 }
