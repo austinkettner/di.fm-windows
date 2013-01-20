@@ -33,8 +33,8 @@ namespace DI.FM.View
 
         private void ButtonPlay_Click(object sender, RoutedEventArgs e)
         {
-            MediaControl.AlbumArt = new Uri(Model.NowPlayingItem.ImageUrl);
-            MediaControl.TrackName = Model.NowPlayingItem.NowPlaying.Track;
+            //MediaControl.AlbumArt = new Uri(Model.NowPlayingItem.ImageUrl);
+            //MediaControl.TrackName = Model.NowPlayingItem.NowPlaying.Track;
             App.MediaPlayer.Source = new Uri(Model.NowPlayingItem.Streams[0]);
             App.PlayingItem = Model.NowPlayingItem;
         }

@@ -1,0 +1,62 @@
+﻿using System.Collections.Generic;
+
+namespace DI.FM.ViewModel
+{
+    class ChannelsHelper
+    {
+        public static Dictionary<string, string[]> ChannelsAssets = new Dictionary<string, string[]>()
+        {
+            {"deeptech", new string[]{"../Assets/Channels/channel1.png", "#3a3a3a", "#c66a33"}},
+            {"liquiddubstep", new string[]{"../Assets/Channels/channel2.png", "#2f203a", "#3874ab"}},
+            {"glitchhop", new string[]{"../Assets/Channels/channel3.png", "#4ea1a1", "#00191a"}},
+            {"darkdnb", new string[]{"../Assets/Channels/channel4.png", "#380e01", "#aa350b"}},
+            {"classiceurodisco", new string[]{"../Assets/Channels/channel5.png", "#123c69", "#700c6b"}},
+            {"trance", new string[]{"../Assets/Channels/channel6.png", "#22a0d2", "#0071ae"}},
+            {"vocaltrance", new string[]{"../Assets/Channels/channel7.png", "#94ac2e", "#e03176"}},
+            {"lounge", new string[]{"../Assets/Channels/channel8.png", "#009fc6", "#422d14"}},
+            {"chillout", new string[]{"../Assets/Channels/channel9.png", "#01b4dd", "#0072aa"}},
+            {"vocalchillout", new string[]{"../Assets/Channels/channel10.png", "#d06a00", "#24797e"}},
+            {"house", new string[]{"../Assets/Channels/channel11.png", "#ff3f00", "#ffa300"}},
+            {"progressive", new string[]{"../Assets/Channels/channel12.png", "#221238", "#7f0e98"}},
+            {"minimal", new string[]{"../Assets/Channels/channel13.png", "#8da639", "#e2dd46"}},
+            {"harddance", new string[]{"../Assets/Channels/channel14.png", "#e25300", "#fed362"}},
+            {"eurodance", new string[]{"../Assets/Channels/channel15.png", "#fe6a00", "#ffeb00"}},
+            {"electro", new string[]{"../Assets/Channels/channel16.png", "#da9fbb", "#c575b0"}},
+            {"techhouse", new string[]{"../Assets/Channels/channel17.png", "#ffa100", "#a10e00"}},
+            {"psychill", new string[]{"../Assets/Channels/channel18.png", "#1bbea1", "#3b31ee"}},
+            {"goapsy", new string[]{"../Assets/Channels/channel19.png", "#d67c0b", "#2ee3df"}},
+            {"progressivepsy", new string[]{"../Assets/Channels/channel20.png", "#032d46", "#5cc6dc"}},
+            {"hardcore", new string[]{"../Assets/Channels/channel21.png", "", ""}},
+            {"djmixes", new string[]{"../Assets/Channels/channel22.png", "", ""}},
+            {"ambient", new string[]{"../Assets/Channels/channel23.png", "", ""}},
+            {"drumandbass", new string[]{"../Assets/Channels/channel24.png", "", ""}},
+            {"classictechno", new string[]{"../Assets/Channels/channel25.png", "", ""}},
+            {"epictrance", new string[]{"../Assets/Channels/channel26.png", "", ""}},
+            {"ukgarage", new string[]{"../Assets/Channels/channel27.png", "", ""}},
+            {"breaks", new string[]{"../Assets/Channels/channel28.png", "", ""}},
+            {"cosmicdowntempo", new string[]{"../Assets/Channels/channel29.png", "", ""}},
+            {"techno", new string[]{"../Assets/Channels/channel30.png", "", ""}},
+            {"soulfulhouse", new string[]{"../Assets/Channels/channel31.png", "", ""}},
+            {"deephouse", new string[]{"../Assets/Channels/channel32.png", "", ""}},
+            {"tribalhouse", new string[]{"../Assets/Channels/channel33.png", "", ""}},
+            {"funkyhouse", new string[]{"../Assets/Channels/channel34.png", "", ""}},
+            {"deepnudisco", new string[]{"../Assets/Channels/channel35.png", "", ""}},
+            {"spacemusic", new string[]{"../Assets/Channels/channel36.png", "", ""}},
+            {"hardstyle", new string[]{"../Assets/Channels/channel37.png", "", ""}},
+            {"chilloutdreams", new string[]{"../Assets/Channels/channel38.png", "", ""}},
+            {"liquiddnb", new string[]{"../Assets/Channels/channel39.png", "", ""}},
+            {"classiceurodance", new string[]{"../Assets/Channels/channel40.png", "", ""}},
+            {"handsup", new string[]{"../Assets/Channels/channel41.png", "", ""}},
+            {"club", new string[]{"../Assets/Channels/channel42.png", "", ""}},
+            {"classictrance", new string[]{"../Assets/Channels/channel43.png", "", ""}},
+            {"classicvocaltrance", new string[]{"../Assets/Channels/channel44.png", "", ""}},
+            {"dubstep", new string[]{"../Assets/Channels/channel45.png", "", ""}},
+            {"clubdubstep", new string[]{"../Assets/Channels/channel46.png", "", ""}},
+            {"discohouse", new string[]{"../Assets/Channels/channel47.png", "", ""}},
+            {"futuresynthpop", new string[]{"../Assets/Channels/channel48.png", "", ""}},
+            {"latinhouse", new string[]{"../Assets/Channels/channel49.png", "", ""}},
+            {"oldschoolacid", new string[]{"../Assets/Channels/channel50.png", "", ""}},
+            {"chiptunes", new string[]{"../Assets/Channels/channel51.png", "", ""}},
+        };
+    }
+}

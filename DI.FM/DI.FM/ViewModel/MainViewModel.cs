@@ -17,10 +17,14 @@ namespace DI.FM.ViewModel
     {
         #region Constants
 
-        private const string SOURCE_URL = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3";
-        private const string TRACK_URL = "http://api.audioaddict.com/v1/di/track_history/channel/{0}.json";
-        private const string USER = "ephemeron";
-        private const string PASS = "dayeiph0ne@pp";
+        private const string CHANNELS_URL = "http://listen.di.fm/public3";
+
+        //private const string SOURCE_URL = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3";
+
+        private const string TRACK_URL = "http://api.v2.audioaddict.com/v1/di/track_history/channel/{0}.json";
+
+        //private const string USER = "ephemeron";
+        //private const string PASS = "dayeiph0ne@pp";
 
         #endregion
 
@@ -138,6 +142,41 @@ namespace DI.FM.ViewModel
 
         public class ChannelItem : ObservableObject
         {
+            private string _image;
+            public string Image
+            {
+                get { return _image; }
+                set
+                {
+                    _image = value;
+                    RaisePropertyChanged("Image");
+                }
+            }
+
+            private string _color1;
+            public string Color1
+            {
+                get { return _color1; }
+                set
+                {
+                    _color1 = value;
+                    RaisePropertyChanged("Color1");
+                }
+            }
+
+            private string _color2;
+            public string Color2
+            {
+                get { return _color2; }
+                set
+                {
+                    _color2 = value;
+                    RaisePropertyChanged("Color2");
+                }
+            }
+
+
+
             private int _id;
             public int ID
             {
@@ -146,6 +185,17 @@ namespace DI.FM.ViewModel
                 {
                     _id = value;
                     RaisePropertyChanged("ID");
+                }
+            }
+
+            private string _key;
+            public string Key
+            {
+                get { return _key; }
+                set
+                {
+                    _key = value;
+                    RaisePropertyChanged("Key");
                 }
             }
 
@@ -306,10 +356,9 @@ namespace DI.FM.ViewModel
 
             var data = "";
 
-
             if (file == null)
             {
-                data = await DownloadJson(SOURCE_URL);
+                data = await DownloadJson(CHANNELS_URL);
                 file = await ApplicationData.Current.LocalFolder.CreateFileAsync("channels.json");
                 var writer = new StreamWriter(await file.OpenStreamForWriteAsync());
                 await writer.WriteAsync(data);
@@ -322,20 +371,25 @@ namespace DI.FM.ViewModel
                 reader.Dispose();
             }
 
-            var json = JsonConvert.DeserializeObject(data) as dynamic;
-            var channels = json["channel_filters"][0]["channels"];
+            var channels = JsonConvert.DeserializeObject(data) as dynamic;
 
             foreach (var channel in channels)
             {
                 var item = new ChannelItem()
                 {
                     ID = channel["id"],
+                    Key = channel["key"],
                     Name = channel["name"],
-                    Description = channel["description"],
-                    ImageUrl = channel["asset_url"]
+                    Description = channel["description"]
                 };
+
+                var assets = ChannelsHelper.ChannelsAssets[item.Key];
+                item.Image = assets[0];
+                item.Color1 = assets[1];
+                item.Color2 = assets[2];
+
                 LoadTrackHistory(item);
-                LoadChannelStreams(item, json);
+                LoadChannelStreams(item);
                 AllChannels.Add(item);
                 //FavoriteChannels.Add(item);
             }
@@ -353,21 +407,15 @@ namespace DI.FM.ViewModel
             }
         }
 
-        private void LoadChannelStreams(ChannelItem channel, dynamic json)
+        private async void LoadChannelStreams(ChannelItem channel)
         {
             channel.Streams = new List<string>();
-            var channels = json["streamlists"]["public3"]["channels"];
+            var data = await DownloadJson(CHANNELS_URL + "/" + channel.Key);
+            var streams = JsonConvert.DeserializeObject(data) as dynamic;
 
-            foreach (var c in channels)
+            foreach (var c in streams)
             {
-                if (c["id"] == channel.ID)
-                {
-                    foreach (var st in c["streams"])
-                    {
-                        channel.Streams.Add(st["url"].ToString());
-                    }
-                    return;
-                }
+                channel.Streams.Add(c.ToString());
             }
         }
 
@@ -401,7 +449,7 @@ namespace DI.FM.ViewModel
         private async Task<string> DownloadJson(string url)
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = CreateBasicHeader(USER, PASS);
+            //client.DefaultRequestHeaders.Authorization = CreateBasicHeader(USER, PASS);
             return await client.GetStringAsync(url);
         }
 

@@ -188,7 +188,7 @@
                                 <Button Content="Now Playing" Style="{StaticResource GroupButtonStyle}" />
                                 <Grid Grid.Row="1">
                                     <StackPanel>
-                                        <Image Source="{Binding NowPlayingItem.ImageUrl}" />
+                                        <Image Source="{Binding NowPlayingItem.Image}" />
                                         <ProgressBar Value="{Binding NowPlayingPosition}" Maximum="{Binding NowPlayingItem.NowPlaying.Duration}" Height="5" />
                                         <Grid Margin="0,0,0,23">
                                             <TextBlock Text="{Binding Path=NowPlayingPosition, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
@@ -215,7 +215,7 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid>
-                                                    <Image Source="{Binding ImageUrl}" Stretch="UniformToFill" />
+                                                    <Image Source="{Binding Image}" Stretch="UniformToFill" />
                                                     <Border Padding="6,3" VerticalAlignment="Bottom">
                                                         <Border.Background>
                                                             <SolidColorBrush Color="Black" Opacity="0.75" />
@@ -251,7 +251,7 @@
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
-                                                <Image Source="{Binding ImageUrl}" Stretch="UniformToFill" />
+                                                <Image Source="{Binding Image}" Stretch="UniformToFill" />
                                                 <Border Padding="6,3" VerticalAlignment="Bottom">
                                                     <Border.Background>
                                                         <SolidColorBrush Color="Black" Opacity="0.6" />
