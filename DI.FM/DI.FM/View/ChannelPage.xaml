@@ -48,7 +48,7 @@
                     <ColumnDefinition Width="109" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Button Margin="42,0,0,30" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
+                <Button Margin="42,0,0,28" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
                 <TextBlock Grid.Column="1" Margin="0,18,0,0">
                     <Run Text="{Binding NowPlayingItem.Name}" Foreground="White" FontSize="40.2" FontWeight="SemiLight" />
                     <LineBreak />
@@ -63,9 +63,19 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            
-            <Grid>
-                <Image Source="{Binding NowPlayingItem.Image}" Stretch="UniformToFill" HorizontalAlignment="Left" />
+
+            <Grid HorizontalAlignment="Left">
+                <Image Source="{Binding NowPlayingItem.Image}" Stretch="UniformToFill" />
+                <Rectangle Width="200" HorizontalAlignment="Right">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                            <GradientStopCollection>
+                                <GradientStop Offset="0" />
+                                <GradientStop Color="{Binding NowPlayingItem.Color1}" Offset="1" />
+                            </GradientStopCollection>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
             </Grid>
             
             <Grid Grid.Column="1">

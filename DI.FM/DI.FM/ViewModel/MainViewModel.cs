@@ -384,8 +384,6 @@ namespace DI.FM.ViewModel
                 LoadTrackHistory(item);
                 LoadChannelStreams(item);
                 AllChannels.Add(item);
-
-                if(FavoriteChannels.Count < 5) FavoriteChannels.Add(item);
             }
 
             if (AllChannels.Count > 2)
@@ -399,6 +397,45 @@ namespace DI.FM.ViewModel
                 AllChannels[i].Prev = AllChannels[i - 1];
                 AllChannels[i].Next = AllChannels[i + 1];
             }
+
+            await LoadFavoriteChannels();
+        }
+
+        private async Task LoadFavoriteChannels()
+        {
+            StorageFile file = null;
+            try { file = await ApplicationData.Current.LocalFolder.GetFileAsync("favorites.txt"); }
+            catch { }
+
+            if (file != null)
+            {
+                var reader = new StreamReader(await file.OpenStreamForReadAsync());
+                var array = await reader.ReadToEndAsync();
+
+                foreach (var channel in AllChannels)
+                {
+                    if (array.Contains(channel.Key))
+                    {
+                        FavoriteChannels.Add(channel);
+                    }
+                }
+
+                reader.Dispose();
+            }
+        }
+
+        public async Task SaveFavoriteChannels()
+        {
+            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("favorites.txt", CreationCollisionOption.OpenIfExists);
+
+            var writer = new StreamWriter(await file.OpenStreamForWriteAsync());
+
+            foreach (var channel in FavoriteChannels)
+            {
+                await writer.WriteLineAsync(channel.Key);
+            }
+
+            writer.Dispose();
         }
 
         private async void LoadChannelStreams(ChannelItem channel)

@@ -83,7 +83,7 @@ namespace DI.FM.View
             }
         }
 
-        private void ListView_ItemClick_1(object sender, ItemClickEventArgs e)
+        private void ListViewChannels_ItemClick(object sender, ItemClickEventArgs e)
         {
             var data = e.ClickedItem as MainViewModel.ChannelItem;
             if (data != null)
@@ -106,6 +106,102 @@ namespace DI.FM.View
                 btn.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
                 App.MediaPlayer.Source = new Uri(this.Model.NowPlayingItem.Streams[0]);
             }
+        }
+
+        private void ButtonFavorites_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(FavoritePage), this.Model);
+        }
+
+        private List<MainViewModel.ChannelItem> TempFavorite = new List<MainViewModel.ChannelItem>();
+        private List<MainViewModel.ChannelItem> TempUnFavorite = new List<MainViewModel.ChannelItem>();
+
+        private void ListViewChannels_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                var item = e.AddedItems[0] as MainViewModel.ChannelItem;
+
+                if (this.Model.FavoriteChannels.Contains(item))
+                {
+                    if (!TempUnFavorite.Contains(item))
+                    {
+                        TempUnFavorite.Add(item);
+                    }
+                }
+                else
+                {
+                    if (!TempFavorite.Contains(item))
+                    {
+                        TempFavorite.Add(item);
+                    }
+                }
+            }
+
+            if (e.RemovedItems.Count > 0)
+            {
+                var item = e.RemovedItems[0] as MainViewModel.ChannelItem;
+                TempUnFavorite.Remove(item);
+                TempFavorite.Remove(item);
+            }
+
+            if (TempFavorite.Count > 0)
+            {
+                ButtonFavorite.Style = App.Current.Resources["FavoriteAppBarButtonStyle"] as Style;
+                ButtonFavorite.Tag = true;
+            }
+            else if (TempUnFavorite.Count > 0)
+            {
+                ButtonFavorite.Style = App.Current.Resources["UnfavoriteAppBarButtonStyle"] as Style;
+                ButtonFavorite.Tag = false;
+            }
+
+            if (TempFavorite.Count + TempUnFavorite.Count > 0)
+            {
+                StackSelectedOptions.Visibility = Visibility.Visible;
+                this.BottomAppBar.IsSticky = true;
+                this.BottomAppBar.IsOpen = true;
+            }
+            else
+            {
+                StackSelectedOptions.Visibility = Visibility.Collapsed;
+                this.BottomAppBar.IsSticky = false;
+                this.BottomAppBar.IsOpen = false;
+            }
+        }
+
+        private async void ButtonFavorite_Click(object sender, RoutedEventArgs e)
+        {
+            if (ButtonFavorite.Tag == null) return;
+
+            if ((bool)ButtonFavorite.Tag)
+            {
+                foreach (var favItem in TempFavorite)
+                {
+                    this.Model.FavoriteChannels.Add(favItem);
+                }
+            }
+            else
+            {
+                for(int i=0;i<TempUnFavorite.Count;i++)
+                {
+                    if (this.Model.FavoriteChannels.Remove(TempUnFavorite[i]))
+                    {
+                        i--;
+                    }
+                }
+            }
+
+            ButtonFavorite.Tag = null;
+
+            TempFavorite.Clear();
+            TempUnFavorite.Clear();
+
+            ListViewFavorite.SelectedItems.Clear();
+            ListViewAllChannels.SelectedItems.Clear();
+
+            // Save to file
+            await this.Model.SaveFavoriteChannels();
         }
     }
 }
