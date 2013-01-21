@@ -224,6 +224,9 @@
     <Reference Include="GalaSoft.MvvmLight.Win8">
       <HintPath>..\packages\MvvmLight.4.1.26.1\lib\netcore45\GalaSoft.MvvmLight.Win8.dll</HintPath>
     </Reference>
+    <Reference Include="MarkedUp">
+      <HintPath>..\packages\MarkedUp.0.6.7\lib\winrt45\MarkedUp.winmd</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\MvvmLight.4.1.26.1\lib\netcore45\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
