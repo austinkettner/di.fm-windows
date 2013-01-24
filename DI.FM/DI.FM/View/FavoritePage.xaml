@@ -1,7 +1,6 @@
 ﻿<common:LayoutAwarePage
     x:Name="pageRoot"
     x:Class="DI.FM.View.FavoritePage"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DI.FM.View"
@@ -9,24 +8,94 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    
+    <Page.Resources>
+        <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+    </Page.Resources>
 
-    <Grid Background="{Binding NowPlayingItem.Color1}">
+    <Page.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="Main" />
+    </Page.DataContext>
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="110"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="109" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="109" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button Margin="42,0,0,28" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
-                <TextBlock Grid.Column="1" Margin="0,22,0,0" Text="Favorite channels" Foreground="White" FontSize="54" FontWeight="Light" />
-                <Image Grid.ColumnSpan="2" Source="../Assets/TopArt.png" Stretch="None" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+            <Grid Margin="0,0,56,0" Style="{StaticResource LayoutRootStyle}">
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Margin="30,0" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
+                    <TextBlock Grid.Column="1" Text="Favorite Channels" Foreground="White" FontSize="42" FontWeight="SemiLight">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform Y="4" />
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
+                <Grid HorizontalAlignment="Right" Visibility="{Binding Path=NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="0,0,34,0"  VerticalAlignment="Center">
+                        <TextBlock Margin="0,0,0,6" Text="NOW LISTENING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
+                        <TextBlock Text="{Binding NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21.33" FontWeight="Light" />
+                    </StackPanel>
+                    <Button x:Name="bpp" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource StopIconButtonStyle}" Click="ButtonPlayPause_Click" />
+                </Grid>
             </Grid>
         </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStopCollection>
+                        <GradientStop Color="#444444" Offset="0" />
+                        <GradientStop Color="#303030" Offset="1" />
+                    </GradientStopCollection>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <!-- Background -->
+            <Border>
+                <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
+            </Border>
+            <!-- Content -->
+            <GridView SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" ItemContainerStyle="{StaticResource FavoriteGridItemStyle}" IsItemClickEnabled="True">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="112" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Image Source="{Binding Image}" Stretch="UniformToFill" />
+                                <Border Padding="6,3" VerticalAlignment="Bottom">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="Black" Opacity="0.75" />
+                                    </Border.Background>
+                                    <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14.67" FontWeight="SemiLight" TextTrimming="WordEllipsis" />
+                                </Border>
+                            </Grid>
+                            <StackPanel Grid.Column="1" Margin="10,25,10,10">
+                                <TextBlock Text="NOW PLAYING" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
+                                <TextBlock Text="{Binding TrackHistory[0].Track}" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VariableSizedWrapGrid Margin="115,40,60,40" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+        </Grid>
     </Grid>
 
 </common:LayoutAwarePage>

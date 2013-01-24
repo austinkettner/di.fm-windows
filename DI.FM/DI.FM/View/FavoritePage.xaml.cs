@@ -12,13 +12,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
-
 namespace DI.FM.View
 {
-    /// <summary>
-    /// A basic page that provides characteristics common to most applications.
-    /// </summary>
     public sealed partial class FavoritePage : DI.FM.Common.LayoutAwarePage
     {
         public FavoritePage()
@@ -26,27 +21,19 @@ namespace DI.FM.View
             this.InitializeComponent();
         }
 
-        /// <summary>
-        /// Populates the page with content passed during navigation.  Any saved state is also
-        /// provided when recreating a page from a prior session.
-        /// </summary>
-        /// <param name="navigationParameter">The parameter value passed to
-        /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested.
-        /// </param>
-        /// <param name="pageState">A dictionary of state preserved by this page during an earlier
-        /// session.  This will be null the first time a page is visited.</param>
-        protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+        private void ButtonPlayPause_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-        }
-
-        /// <summary>
-        /// Preserves state associated with this page in case the application is suspended or the
-        /// page is discarded from the navigation cache.  Values must conform to the serialization
-        /// requirements of <see cref="SuspensionManager.SessionState"/>.
-        /// </summary>
-        /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
-        protected override void SaveState(Dictionary<String, Object> pageState)
-        {
+            var btn = sender as Button;
+            if (App.MediaPlayer.CurrentState == MediaElementState.Playing)
+            {
+                btn.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
+                App.MediaPlayer.Source = null;
+            }
+            else
+            {
+                btn.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
+             //   App.MediaPlayer.Source = new Uri(this.Model.NowPlayingItem.Streams[0]);
+            }
         }
     }
 }
