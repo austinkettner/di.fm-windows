@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using DI.FM.ViewModel;
+using System;
+using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 namespace DI.FM.View
 {
@@ -19,20 +12,48 @@ namespace DI.FM.View
         public FavoritePage()
         {
             this.InitializeComponent();
+            // Init the model
+            var model = App.Current.Resources["Locator"] as ViewModelLocator;
+            this.DefaultViewModel.Add("Favorites", model.Main.FavoriteChannels);
+            this.DefaultViewModel.Add("NowPlaying", App.NowPlaying);
+
+            App.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
+        }
+
+        private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
+        {
+            if (App.MediaPlayer.CurrentState == MediaElementState.Playing)
+            {
+                bpp.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
+            }
+            else
+            {
+                bpp.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
+            }
         }
 
         private void ButtonPlayPause_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            var btn = sender as Button;
             if (App.MediaPlayer.CurrentState == MediaElementState.Playing)
             {
-                btn.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
                 App.MediaPlayer.Source = null;
+                MediaControl.IsPlaying = false;
             }
             else
             {
-                btn.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
-             //   App.MediaPlayer.Source = new Uri(this.Model.NowPlayingItem.Streams[0]);
+                if (App.NowPlaying.PlayingItem != null) App.MediaPlayer.Source = new Uri(App.NowPlaying.PlayingItem.Streams[0]);
+                MediaControl.IsPlaying = true;
+            }
+        }
+
+        private void GridViewFavorites_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = e.ClickedItem as MainViewModel.ChannelItem;
+            var model = App.Current.Resources["Locator"] as ViewModelLocator;
+            if (item != null && model != null)
+            {
+                model.Main.NowPlayingItem = item;
+                this.Frame.Navigate(typeof(ChannelPage), model.Main);
             }
         }
     }

@@ -37,17 +37,17 @@ namespace DI.FM.View
         {
             //MediaControl.AlbumArt = new Uri(Model.NowPlayingItem.ImageUrl);
             //MediaControl.TrackName = Model.NowPlayingItem.NowPlaying.Track;
-            if (App.MediaPlayer.CurrentState == MediaElementState.Playing && Model.NowPlayingItem == App.PlayingItem)
+            if (App.MediaPlayer.CurrentState == MediaElementState.Playing && Model.NowPlayingItem == App.NowPlaying.PlayingItem)
             {
                 ButtonPlay.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
                 App.MediaPlayer.Source = null;
-                App.PlayingItem = null;
+                App.NowPlaying.PlayingItem = null;
             }
             else
             {
                 ButtonPlay.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
                 App.MediaPlayer.Source = new Uri(Model.NowPlayingItem.Streams[0]);
-                App.PlayingItem = Model.NowPlayingItem;
+                App.NowPlaying.PlayingItem = Model.NowPlayingItem;
             }
         }
 
@@ -65,7 +65,7 @@ namespace DI.FM.View
 
         private void CheckTrackPlayingState()
         {
-            if (Model.NowPlayingItem != null && Model.NowPlayingItem == App.PlayingItem &&
+            if (Model.NowPlayingItem != null && Model.NowPlayingItem == App.NowPlaying.PlayingItem &&
                 App.MediaPlayer.CurrentState == MediaElementState.Playing) 
                 ButtonPlay.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
             else ButtonPlay.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;

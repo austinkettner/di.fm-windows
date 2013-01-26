@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.UI.Xaml;
+using System.Linq;
 
 namespace DI.FM.ViewModel
 {
@@ -45,6 +46,11 @@ namespace DI.FM.ViewModel
             }
         }
 
+        public IEnumerable<ChannelItem> MainFavoriteChannels
+        {
+            get { return this.FavoriteChannels.Take(5); }
+        }
+
         private DispatcherTimer nowPlayingRefresh;
 
         private ChannelItem _nowPlayingItem;
@@ -53,32 +59,18 @@ namespace DI.FM.ViewModel
             get { return _nowPlayingItem; }
             set
             {
-                if (value != null)
+                _nowPlayingItem = value;
+                if (_nowPlayingItem != null)
                 {
-                    if (_nowPlayingItem != value)
-                    {
-                        nowPlayingRefresh.Start();
-                        NowPlayingPosition = 0;
-                    }
+                    NowPlayingRefresh_Tick(null, null);
+                    nowPlayingRefresh.Start();
                 }
                 else
                 {
                     nowPlayingRefresh.Stop();
                 }
 
-                _nowPlayingItem = value;
                 RaisePropertyChanged("NowPlayingItem");
-            }
-        }
-
-        private double _nowPlayingPosition;
-        public double NowPlayingPosition
-        {
-            get { return _nowPlayingPosition; }
-            set
-            {
-                _nowPlayingPosition = value;
-                RaisePropertyChanged("NowPlayingPosition");
             }
         }
 
@@ -118,6 +110,17 @@ namespace DI.FM.ViewModel
                 {
                     _started = value;
                     RaisePropertyChanged("Started");
+                }
+            }
+
+            private int _position;
+            public int Position
+            {
+                get { return _position; }
+                set
+                {
+                    _position = value;
+                    RaisePropertyChanged("Position");
                 }
             }
 
@@ -167,8 +170,6 @@ namespace DI.FM.ViewModel
                     RaisePropertyChanged("Color2");
                 }
             }
-
-
 
             private int _id;
             public int ID
@@ -307,19 +308,30 @@ namespace DI.FM.ViewModel
                 // Init the arrays
                 AllChannels = new ObservableCollection<ChannelItem>();
                 FavoriteChannels = new ObservableCollection<ChannelItem>();
+                FavoriteChannels.CollectionChanged += (sender, e) => { RaisePropertyChanged("MainFavoriteChannels"); };
                 // Init the timer
                 nowPlayingRefresh = new DispatcherTimer();
                 nowPlayingRefresh.Interval = TimeSpan.FromSeconds(1);
-                nowPlayingRefresh.Tick += nowPlayingRefresh_Tick;
+                nowPlayingRefresh.Tick += NowPlayingRefresh_Tick;
                 // Load the channels
                 LoadAllChannels();
             }
         }
 
+        private void NowPlayingRefresh_Tick(object sender, object e)
+        {
+            var currentPosition = ConvertFromUnixTime(NowPlayingItem.NowPlaying.Started);
+            if (currentPosition > NowPlayingItem.NowPlaying.Duration)
+            {
+                LoadTrackHistory(NowPlayingItem);
+                currentPosition = 0;
+            }
+            NowPlayingItem.NowPlaying.Position = (int)currentPosition;
+        }
+
         #endregion
 
-
-
+        #region Helpers
 
         private double ConvertFromUnixTime(long seconds)
         {
@@ -328,18 +340,16 @@ namespace DI.FM.ViewModel
             return DateTime.Now.Subtract(unixTime).TotalSeconds;
         }
 
-
-        void nowPlayingRefresh_Tick(object sender, object e)
+        private async Task<string> DownloadJson(string url)
         {
-            var currentPosition = ConvertFromUnixTime(NowPlayingItem.NowPlaying.Started);
-            if (currentPosition > NowPlayingItem.NowPlaying.Duration)
-            {
-                //refresh
-                LoadTrackHistory(NowPlayingItem);
-                currentPosition = 0;
-            }
-            NowPlayingPosition = currentPosition;
+            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
+            try { return await client.GetStringAsync(url); }
+            catch { return null; }
         }
+
+        #endregion
+
+        #region Process
 
         private async void LoadAllChannels()
         {
@@ -453,6 +463,7 @@ namespace DI.FM.ViewModel
         private async void LoadTrackHistory(ChannelItem channel)
         {
             var data = await DownloadJson(string.Format(TRACK_URL, channel.ID));
+            if (data == null) return;
 
             if (channel.TrackHistory == null) channel.TrackHistory = new ObservableCollection<TrackItem>();
             else channel.TrackHistory.Clear();
@@ -477,10 +488,6 @@ namespace DI.FM.ViewModel
             }
         }
 
-        private async Task<string> DownloadJson(string url)
-        {
-            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
-            return await client.GetStringAsync(url);
-        }
+        #endregion
     }
 }

@@ -7,6 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:DI.FM.ViewModel"
              mc:Ignorable="d">
+    
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -27,4 +28,5 @@
             </Style>
         </ResourceDictionary>
     </Application.Resources>
+    
 </Application>
