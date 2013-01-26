@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="2f237208-d2ad-4dcb-84dc-241f6e72af52" Publisher="CN=Adrian" Version="1.0.0.0" />
+  <Identity Name="2f237208-d2ad-4dcb-84dc-241f6e72af52" Publisher="CN=Adrian" Version="0.8.1.0" />
   <Properties>
     <DisplayName>DI.FM</DisplayName>
     <PublisherDisplayName>Adrian</PublisherDisplayName>
