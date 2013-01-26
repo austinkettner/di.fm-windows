@@ -151,10 +151,14 @@
                                                         <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14.67" FontWeight="SemiLight" TextTrimming="WordEllipsis" />
                                                     </Border>
                                                 </Grid>
-                                                <StackPanel Grid.Column="1" Margin="10,25,10,10">
+                                                <Grid Grid.Column="1" Margin="10,25,10,10">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
                                                     <TextBlock Text="NOW PLAYING" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
-                                                    <TextBlock Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" />
-                                                </StackPanel>
+                                                    <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                                                </Grid>
                                             </Grid>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>

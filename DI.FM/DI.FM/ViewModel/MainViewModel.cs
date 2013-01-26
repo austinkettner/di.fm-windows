@@ -320,13 +320,23 @@ namespace DI.FM.ViewModel
 
         private void NowPlayingRefresh_Tick(object sender, object e)
         {
+            if (NowPlayingItem.NowPlaying.Started == -1)
+            {
+                nowPlayingRefresh.Stop();
+                return;
+            }
+
             var currentPosition = ConvertFromUnixTime(NowPlayingItem.NowPlaying.Started);
             if (currentPosition > NowPlayingItem.NowPlaying.Duration)
             {
                 LoadTrackHistory(NowPlayingItem);
-                currentPosition = 0;
+                //NowPlayingItem.NowPlaying.Started = -1;
+                NowPlayingItem.NowPlaying.Position = 0;
             }
-            NowPlayingItem.NowPlaying.Position = (int)currentPosition;
+            else
+            {
+                NowPlayingItem.NowPlaying.Position = (int)currentPosition;
+            }
         }
 
         #endregion
@@ -465,8 +475,10 @@ namespace DI.FM.ViewModel
             var data = await DownloadJson(string.Format(TRACK_URL, channel.ID));
             if (data == null) return;
 
-            if (channel.TrackHistory == null) channel.TrackHistory = new ObservableCollection<TrackItem>();
-            else channel.TrackHistory.Clear();
+           /* if (channel.TrackHistory == null) channel.TrackHistory = new ObservableCollection<TrackItem>();
+            else channel.TrackHistory.Clear();*/
+
+            var tempTracks = new List<TrackItem>();
 
             var index = 0;
             var tracks = JsonConvert.DeserializeObject(data) as dynamic;
@@ -474,17 +486,29 @@ namespace DI.FM.ViewModel
             {
                 if (track["type"] == "track")
                 {
-                    channel.TrackHistory.Add(new TrackItem()
+                    tempTracks.Add(new TrackItem()
                     {
                         Index = index + 1,
                         Track = track["track"],
                         Started = track["started"],
                         Duration = track["duration"]
                     });
-                    if (index == 0) channel.NowPlaying = channel.TrackHistory[0];
+                    
                     if (index == 4) break;
                     index++;
                 }
+            }
+
+            if (channel.TrackHistory != null && channel.TrackHistory.Count > 0 && tempTracks.Count > 0 && channel.TrackHistory[0].Started == tempTracks[0].Started)
+            {
+                channel.TrackHistory[0].Started = -1;
+                return;
+            }
+
+            if (tempTracks.Count > 0)
+            {
+                channel.NowPlaying = tempTracks[0];
+                channel.TrackHistory = new ObservableCollection<TrackItem>(tempTracks);
             }
         }
 

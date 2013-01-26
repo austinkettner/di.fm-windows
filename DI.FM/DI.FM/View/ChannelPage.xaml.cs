@@ -19,11 +19,34 @@ namespace DI.FM.View
 {
     public sealed partial class ChannelPage : LayoutAwarePage
     {
+        #region Properties
+
         public MainViewModel Model;
+
+        #endregion
+
+        #region Constructor
 
         public ChannelPage()
         {
             this.InitializeComponent();
+            this.Loaded += (sender, e) => { App.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged; };
+            this.Unloaded += (sender, e) => { App.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };
+        }
+
+        private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
+        {
+            if (App.NowPlaying.PlayingItem == Model.NowPlayingItem)
+            {
+                if (App.MediaPlayer.CurrentState == MediaElementState.Playing)
+                {
+                    ButtonPlay.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
+                }
+                else
+                {
+                    ButtonPlay.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
+                }
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -33,20 +56,19 @@ namespace DI.FM.View
             this.DataContext = Model;
         }
 
+        #endregion
+
+
+
         private void ButtonPlay_Click(object sender, RoutedEventArgs e)
         {
-            //MediaControl.AlbumArt = new Uri(Model.NowPlayingItem.ImageUrl);
-            //MediaControl.TrackName = Model.NowPlayingItem.NowPlaying.Track;
             if (App.MediaPlayer.CurrentState == MediaElementState.Playing && Model.NowPlayingItem == App.NowPlaying.PlayingItem)
             {
-                ButtonPlay.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
                 App.MediaPlayer.Source = null;
-                App.NowPlaying.PlayingItem = null;
+                MediaControl.IsPlaying = false;
             }
             else
             {
-                ButtonPlay.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
-                App.MediaPlayer.Source = new Uri(Model.NowPlayingItem.Streams[0]);
                 App.NowPlaying.PlayingItem = Model.NowPlayingItem;
             }
         }

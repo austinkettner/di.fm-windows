@@ -14,10 +14,6 @@
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
     </Page.Resources>
 
-    <!--<Page.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="Main" />
-    </Page.DataContext>-->
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="109" />

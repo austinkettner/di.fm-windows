@@ -235,8 +235,7 @@ namespace DI.FM.View
             }
             else
             {
-                if (App.NowPlaying.PlayingItem != null) App.MediaPlayer.Source = new Uri(App.NowPlaying.PlayingItem.Streams[0]);
-                MediaControl.IsPlaying = true;
+                App.NowPlaying.PlayingItem = Model.NowPlayingItem;
             }
         }
 

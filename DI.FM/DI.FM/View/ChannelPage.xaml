@@ -78,93 +78,97 @@
                 </Rectangle>
             </Grid>
             <!-- Info -->
-            <Grid Grid.Column="1">
-                <ScrollViewer>
-                    <StackPanel Margin="40,35,40,30">
-                        <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold" />
-                        <Grid Height="170">
-                            <Grid.Background>
-                                <SolidColorBrush Color="{Binding NowPlayingItem.Color2}" Opacity="0.7" />
-                            </Grid.Background>
-                            <Border BorderThickness="1" BorderBrush="#16FFFFFF" />
-                            <Grid Margin="15,10">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding NowPlayingItem.NowPlaying.Track}" FontSize="29.3" FontWeight="Light" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
-                                <TextBlock Grid.Row="1" FontSize="21.3" FontWeight="Normal" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+            <Grid Grid.Column="1" Margin="40,35,40,30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold" />
+                    <Grid Height="170">
+                        <Grid.Background>
+                            <SolidColorBrush Color="{Binding NowPlayingItem.Color2}" Opacity="0.7" />
+                        </Grid.Background>
+                        <Border BorderThickness="1" BorderBrush="#16FFFFFF" />
+                        <Grid Margin="15,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding NowPlayingItem.NowPlaying.Track}" FontSize="29.3" FontWeight="Light" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                            <TextBlock Grid.Row="1" FontSize="21.3" FontWeight="Normal" VerticalAlignment="Bottom" HorizontalAlignment="Left">
                                     <Run Text="{Binding Path=NowPlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" />
                                     <Run Text="/" />
                                     <Run Text="{Binding Path=NowPlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" />
-                                </TextBlock>
-                                <Button x:Name="ButtonPlay" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlay_Click" />
-                            </Grid>
+                            </TextBlock>
+                            <Button x:Name="ButtonPlay" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlay_Click" />
                         </Grid>
-                        <Grid Margin="0,15,0,0">
-                            <Button HorizontalAlignment="Left" Visibility="{Binding Path=NowPlayingItem.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource NavigationButtonStyle}" Click="ButtonPrev_Click">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Path Margin="0,0,15,0" StrokeThickness="3" Stroke="White" Data="M 14 0 L 0 18 L 14 36" VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="1" TextAlignment="Left">
+                    </Grid>
+                    <Grid Margin="0,15,0,0">
+                        <Button HorizontalAlignment="Left" Visibility="{Binding Path=NowPlayingItem.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource NavigationButtonStyle}" Click="ButtonPrev_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Path Margin="0,0,15,0" StrokeThickness="3" Stroke="White" Data="M 14 0 L 0 18 L 14 36" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" TextAlignment="Left">
                                         <Run Text="PREV" FontSize="16.2" FontWeight="Bold" />
                                         <LineBreak />
                                         <Run Text="{Binding NowPlayingItem.Prev.Name}" FontSize="16.8" FontWeight="Normal" />
-                                    </TextBlock>
-                                </Grid>
-                            </Button>
-                            <Button HorizontalAlignment="Right" Visibility="{Binding Path=NowPlayingItem.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource NavigationButtonStyle}" Click="ButtonNext_Click">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock TextAlignment="Right">
+                                </TextBlock>
+                            </Grid>
+                        </Button>
+                        <Button HorizontalAlignment="Right" Visibility="{Binding Path=NowPlayingItem.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource NavigationButtonStyle}" Click="ButtonNext_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock TextAlignment="Right">
                                         <Run Text="NEXT" FontSize="16.2" FontWeight="Bold" />
                                         <LineBreak />
                                         <Run Text="{Binding NowPlayingItem.Next.Name}" FontSize="16.8" FontWeight="Normal" />
-                                    </TextBlock>
-                                    <Path Grid.Column="1" Margin="15,0,0,0" StrokeThickness="3" Stroke="White" Data="M 0 0 L 14 18 L 0 36" VerticalAlignment="Center" />
-                                </Grid>
-                            </Button>
-                        </Grid>
-                        <TextBlock Margin="0,40,0,8" Text="TRACK HISTORY" FontSize="18.6" FontWeight="Bold" />
-                        <ListView ItemsSource="{Binding NowPlayingItem.TrackHistory}">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="Margin" Value="0,1" />
-                                    <Setter Property="Height" Value="48" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="ListViewItem">
-                                                <Border>
-                                                    <Border.Background>
-                                                        <SolidColorBrush Color="Black" Opacity="0.4" />
-                                                    </Border.Background>
-                                                    <Grid Margin="15,0" VerticalAlignment="Center">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition />
-                                                            <ColumnDefinition Width="Auto" />
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock FontSize="14.63" FontWeight="SemiLight">
+                                </TextBlock>
+                                <Path Grid.Column="1" Margin="15,0,0,0" StrokeThickness="3" Stroke="White" Data="M 0 0 L 14 18 L 0 36" VerticalAlignment="Center" />
+                            </Grid>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Margin="0,40,0,8" Text="TRACK HISTORY" FontSize="18.6" FontWeight="Bold" />
+                    <ListView ItemsSource="{Binding NowPlayingItem.TrackHistory}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Margin" Value="0,1" />
+                                <Setter Property="Height" Value="48" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <Border>
+                                                <Border.Background>
+                                                    <SolidColorBrush Color="Black" Opacity="0.4" />
+                                                </Border.Background>
+                                                <Grid Margin="15,0" VerticalAlignment="Center">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock FontSize="14.63" FontWeight="SemiLight">
                                                             <Run Text="{Binding Index}" />
                                                             <Run Text=". " />
                                                             <Run Text="{Binding Track}" />
-                                                        </TextBlock>
-                                                        <TextBlock Grid.Column="1" Text="{Binding Path=Duration, Converter={StaticResource DurationConverter}}" FontSize="14.63" FontWeight="SemiLight" />
-                                                    </Grid>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                        </ListView>
-                    </StackPanel>
-                </ScrollViewer>
+                                                    </TextBlock>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Path=Duration, Converter={StaticResource DurationConverter}}" FontSize="14.63" FontWeight="SemiLight" />
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>
