@@ -213,6 +213,12 @@ namespace DI.FM.View
                 var zol = sz.ZoomedOutView as GridView;
                 var index = zol.Items.IndexOf(e.SourceItem.Item);
                 e.DestinationItem.Item = zil.Items[index];
+
+                Ad.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Ad.Visibility = Visibility.Collapsed;
             }
         }
 

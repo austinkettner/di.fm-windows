@@ -13,6 +13,8 @@ namespace DI.FM.Common
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var duration = double.Parse(value.ToString());
+            if (duration < 0) duration = 0;
+
             var time = TimeSpan.FromSeconds(duration);
 
             string min = time.Minutes.ToString();

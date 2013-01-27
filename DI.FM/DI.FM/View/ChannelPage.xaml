@@ -66,7 +66,7 @@
             <!-- Image -->
             <Grid HorizontalAlignment="Left">
                 <Image Source="{Binding NowPlayingItem.Image}" Stretch="UniformToFill" />
-                <Rectangle Width="200" HorizontalAlignment="Right">
+                <Rectangle Width="400" HorizontalAlignment="Right">
                     <Rectangle.Fill>
                         <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
                             <GradientStopCollection>
