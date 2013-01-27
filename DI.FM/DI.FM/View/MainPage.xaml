@@ -42,10 +42,8 @@
         <common:DurationConverter x:Key="DurationConverter" />
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
         <!-- Styles -->
-        <Style TargetType="ListView">
-            <Setter Property="IsTabStop" Value="False" />
-            <Setter Property="TabNavigation" Value="Once" />
-            <Setter Property="IsSwipeEnabled" Value="False" />
+        <Style x:Key="GroupGridView" TargetType="GridView">
+            <Setter Property="ItemContainerStyle" Value="{StaticResource GridViewChannelItemStyle}" />
             <Setter Property="ItemsPanel">
                 <Setter.Value>
                     <ItemsPanelTemplate>
@@ -55,7 +53,7 @@
             </Setter>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="ListView">
+                    <ControlTemplate TargetType="GridView">
                         <ItemsPresenter />
                     </ControlTemplate>
                 </Setter.Value>
@@ -133,17 +131,17 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
-                                <ListView x:Name="ListViewFavorite" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.MainFavoriteChannels}" ItemContainerStyle="{StaticResource FavoriteItemStyle}" IsItemClickEnabled="True" ItemClick="ListViewChannels_ItemClick"
-                                          SelectionChanged="ListViewChannels_SelectionChanged">
-                                    <ListView.ItemTemplate>
+                                <GridView x:Name="ListViewFavorite" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.MainFavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
+                                          ItemClick="ListViewChannels_ItemClick" SelectionChanged="ListViewChannels_SelectionChanged">
+                                    <GridView.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid>
+                                            <Grid Width="380" Height="120">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="112" />
+                                                    <ColumnDefinition Width="Auto" />
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid>
-                                                    <Image Source="{Binding Image}" Stretch="UniformToFill" />
+                                                    <Image Source="{Binding Image}" Stretch="Uniform" />
                                                     <Border Padding="6,3" VerticalAlignment="Bottom">
                                                         <Border.Background>
                                                             <SolidColorBrush Color="Black" Opacity="0.75" />
@@ -161,8 +159,8 @@
                                                 </Grid>
                                             </Grid>
                                         </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                    </GridView.ItemTemplate>
+                                </GridView>
                             </Grid>
                             <!-- Advertisment -->
                             <Grid Margin="0,0,61,0" Width="160">
@@ -179,11 +177,11 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Button Content="All Radio Channels" Style="{StaticResource GroupButtonStyle}" />
-                                <ListView x:Name="ListViewAllChannels" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.AllChannels}" ItemContainerStyle="{StaticResource RadioItemStyle}" IsItemClickEnabled="True" ItemClick="ListViewChannels_ItemClick"
-                                          SelectionChanged="ListViewChannels_SelectionChanged">
-                                    <ListView.ItemTemplate>
+                                <GridView x:Name="ListViewAllChannels" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
+                                          ItemClick="ListViewChannels_ItemClick" SelectionChanged="ListViewChannels_SelectionChanged">
+                                    <GridView.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid>
+                                            <Grid Width="120" Height="120">
                                                 <Image Source="{Binding Image}" Stretch="UniformToFill" />
                                                 <Border Padding="6,3" VerticalAlignment="Bottom">
                                                     <Border.Background>
@@ -193,8 +191,8 @@
                                                 </Border>
                                             </Grid>
                                         </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                    </GridView.ItemTemplate>
+                                </GridView>
                             </Grid>
                         </GridView.Items>
                         <GridView.ItemContainerStyle>
