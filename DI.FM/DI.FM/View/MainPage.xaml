@@ -11,10 +11,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" NavigationCacheMode="Enabled">
     
-    <!--<Page.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="Main" />
-    </Page.DataContext>-->
-    
     <Page.BottomAppBar>
         <AppBar BorderBrush="{x:Null}">
             <AppBar.Background>
@@ -68,7 +64,7 @@
         </Grid.RowDefinitions>
         <!-- Header -->
         <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
-            <Grid Margin="117,0,56,0" Style="{StaticResource LayoutRootStyle}">
+            <Grid Margin="118,0,56,0" Style="{StaticResource LayoutRootStyle}">
                 <Grid HorizontalAlignment="Left">
                     <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
                 </Grid>
@@ -107,7 +103,7 @@
                             <!-- Now Playing -->
                             <Grid Margin="0,0,61,0" Width="366" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="38" />
+                                    <RowDefinition Height="46" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Button Content="Now Playing" Style="{StaticResource GroupButtonStyle}" />
@@ -127,7 +123,7 @@
                             <!-- Favorite Channels -->
                             <Grid Margin="0,0,61,0">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="35" />
+                                    <RowDefinition Height="40" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
@@ -165,7 +161,7 @@
                             <!-- Advertisment -->
                             <Grid Margin="0,0,61,0" Width="160">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="38" />
+                                    <RowDefinition Height="46" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <ad:AdControl x:Name="Ad" Grid.Row="1" Margin="0" Width="160" Height="500" ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" AdUnitId="114352" VerticalAlignment="Top" />
@@ -173,10 +169,10 @@
                             <!-- All Radio Channels -->
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="35" />
+                                    <RowDefinition Height="40" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Button Content="All Radio Channels" Style="{StaticResource GroupButtonStyle}" />
+                                <Button Content="All Radio Channels" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
                                 <GridView x:Name="ListViewAllChannels" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                           ItemClick="ListViewChannels_ItemClick" SelectionChanged="ListViewChannels_SelectionChanged">
                                     <GridView.ItemTemplate>
@@ -208,13 +204,13 @@
                         </GridView.ItemContainerStyle>
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Margin="117,25,42,25" Orientation="Horizontal" VerticalAlignment="Top" />
+                                <StackPanel Margin="112,26,40,25" Orientation="Horizontal" VerticalAlignment="Top" />
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                     </GridView>
                 </SemanticZoom.ZoomedInView>
                 <SemanticZoom.ZoomedOutView>
-                    <GridView>
+                    <GridView SelectionMode="None" Style="{StaticResource GroupGridView}">
                         <GridView.Items>
                             <x:String>Now Playing</x:String>
                             <x:String>Favorite Channels</x:String>
@@ -223,40 +219,14 @@
                         </GridView.Items>
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Margin="20,10" Text="{Binding}" Foreground="White" FontSize="18" FontWeight="Normal" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                <Grid Width="250" Height="100" Background="#3e5688">
+                                    <TextBlock Margin="20,10" Text="{Binding}" Foreground="White" FontSize="18" FontWeight="Normal" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>
-                        <GridView.ItemContainerStyle>
-                            <Style TargetType="GridViewItem">
-                                <Setter Property="Width" Value="250" />
-                                <Setter Property="Height" Value="100" />
-                                <Setter Property="Margin" Value="0,0,10,10" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="GridViewItem">
-                                            <Border Name="Border" Padding="3" Background="#3e5688">
-                                                <VisualStateManager.VisualStateGroups>
-                                                    <VisualStateGroup>
-                                                        <VisualState x:Name="Normal" />
-                                                        <VisualState x:Name="PointerOver">
-                                                            <Storyboard>
-                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderBrush">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#3e5688" />
-                                                                </ObjectAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </VisualState>
-                                                    </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>
-                                                <ContentPresenter />
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </GridView.ItemContainerStyle>
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapGrid Margin="117,45,42,25" />
+                                <WrapGrid Margin="114,26,40,25" />
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                     </GridView>

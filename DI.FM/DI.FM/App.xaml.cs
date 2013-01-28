@@ -144,6 +144,8 @@ namespace DI.FM
             }
 
             Window.Current.Activate();
+
+            //MC.MetroGridHelper.MetroGridHelper.CreateGrid();
         }
 
         private void OnSuspending(object sender, SuspendingEventArgs e)

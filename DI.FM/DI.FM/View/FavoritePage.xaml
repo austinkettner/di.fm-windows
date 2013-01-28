@@ -27,7 +27,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Button Margin="30,0" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
+                    <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
                     <TextBlock Grid.Column="1" Text="Favorite Channels" Foreground="White" FontSize="42" FontWeight="SemiLight">
                         <TextBlock.RenderTransform>
                             <TranslateTransform Y="4" />
@@ -92,7 +92,7 @@
                 </GridView.ItemTemplate>
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <VariableSizedWrapGrid Margin="115,40,60,40" ItemWidth="400" ItemHeight="130" />
+                        <VariableSizedWrapGrid Margin="112,26,60,40" />
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>

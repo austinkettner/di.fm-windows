@@ -14,18 +14,6 @@
         <!-- Converters -->
         <common:DurationConverter x:Key="DurationConverter" />
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
-        <!-- Styles -->
-        <Style x:Key="NavigationButtonStyle" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Grid Background="Transparent">
-                            <ContentPresenter />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Page.Resources>
     
     <Page.BottomAppBar>
@@ -45,11 +33,11 @@
         <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="109" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Button Margin="42,0,0,28" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
-                <TextBlock Grid.Column="1" Margin="0,18,0,0">
+                <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" VerticalAlignment="Center" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
+                <TextBlock Grid.Column="1" VerticalAlignment="Center">
                     <Run Text="{Binding NowPlayingItem.Name}" Foreground="White" FontSize="40.2" FontWeight="SemiLight" />
                     <LineBreak />
                     <Run Text="{Binding NowPlayingItem.Description}" Foreground="#c3c3c3" FontSize="17.4" FontWeight="SemiLight" />
@@ -65,7 +53,7 @@
             </Grid.ColumnDefinitions>
             <!-- Image -->
             <Grid HorizontalAlignment="Left">
-                <Image Source="{Binding NowPlayingItem.Image}" Stretch="UniformToFill" />
+                <Image Source="{Binding NowPlayingItem.Image}" Stretch="UniformToFill" Opacity="0.75" />
                 <Rectangle Width="400" HorizontalAlignment="Right">
                     <Rectangle.Fill>
                         <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
@@ -78,13 +66,17 @@
                 </Rectangle>
             </Grid>
             <!-- Info -->
-            <Grid Grid.Column="1" Margin="40,35,40,30">
+            <Grid Grid.Column="1" Margin="40,30,40,30">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <StackPanel>
-                    <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold" />
+                    <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform X="-2" />
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
                     <Grid Height="170">
                         <Grid.Background>
                             <SolidColorBrush Color="{Binding NowPlayingItem.Color2}" Opacity="0.7" />
@@ -105,7 +97,7 @@
                         </Grid>
                     </Grid>
                     <Grid Margin="0,15,0,0">
-                        <Button HorizontalAlignment="Left" Visibility="{Binding Path=NowPlayingItem.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource NavigationButtonStyle}" Click="ButtonPrev_Click">
+                        <Button HorizontalAlignment="Left" Visibility="{Binding Path=NowPlayingItem.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev_Click">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -113,22 +105,22 @@
                                 </Grid.ColumnDefinitions>
                                 <Path Margin="0,0,15,0" StrokeThickness="3" Stroke="White" Data="M 14 0 L 0 18 L 14 36" VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="1" TextAlignment="Left">
-                                        <Run Text="PREV" FontSize="16.2" FontWeight="Bold" />
-                                        <LineBreak />
-                                        <Run Text="{Binding NowPlayingItem.Prev.Name}" FontSize="16.8" FontWeight="Normal" />
+                                    <Run Text="PREV" FontSize="16.2" FontWeight="Bold" />
+                                    <LineBreak />
+                                    <Run Text="{Binding NowPlayingItem.Prev.Name}" FontSize="16.8" FontWeight="Normal" />
                                 </TextBlock>
                             </Grid>
                         </Button>
-                        <Button HorizontalAlignment="Right" Visibility="{Binding Path=NowPlayingItem.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource NavigationButtonStyle}" Click="ButtonNext_Click">
+                        <Button HorizontalAlignment="Right" Visibility="{Binding Path=NowPlayingItem.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext_Click">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock TextAlignment="Right">
-                                        <Run Text="NEXT" FontSize="16.2" FontWeight="Bold" />
-                                        <LineBreak />
-                                        <Run Text="{Binding NowPlayingItem.Next.Name}" FontSize="16.8" FontWeight="Normal" />
+                                    <Run Text="NEXT" FontSize="16.2" FontWeight="Bold" />
+                                    <LineBreak />
+                                    <Run Text="{Binding NowPlayingItem.Next.Name}" FontSize="16.8" FontWeight="Normal" />
                                 </TextBlock>
                                 <Path Grid.Column="1" Margin="15,0,0,0" StrokeThickness="3" Stroke="White" Data="M 0 0 L 14 18 L 0 36" VerticalAlignment="Center" />
                             </Grid>
@@ -136,7 +128,11 @@
                     </Grid>
                 </StackPanel>
                 <StackPanel Grid.Row="1">
-                    <TextBlock Margin="0,40,0,8" Text="TRACK HISTORY" FontSize="18.6" FontWeight="Bold" />
+                    <TextBlock Margin="0,40,0,8" Text="TRACK HISTORY" FontSize="18.6" FontWeight="Bold">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform X="-2" />
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
                     <ListView ItemsSource="{Binding NowPlayingItem.TrackHistory}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -147,7 +143,7 @@
                                         <ControlTemplate TargetType="ListViewItem">
                                             <Border>
                                                 <Border.Background>
-                                                    <SolidColorBrush Color="Black" Opacity="0.4" />
+                                                    <SolidColorBrush Color="Black" Opacity="0.25" />
                                                 </Border.Background>
                                                 <Grid Margin="15,0" VerticalAlignment="Center">
                                                     <Grid.ColumnDefinitions>

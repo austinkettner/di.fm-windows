@@ -114,29 +114,20 @@ namespace DI.FM.View
 
         private void ListViewChannels_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems.Count > 0)
+            foreach (MainViewModel.ChannelItem item in e.AddedItems)
             {
-                var item = e.AddedItems[0] as MainViewModel.ChannelItem;
-
                 if (this.Model.FavoriteChannels.Contains(item))
                 {
-                    if (!TempUnFavorite.Contains(item))
-                    {
-                        TempUnFavorite.Add(item);
-                    }
+                    TempUnFavorite.Add(item);
                 }
                 else
                 {
-                    if (!TempFavorite.Contains(item))
-                    {
-                        TempFavorite.Add(item);
-                    }
+                    TempFavorite.Add(item);
                 }
             }
 
-            if (e.RemovedItems.Count > 0)
+            foreach (MainViewModel.ChannelItem item in e.RemovedItems)
             {
-                var item = e.RemovedItems[0] as MainViewModel.ChannelItem;
                 TempUnFavorite.Remove(item);
                 TempFavorite.Remove(item);
             }

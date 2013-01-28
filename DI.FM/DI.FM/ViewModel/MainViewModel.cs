@@ -320,7 +320,7 @@ namespace DI.FM.ViewModel
 
         private void NowPlayingRefresh_Tick(object sender, object e)
         {
-            if (NowPlayingItem.NowPlaying.Started == -1)
+            if (NowPlayingItem.NowPlaying == null || NowPlayingItem.NowPlaying.Started == -1)
             {
                 nowPlayingRefresh.Stop();
                 return;
