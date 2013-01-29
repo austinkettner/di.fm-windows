@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DI.FM.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,6 +44,20 @@ namespace DI.FM.Common
         {
             if (value == null) return Visibility.Collapsed;
             return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class FavoritesHeaderVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null || ((IList<MainViewModel.ChannelItem>)value).Count == 0) return Visibility.Visible;
+            return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

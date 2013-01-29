@@ -12,14 +12,26 @@
     
     <Page.Resources>
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+        <common:FavoritesHeaderVisibility x:Key="FavoritesHeaderVisibility" />
     </Page.Resources>
+    
+    <Page.BottomAppBar>
+        <AppBar BorderBrush="{x:Null}">
+            <AppBar.Background>
+                <SolidColorBrush Color="#3e5688" Opacity="0.9" />
+            </AppBar.Background>
+            <Grid>
+                <Button HorizontalAlignment="Left" Style="{StaticResource UnfavoriteAppBarButtonStyle}" />
+            </Grid>
+        </AppBar>
+    </Page.BottomAppBar>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="109" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
+        <!-- Header -->
         <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
             <Grid Margin="0,0,56,0" Style="{StaticResource LayoutRootStyle}">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -47,7 +59,7 @@
                 </Grid>
             </Grid>
         </Border>
-
+        <!-- Content -->
         <Grid Grid.Row="1">
             <Grid.Background>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
@@ -62,6 +74,11 @@
                 <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
             </Border>
             <!-- Content -->
+            <TextBlock Margin="112,26,0,0" Text="There are no favorites yet..." Foreground="White" FontSize="26" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Favorites, Converter={StaticResource FavoritesHeaderVisibility}}">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform X="6" />
+                </TextBlock.RenderTransform>
+            </TextBlock>
             <GridView SelectionMode="Extended" ItemsSource="{Binding Favorites}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" ItemClick="GridViewFavorites_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate>

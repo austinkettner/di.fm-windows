@@ -48,7 +48,7 @@ namespace DI.FM.ViewModel
 
         public IEnumerable<ChannelItem> MainFavoriteChannels
         {
-            get { return this.FavoriteChannels.Take(5); }
+            get { return this.FavoriteChannels.Take(5).ToList(); }
         }
 
         private DispatcherTimer nowPlayingRefresh;
@@ -446,7 +446,7 @@ namespace DI.FM.ViewModel
 
         public async Task SaveFavoriteChannels()
         {
-            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("favorites.txt", CreationCollisionOption.OpenIfExists);
+            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("favorites.txt", CreationCollisionOption.ReplaceExisting);
 
             var writer = new StreamWriter(await file.OpenStreamForWriteAsync());
 
@@ -475,8 +475,8 @@ namespace DI.FM.ViewModel
             var data = await DownloadJson(string.Format(TRACK_URL, channel.ID));
             if (data == null) return;
 
-           /* if (channel.TrackHistory == null) channel.TrackHistory = new ObservableCollection<TrackItem>();
-            else channel.TrackHistory.Clear();*/
+            /* if (channel.TrackHistory == null) channel.TrackHistory = new ObservableCollection<TrackItem>();
+             else channel.TrackHistory.Clear();*/
 
             var tempTracks = new List<TrackItem>();
 
@@ -493,7 +493,7 @@ namespace DI.FM.ViewModel
                         Started = track["started"],
                         Duration = track["duration"]
                     });
-                    
+
                     if (index == 4) break;
                     index++;
                 }

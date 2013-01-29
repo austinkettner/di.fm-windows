@@ -37,6 +37,7 @@
         <!-- Converters -->
         <common:DurationConverter x:Key="DurationConverter" />
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+        <common:FavoritesHeaderVisibility x:Key="FavoritesHeaderVisibility" />
         <!-- Styles -->
         <Style x:Key="GroupGridView" TargetType="GridView">
             <Setter Property="ItemContainerStyle" Value="{StaticResource GridViewChannelItemStyle}" />
@@ -127,6 +128,11 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
+                                <TextBlock Grid.Row="1" Text="Favorite your channels right here..." Foreground="White" FontSize="26" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Model.MainFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform X="6" />
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
                                 <GridView x:Name="ListViewFavorite" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.MainFavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                           ItemClick="ListViewChannels_ItemClick" SelectionChanged="ListViewChannels_SelectionChanged">
                                     <GridView.ItemTemplate>

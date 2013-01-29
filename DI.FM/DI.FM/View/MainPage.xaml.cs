@@ -170,12 +170,14 @@ namespace DI.FM.View
             }
             else
             {
-                for (int i = 0; i < TempUnFavorite.Count; i++)
+                List<MainViewModel.ChannelItem> temp = new List<MainViewModel.ChannelItem>();
+                foreach (var unFavItem in TempUnFavorite)
                 {
-                    if (this.Model.FavoriteChannels.Remove(TempUnFavorite[i]))
-                    {
-                        i--;
-                    }
+                    temp.Add(unFavItem);
+                }
+                foreach (var unFavItem in temp)
+                {
+                    this.Model.FavoriteChannels.Remove(unFavItem);
                 }
             }
 
