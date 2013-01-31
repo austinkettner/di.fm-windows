@@ -20,7 +20,7 @@
         <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#333333" />
       </VisualElements>
       <Extensions>
-        <Extension Category="windows.search" EntryPoint="MainPage.xaml" />
+        <Extension Category="windows.search" />
         <Extension Category="windows.backgroundTasks" EntryPoint="App.xaml">
           <BackgroundTasks>
             <Task Type="audio" />

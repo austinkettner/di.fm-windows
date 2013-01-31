@@ -2,10 +2,12 @@
 using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
+using Windows.ApplicationModel.Search;
 using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
 namespace DI.FM.View
@@ -41,6 +43,12 @@ namespace DI.FM.View
                     App.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
                     App.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
                 }
+            };
+
+
+            SearchPane.GetForCurrentView().VisibilityChanged += (sender, e) =>
+            {
+                if (e.Visible) this.Frame.Navigate(typeof(SearchPage));
             };
         }
 
@@ -244,5 +252,14 @@ namespace DI.FM.View
         }
 
         #endregion
+        
+        protected override void OnKeyDown(KeyRoutedEventArgs e)
+        {
+            var c = (char)e.Key;
+            if (char.IsLetter(c))
+            {
+                SearchPane.GetForCurrentView().Show(c.ToString());
+            }
+        }
     }
 }
