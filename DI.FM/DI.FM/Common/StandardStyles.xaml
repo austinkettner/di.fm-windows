@@ -1981,14 +1981,17 @@
                                 <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="RootGrid">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
-                                        </ObjectAnimationUsingKeyFrames>
+                                        <DoubleAnimation To="0.5" Duration="0" Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Opacity" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
                                         <PointerDownThemeAnimation TargetName="RootGrid"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation To="0" Duration="0" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="Opacity" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -1998,7 +2001,7 @@
                             <ColumnDefinition Width="15" />
                         </Grid.ColumnDefinitions>
                         <ContentPresenter />
-                        <Path Margin="0,3,0,0" Grid.Column="1" Data="M 0 0 L 7 6 L 0 12" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                        <Path x:Name="Arrow" Margin="0,3,0,0" Grid.Column="1" Data="M 0 0 L 7 6 L 0 12" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" VerticalAlignment="Center" HorizontalAlignment="Right" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -2043,34 +2046,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <Style x:Key="GridViewChannelItemStyle" TargetType="GridViewItem">
         <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}"/>
         <Setter Property="FontSize" Value="{StaticResource ControlContentThemeFontSize}"/>
@@ -2078,7 +2053,7 @@
         <Setter Property="TabNavigation" Value="Local"/>
         <Setter Property="IsHoldingEnabled" Value="True"/>
         <Setter Property="Margin" Value="0,0,2,2"/>
-        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Padding" Value="1"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="Template">
@@ -2092,13 +2067,13 @@
                                     <Storyboard>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PointerOverBorder"/>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="SelectionBackground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="#3e5688"/>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="#3896FA"/>
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="SelectedBorder">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="#3e5688"/>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="#3896FA"/>
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="SelectedEarmark">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="#3e5688"/>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="#3896FA"/>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -2327,9 +2302,9 @@
                             </Border>
                             <Border x:Name="ContentContainer">
                                 <Grid x:Name="InnerDragContent">
-                                    <Rectangle x:Name="PointerOverBorder" IsHitTestVisible="False" Margin="1" Opacity="0" Fill="#59FFFFFF"/>
+                                    <Rectangle x:Name="PointerOverBorder" IsHitTestVisible="False" Margin="2" Opacity="0" Fill="#59FFFFFF"/>
                                     <Rectangle x:Name="FocusVisual" IsHitTestVisible="False" Opacity="0" Stroke="{StaticResource ListViewItemFocusBorderThemeBrush}" StrokeThickness="2"/>
-                                    <Rectangle x:Name="SelectionBackground" Fill="#3e5688" Margin="4" Opacity="0"/>
+                                    <Rectangle x:Name="SelectionBackground" Fill="#3896FA" Margin="4" Opacity="0"/>
                                     <Border x:Name="ContentBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="4">
                                         <Grid>
                                             <ContentPresenter x:Name="contentPresenter" ContentTransitions="{TemplateBinding ContentTransitions}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
@@ -2338,10 +2313,10 @@
                                             <Rectangle x:Name="MultiArrangeOverlayBackground" Fill="{StaticResource ListViewItemDragBackgroundThemeBrush}" IsHitTestVisible="False" Opacity="0"/>
                                         </Grid>
                                     </Border>
-                                    <Rectangle x:Name="SelectedBorder" IsHitTestVisible="False" Margin="4" Opacity="0" Stroke="#3e5688" StrokeThickness="{StaticResource GridViewItemSelectedBorderThemeThickness}"/>
+                                    <Rectangle x:Name="SelectedBorder" IsHitTestVisible="False" Margin="4" Opacity="0" Stroke="#3896FA" StrokeThickness="{StaticResource GridViewItemSelectedBorderThemeThickness}"/>
                                     <Border x:Name="SelectedCheckMarkOuter" HorizontalAlignment="Right" IsHitTestVisible="False" Margin="4" VerticalAlignment="Top">
                                         <Grid x:Name="SelectedCheckMark" Height="40" Opacity="0" Width="40">
-                                            <Path x:Name="SelectedEarmark" Data="M0,0 L40,0 L40,40 z" Fill="#3e5688" Stretch="Fill"/>
+                                            <Path x:Name="SelectedEarmark" Data="M0,0 L40,0 L40,40 z" Fill="#3896FA" Stretch="Fill"/>
                                             <Path Data="F1 M133.1,17.9 L137.2,13.2 L144.6,19.6 L156.4,5.8 L161.2,9.9 L145.6,28.4 z" Fill="{StaticResource ListViewItemCheckThemeBrush}" FlowDirection="LeftToRight" HorizontalAlignment="Right" Height="13" Margin="0,5.5,5.5,0" Stretch="Fill" VerticalAlignment="Top" Width="15"/>
                                         </Grid>
                                     </Border>

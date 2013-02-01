@@ -1,5 +1,6 @@
 ﻿using DI.FM.ViewModel;
 using System;
+using System.Collections.Generic;
 using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -9,11 +10,14 @@ namespace DI.FM.View
 {
     public sealed partial class FavoritePage : DI.FM.Common.LayoutAwarePage
     {
+        private MainViewModel Model;
+
         public FavoritePage()
         {
             this.InitializeComponent();
             // Init the model
             var model = App.Current.Resources["Locator"] as ViewModelLocator;
+            Model = model.Main;
             this.DefaultViewModel.Add("Favorites", model.Main.FavoriteChannels);
             this.DefaultViewModel.Add("NowPlaying", App.NowPlaying);
 
@@ -55,6 +59,31 @@ namespace DI.FM.View
                 model.Main.NowPlayingItem = item;
                 this.Frame.Navigate(typeof(ChannelPage), model.Main);
             }
+        }
+
+        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var gridView = sender as GridView;
+            if (gridView.SelectedItems.Count > 0)
+            {
+                ButtonUnfavorite.Visibility = Visibility.Visible;
+                this.BottomAppBar.IsSticky = true;
+                this.BottomAppBar.IsOpen = true;
+            }
+            else
+            {
+                ButtonUnfavorite.Visibility = Visibility.Collapsed;
+                this.BottomAppBar.IsSticky = false;
+                this.BottomAppBar.IsOpen = false;
+            }
+        }
+
+        private async void ButtonUnfavorite_Click(object sender, RoutedEventArgs e)
+        {
+            List<MainViewModel.ChannelItem> items = new List<MainViewModel.ChannelItem>();
+            foreach (MainViewModel.ChannelItem item in GridViewFavorites.SelectedItems) items.Add(item);
+            foreach (var item in items) Model.FavoriteChannels.Remove(item);
+            await Model.SaveFavoriteChannels();
         }
     }
 }

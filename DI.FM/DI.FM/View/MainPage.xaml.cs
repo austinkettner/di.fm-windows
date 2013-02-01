@@ -173,7 +173,7 @@ namespace DI.FM.View
             {
                 foreach (var favItem in TempFavorite)
                 {
-                    this.Model.FavoriteChannels.Add(favItem);
+                    this.Model.FavoriteChannels.Insert(0, favItem);
                 }
             }
             else

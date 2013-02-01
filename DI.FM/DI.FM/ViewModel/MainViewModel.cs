@@ -48,7 +48,7 @@ namespace DI.FM.ViewModel
 
         public IEnumerable<ChannelItem> MainFavoriteChannels
         {
-            get { return this.FavoriteChannels.Take(5).ToList(); }
+            get { return this.FavoriteChannels.Take(3).ToList(); }
         }
 
         private DispatcherTimer nowPlayingRefresh;

@@ -18,10 +18,10 @@
     <Page.BottomAppBar>
         <AppBar BorderBrush="{x:Null}">
             <AppBar.Background>
-                <SolidColorBrush Color="#3e5688" Opacity="0.9" />
+                <SolidColorBrush Color="#3896FA" Opacity="0.9" />
             </AppBar.Background>
             <Grid>
-                <Button HorizontalAlignment="Left" Style="{StaticResource UnfavoriteAppBarButtonStyle}" />
+                <Button x:Name="ButtonUnfavorite" HorizontalAlignment="Left" Visibility="Collapsed" Style="{StaticResource UnfavoriteAppBarButtonStyle}" Click="ButtonUnfavorite_Click" />
             </Grid>
         </AppBar>
     </Page.BottomAppBar>
@@ -79,7 +79,7 @@
                     <TranslateTransform X="6" />
                 </TextBlock.RenderTransform>
             </TextBlock>
-            <GridView SelectionMode="Extended" ItemsSource="{Binding Favorites}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" ItemClick="GridViewFavorites_ItemClick">
+            <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding Favorites}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" SelectionChanged="GridView_SelectionChanged" ItemClick="GridViewFavorites_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Grid Width="380" Height="120">
