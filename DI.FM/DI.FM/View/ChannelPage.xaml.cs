@@ -87,6 +87,8 @@ namespace DI.FM.View
 
         private void CheckTrackPlayingState()
         {
+            if (Model == null) return;
+
             if (Model.NowPlayingItem != null && Model.NowPlayingItem == App.NowPlaying.PlayingItem &&
                 App.MediaPlayer.CurrentState == MediaElementState.Playing) 
                 ButtonPlay.Style = App.Current.Resources["StopIconButtonStyle"] as Style;

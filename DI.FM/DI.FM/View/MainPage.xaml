@@ -107,7 +107,11 @@
                                     <RowDefinition Height="46" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Button Content="Now Playing" Style="{StaticResource GroupButtonStyle}" />
+                                <Button Content="Now Playing" Style="{StaticResource GroupButtonStyle}" Click="ButtonNowPlaying_Click">
+                                    <Button.RenderTransform>
+                                        <TranslateTransform X="-2" />
+                                    </Button.RenderTransform>
+                                </Button>
                                 <Grid Grid.Row="1">
                                     <StackPanel>
                                         <Image Source="{Binding NowPlaying.PlayingItem.Image}" />
@@ -143,7 +147,11 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid>
-                                                    <Image Source="{Binding Image}" Stretch="Uniform" />
+                                                    <Image Stretch="Uniform">
+                                                        <Image.Source>
+                                                            <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="150" DecodePixelWidth="150" />
+                                                        </Image.Source>
+                                                    </Image>
                                                     <Border Padding="6,3" VerticalAlignment="Bottom">
                                                         <Border.Background>
                                                             <SolidColorBrush Color="Black" Opacity="0.75" />
@@ -184,7 +192,11 @@
                                     <GridView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid Width="150" Height="150">
-                                                <Image Source="{Binding Image}" Stretch="UniformToFill" />
+                                                <Image Stretch="UniformToFill">
+                                                    <Image.Source>
+                                                        <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="150" DecodePixelWidth="150" />
+                                                    </Image.Source>
+                                                </Image>
                                                 <Border Padding="6,3" VerticalAlignment="Bottom">
                                                     <Border.Background>
                                                         <SolidColorBrush Color="Black" Opacity="0.6" />
@@ -225,7 +237,7 @@
                         </GridView.Items>
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Width="250" Height="100" Background="#3e5688">
+                                <Grid Width="280" Height="120" Background="#3896FA" Opacity="0.95">
                                     <TextBlock Margin="20,10" Text="{Binding}" Foreground="White" FontSize="18" FontWeight="Normal" VerticalAlignment="Top" HorizontalAlignment="Left" />
                                 </Grid>
                             </DataTemplate>

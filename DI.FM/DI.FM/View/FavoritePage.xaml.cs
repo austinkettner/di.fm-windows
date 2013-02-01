@@ -67,12 +67,14 @@ namespace DI.FM.View
             if (gridView.SelectedItems.Count > 0)
             {
                 ButtonUnfavorite.Visibility = Visibility.Visible;
+                ButtonSelectNone.Visibility = Visibility.Visible;
                 this.BottomAppBar.IsSticky = true;
                 this.BottomAppBar.IsOpen = true;
             }
             else
             {
                 ButtonUnfavorite.Visibility = Visibility.Collapsed;
+                ButtonSelectNone.Visibility = Visibility.Collapsed;
                 this.BottomAppBar.IsSticky = false;
                 this.BottomAppBar.IsOpen = false;
             }
@@ -84,6 +86,16 @@ namespace DI.FM.View
             foreach (MainViewModel.ChannelItem item in GridViewFavorites.SelectedItems) items.Add(item);
             foreach (var item in items) Model.FavoriteChannels.Remove(item);
             await Model.SaveFavoriteChannels();
+        }
+
+        private void ButtonSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewFavorites.SelectAll();
+        }
+
+        private void ButtonSelectNone_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewFavorites.SelectedItems.Clear();
         }
     }
 }

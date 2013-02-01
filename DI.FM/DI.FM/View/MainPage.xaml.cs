@@ -261,5 +261,11 @@ namespace DI.FM.View
                 SearchPane.GetForCurrentView().Show(c.ToString());
             }
         }
+
+        private void ButtonNowPlaying_Click(object sender, RoutedEventArgs e)
+        {
+            Model.NowPlayingItem = App.NowPlaying.PlayingItem;
+            this.Frame.Navigate(typeof(ChannelPage), Model);
+        }
     }
 }

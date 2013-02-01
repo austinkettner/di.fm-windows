@@ -22,6 +22,10 @@
             </AppBar.Background>
             <Grid>
                 <Button x:Name="ButtonUnfavorite" HorizontalAlignment="Left" Visibility="Collapsed" Style="{StaticResource UnfavoriteAppBarButtonStyle}" Click="ButtonUnfavorite_Click" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource SelectAllAppBarButtonStyle}" Click="ButtonSelectAll_Click" />
+                    <Button x:Name="ButtonSelectNone" Visibility="Collapsed" Style="{StaticResource ClearSelectionAppBarButtonStyle}" Click="ButtonSelectNone_Click" />
+                </StackPanel>
             </Grid>
         </AppBar>
     </Page.BottomAppBar>
@@ -82,7 +86,7 @@
             <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding Favorites}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" SelectionChanged="GridView_SelectionChanged" ItemClick="GridViewFavorites_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="380" Height="120">
+                        <Grid Width="400" Height="150">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
@@ -109,7 +113,7 @@
                 </GridView.ItemTemplate>
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <VariableSizedWrapGrid Margin="112,26,60,40" />
+                        <VariableSizedWrapGrid Margin="112,46,60,40" />
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
