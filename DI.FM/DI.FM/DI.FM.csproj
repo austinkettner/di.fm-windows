@@ -116,6 +116,7 @@
     <Compile Include="MetroGridHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\ChannelsHelper.cs" />
+    <Compile Include="ViewModel\ItemModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\ChannelPage.xaml.cs">

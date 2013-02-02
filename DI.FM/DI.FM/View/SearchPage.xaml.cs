@@ -1,117 +1,82 @@
-﻿using DI.FM.ViewModel;
+﻿using DI.FM.Common;
+using DI.FM.ViewModel;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Search;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Media;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 namespace DI.FM.View
 {
-    public sealed partial class SearchPage : DI.FM.Common.LayoutAwarePage
+    public sealed partial class SearchPage : LayoutAwarePage
     {
-        string lastQuery = "";
-        ObservableCollection<MainViewModel.ChannelItem> results;
-
-        MainViewModel model;
+        private string LastQuery = "";
+        private ObservableCollection<ChannelItem> Results;
+        private MainViewModel Model;
 
         public SearchPage()
         {
             this.InitializeComponent();
-
-            var x = App.Current.Resources["Locator"] as ViewModelLocator;
-            model = x.Main;
-
-            results = new ObservableCollection<MainViewModel.ChannelItem>(model.AllChannels);
-
-            this.DefaultViewModel.Add("Results", results);
-
-
+            // Get model
+            Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+            // Init the initial result list
+            Results = new ObservableCollection<ChannelItem>(Model.AllChannels);
+            // Bind the model
+            this.DefaultViewModel.Add("Results", Results);
+            // Hook up events
             SearchPane.GetForCurrentView().QueryChanged += SearchPage_QueryChanged;
-        }
-
-        void SearchPage_QueryChanged(SearchPane sender, SearchPaneQueryChangedEventArgs args)
-        {
-            this.DefaultViewModel["QueryText"] = args.QueryText;
-            Search(args.QueryText.ToLower());
-            //results.Clear();
         }
 
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
             var queryText = navigationParameter as string;
-            if(queryText != null) Search(queryText.ToLower());
+            if (queryText != null)
+            {
+                this.DefaultViewModel["QueryText"] = queryText;
+                Search(queryText.ToLower());
+            }
+        }
 
-            /*var filterList = new List<Filter>();
-            filterList.Add(new Filter("All", 0, true));
-
-            // Communicate results through the view model
-            this.DefaultViewModel["QueryText"] = '\u201c' + queryText + '\u201d';
-            this.DefaultViewModel["Filters"] = filterList;
-            this.DefaultViewModel["ShowFilters"] = filterList.Count > 1;*/
+        private void SearchPage_QueryChanged(SearchPane sender, SearchPaneQueryChangedEventArgs args)
+        {
+            this.DefaultViewModel["QueryText"] = args.QueryText;
+            Search(args.QueryText.ToLower());
         }
 
         private void Search(string query)
         {
-            if (query.Contains(lastQuery))
+            if (query.Contains(LastQuery))
             {
-                for (int i = 0; i < results.Count; i++)
+                for (int i = 0; i < Results.Count; i++)
                 {
-                    if (!results[i].Name.ToLower().Contains(query))
+                    if (!Results[i].Name.ToLower().Contains(query))
                     {
-                        results.RemoveAt(i);
+                        Results.RemoveAt(i);
                         i--;
                     }
                 }
             }
             else
             {
-                foreach(var channel in model.AllChannels)
+                foreach (var channel in Model.AllChannels)
                 {
-                    if (channel.Name.ToLower().Contains(query) && !results.Contains(channel))
+                    if (channel.Name.ToLower().Contains(query) && !Results.Contains(channel))
                     {
-                        results.Add(channel);
+                        Results.Add(channel);
                     }
                 }
             }
 
-            lastQuery = query;
+            LastQuery = query;
         }
 
-        private void ButtonPlayPause_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void GridViewResults_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (App.MediaPlayer.CurrentState == MediaElementState.Playing)
+            var item = e.ClickedItem as ChannelItem;
+            if (item != null)
             {
-                App.MediaPlayer.Source = null;
-                MediaControl.IsPlaying = false;
-            }
-            else
-            {
-                if (App.NowPlaying.PlayingItem != null) App.MediaPlayer.Source = new Uri(App.NowPlaying.PlayingItem.Streams[0]);
-                MediaControl.IsPlaying = true;
-            }
-        }
-
-        private void GridViewFavorites_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var item = e.ClickedItem as MainViewModel.ChannelItem;
-            var model = App.Current.Resources["Locator"] as ViewModelLocator;
-            if (item != null && model != null)
-            {
-                model.Main.NowPlayingItem = item;
-                this.Frame.Navigate(typeof(ChannelPage), model.Main);
+                Model.NowPlayingItem = item;
+                this.Frame.Navigate(typeof(ChannelPage));
             }
         }
     }

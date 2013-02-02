@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Search;
 using Windows.Media;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -16,33 +17,54 @@ namespace DI.FM
     {
         #region Variables
 
-        public static MediaElement MediaPlayer;
-        public static NowPlayingItem NowPlaying;
+        public static NowPlayingItem PlayingMedia;
 
         public class NowPlayingItem : ViewModelBase
         {
-            private MainViewModel.ChannelItem _playingItem;
-            public MainViewModel.ChannelItem PlayingItem
+            public MediaElement MediaPlayer { get; set; }
+
+            private ChannelItem _playingItem;
+            public ChannelItem PlayingItem
             {
                 get { return _playingItem; }
                 set
                 {
                     _playingItem = value;
-                    if (_playingItem != null)
+
+                    if (MediaPlayer != null)
                     {
-                        MediaPlayer.Source = new Uri(_playingItem.Streams[0]);
-                        MediaControl.AlbumArt = new Uri("ms-appx:///" + _playingItem.Image.Substring(3));
-                        MediaControl.TrackName = _playingItem.Name;
-                        MediaControl.ArtistName = _playingItem.Description;
-                        MediaControl.IsPlaying = true;
-                    }
-                    else
-                    {
-                        MediaPlayer.Source = null;
-                        MediaControl.IsPlaying = false;
+                        if (_playingItem != null)
+                        {
+                            MediaPlayer.Source = new Uri(_playingItem.Streams[0]);
+                            MediaControl.AlbumArt = new Uri(_playingItem.Image);
+                            MediaControl.TrackName = _playingItem.Name;
+                            MediaControl.ArtistName = _playingItem.Description;
+                            MediaControl.IsPlaying = true;
+                        }
+                        else
+                        {
+                            MediaPlayer.Source = null;
+                            MediaControl.IsPlaying = false;
+                        }
                     }
 
                     RaisePropertyChanged("PlayingItem");
+                }
+            }
+
+            public void TogglePlayStop()
+            {
+                if (MediaPlayer == null) return;
+
+                if (MediaPlayer.CurrentState == MediaElementState.Playing)
+                {
+                    MediaPlayer.Source = null;
+                    MediaControl.IsPlaying = false;
+                }
+                else
+                {
+                    if (PlayingItem != null) MediaPlayer.Source = new Uri(PlayingItem.Streams[0]);
+                    MediaControl.IsPlaying = true;
                 }
             }
         }
@@ -56,7 +78,7 @@ namespace DI.FM
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             // Init the now playing item
-            NowPlaying = new NowPlayingItem();
+            PlayingMedia = new NowPlayingItem();
             // Init the windows 8 mini player
             MediaControl.PlayPressed += MediaControl_PlayPressed;
             MediaControl.PausePressed += MediaControl_PausePressed;
@@ -70,9 +92,9 @@ namespace DI.FM
 
         private async void MediaControl_PlayPauseTogglePressed(object sender, object e)
         {
-            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                if (MediaPlayer.CurrentState == MediaElementState.Playing)
+                if (PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
                 {
                     MediaControl_PausePressed(sender, e);
                     MediaControl.IsPlaying = false;
@@ -87,27 +109,27 @@ namespace DI.FM
 
         private async void MediaControl_PlayPressed(object sender, object e)
         {
-            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                MediaPlayer.Source = new Uri(NowPlaying.PlayingItem.Streams[0]);
+                PlayingMedia.MediaPlayer.Source = new Uri(PlayingMedia.PlayingItem.Streams[0]);
                 MediaControl.IsPlaying = true;
             });
         }
 
         private async void MediaControl_PausePressed(object sender, object e)
         {
-            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                MediaPlayer.Source = null;
+                PlayingMedia.MediaPlayer.Source = null;
                 MediaControl.IsPlaying = false;
             });
         }
 
         private async void MediaControl_StopPressed(object sender, object e)
         {
-            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                MediaPlayer.Source = null;
+                PlayingMedia.MediaPlayer.Source = null;
                 MediaControl.IsPlaying = false;
             });
         }
@@ -146,6 +168,8 @@ namespace DI.FM
             Window.Current.Activate();
 
             //MC.MetroGridHelper.MetroGridHelper.CreateGrid();
+
+            SearchPane.GetForCurrentView().SearchHistoryEnabled = false;
         }
 
         private void OnSuspending(object sender, SuspendingEventArgs e)
@@ -192,7 +216,7 @@ namespace DI.FM
                 }
             }
 
-            frame.Navigate(typeof(SearchPage), args.QueryText);
+            if(!(frame.Content is SearchPage)) frame.Navigate(typeof(SearchPage), args.QueryText);
             Window.Current.Content = frame;
 
             // Ensure the current window is active

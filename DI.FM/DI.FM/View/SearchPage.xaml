@@ -1,5 +1,5 @@
 ﻿<common:LayoutAwarePage
-    x:Name="pageRoot"
+    x:Name="PageRoot"
     x:Class="DI.FM.View.SearchPage"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -16,20 +16,9 @@
         <common:FavoritesHeaderVisibility x:Key="FavoritesHeaderVisibility" />
     </Page.Resources>
 
-    <Page.BottomAppBar>
-        <AppBar BorderBrush="{x:Null}">
-            <AppBar.Background>
-                <SolidColorBrush Color="#3e5688" Opacity="0.9" />
-            </AppBar.Background>
-            <Grid>
-                <Button HorizontalAlignment="Left" Style="{StaticResource UnfavoriteAppBarButtonStyle}" />
-            </Grid>
-        </AppBar>
-    </Page.BottomAppBar>
-
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="109" />
+            <RowDefinition Height="110" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <!-- Header -->
@@ -40,7 +29,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
+                    <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
                     <Grid Grid.Column="1" HorizontalAlignment="Left">
                         <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
                     </Grid>
@@ -50,7 +39,7 @@
         <!-- Content -->
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
+                <RowDefinition Height="60" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.Background>
@@ -66,13 +55,16 @@
                 <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
             </Border>
             <!-- Content -->
-            <TextBlock Margin="118,0,0,0" Foreground="#e0e0e0" FontSize="18.8" FontWeight="Light" VerticalAlignment="Bottom">
-                Results for ”<Run Text="{Binding QueryText}" FontSize="24" />”
+            <TextBlock Margin="118,0,0,0" Foreground="#e0e0e0" FontSize="24" FontWeight="Light">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform Y="30" />
+                </TextBlock.RenderTransform>
+                Results for ”<Run Text="{Binding QueryText}" />”
             </TextBlock>
-            <GridView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding Results}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" ItemClick="GridViewFavorites_ItemClick">
+            <GridView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding Results}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" ItemClick="GridViewResults_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="380" Height="120">
+                        <Grid Width="400" Height="150">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />

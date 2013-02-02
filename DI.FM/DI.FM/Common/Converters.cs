@@ -56,7 +56,7 @@ namespace DI.FM.Common
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null || ((IList<MainViewModel.ChannelItem>)value).Count == 0) return Visibility.Visible;
+            if (value == null || ((IList<ChannelItem>)value).Count == 0) return Visibility.Visible;
             return Visibility.Collapsed;
         }
 

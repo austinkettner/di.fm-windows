@@ -1,5 +1,5 @@
 ﻿<common:LayoutAwarePage
-    x:Name="pageRoot"
+    x:Name="PageRoot"
     x:Class="DI.FM.View.ChannelPage"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -11,7 +11,6 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <!-- Converters -->
         <common:DurationConverter x:Key="DurationConverter" />
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
     </Page.Resources>
@@ -19,15 +18,18 @@
     <Page.BottomAppBar>
         <AppBar BorderBrush="{x:Null}">
             <AppBar.Background>
-                <SolidColorBrush Color="{Binding NowPlayingItem.Color2}" Opacity="0.7" />
+                <SolidColorBrush Color="{Binding NowPlayingItem.Color2}" Opacity="0.9" />
             </AppBar.Background>
+            <Grid>
+                <Button x:Name="ButtonFavorite" Style="{StaticResource FavoriteAppBarButtonStyle}" Click="ButtonFavorite_Click" />
+            </Grid>
         </AppBar>
     </Page.BottomAppBar>
 
     <Grid Background="{Binding NowPlayingItem.Color1}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="110"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="110" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <!-- Header -->
         <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
@@ -36,7 +38,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" VerticalAlignment="Center" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
+                <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" VerticalAlignment="Center" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
                 <TextBlock Grid.Column="1" VerticalAlignment="Center">
                     <Run Text="{Binding NowPlayingItem.Name}" Foreground="White" FontSize="40.2" FontWeight="SemiLight" />
                     <LineBreak />
@@ -93,7 +95,7 @@
                                     <Run Text="/" />
                                     <Run Text="{Binding Path=NowPlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" />
                             </TextBlock>
-                            <Button x:Name="ButtonPlay" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlay_Click" />
+                            <Button x:Name="ButtonPlayStop" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
                         </Grid>
                     </Grid>
                     <Grid Margin="0,15,0,0">
@@ -168,4 +170,5 @@
             </Grid>
         </Grid>
     </Grid>
+    
 </common:LayoutAwarePage>

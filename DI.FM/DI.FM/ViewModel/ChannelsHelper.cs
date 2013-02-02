@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace DI.FM.ViewModel
 {
-    class ChannelsHelper
+    public class ChannelsHelper
     {
+        public const string CHANNELS_URL = "http://listen.di.fm/public3";
+        public const string TRACK_URL = "http://api.v2.audioaddict.com/v1/di/track_history/channel/{0}.json";
+
         public static Dictionary<string, string[]> ChannelsAssets = new Dictionary<string, string[]>()
         {
             {"deeptech", new string[]{"ms-appx:///Assets/Channels/channel1.png", "#3a3a3a", "#c66a33"}},
@@ -58,5 +64,12 @@ namespace DI.FM.ViewModel
             {"oldschoolacid", new string[]{"ms-appx:///Assets/Channels/channel50.png", "#226576", "#f8c000"}},
             {"chiptunes", new string[]{"ms-appx:///Assets/Channels/channel51.png", "#083147", "#4a96b0"}},
         };
+
+        public static async Task<string> DownloadJson(string url)
+        {
+            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
+            try { return await client.GetStringAsync(url); }
+            catch { return null; }
+        }
     }
 }

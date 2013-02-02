@@ -3,7 +3,6 @@ using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Search;
-using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -14,62 +13,31 @@ namespace DI.FM.View
 {
     public sealed partial class MainPage : LayoutAwarePage
     {
-        #region Variables
-
-        public MainViewModel Model
-        {
-            get;
-            set; //{ return this.DataContext as MainViewModel; }
-        }
-
-        #endregion
-
-        #region Constructor
+        private MainViewModel Model;
 
         public MainPage()
         {
             this.InitializeComponent();
             // Init the model
-            var model = App.Current.Resources["Locator"] as ViewModelLocator;
-            this.Model = model.Main;
-            this.DefaultViewModel.Add("Model", model.Main);
-            this.DefaultViewModel.Add("NowPlaying", App.NowPlaying);
+            Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+            this.DefaultViewModel.Add("Model", Model);
+            this.DefaultViewModel.Add("NowPlaying", App.PlayingMedia);
             // Init the player
             this.Loaded += (sender, e) =>
             {
-                if (App.MediaPlayer == null)
+                if (App.PlayingMedia.MediaPlayer == null)
                 {
                     var rootGrid = VisualTreeHelper.GetChild(Window.Current.Content, 0);
-                    App.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
-                    App.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
+                    App.PlayingMedia.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
+                    App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
                 }
             };
-
-
-            SearchPane.GetForCurrentView().VisibilityChanged += (sender, e) =>
-            {
-                if (e.Visible) this.Frame.Navigate(typeof(SearchPage));
-            };
-        }
-
-        private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
-        {
-            if (App.MediaPlayer.CurrentState == MediaElementState.Playing)
-            {
-                bpp.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
-            }
-            else
-            {
-                bpp.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
-            }
         }
 
         protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
         {
-            this.Model.NowPlayingItem = App.NowPlaying.PlayingItem;
+            this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
         }
-
-        #endregion
 
         #region Next/Prev/Shuffle
 
@@ -83,46 +51,49 @@ namespace DI.FM.View
         {
             if (ToggleShuffle.IsChecked == true)
             {
-                var random = new Random();
-                var index = random.Next(0, this.Model.AllChannels.Count);
-                App.NowPlaying.PlayingItem = this.Model.AllChannels[index];
+                ShuffleChannel();
             }
             else
             {
-                var index = this.Model.AllChannels.IndexOf(App.NowPlaying.PlayingItem);
-                if (index != -1 && index > 0) App.NowPlaying.PlayingItem = this.Model.AllChannels[index - 1];
+                var index = this.Model.AllChannels.IndexOf(App.PlayingMedia.PlayingItem);
+                if (index != -1 && index > 0) App.PlayingMedia.PlayingItem = this.Model.AllChannels[index - 1];
             }
 
-            this.Model.NowPlayingItem = App.NowPlaying.PlayingItem;
+            this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
         }
 
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
             if (ToggleShuffle.IsChecked == true)
             {
-                var random = new Random();
-                var index = random.Next(0, this.Model.AllChannels.Count);
-                App.NowPlaying.PlayingItem = this.Model.AllChannels[index];
+                ShuffleChannel();
             }
             else
             {
-                var index = this.Model.AllChannels.IndexOf(App.NowPlaying.PlayingItem);
-                if (index != -1 && index < this.Model.AllChannels.Count - 1) App.NowPlaying.PlayingItem = this.Model.AllChannels[index + 1];
+                var index = this.Model.AllChannels.IndexOf(App.PlayingMedia.PlayingItem);
+                if (index != -1 && index < this.Model.AllChannels.Count - 1) App.PlayingMedia.PlayingItem = this.Model.AllChannels[index + 1];
             }
 
-            this.Model.NowPlayingItem = App.NowPlaying.PlayingItem;
+            this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
+        }
+
+        private void ShuffleChannel()
+        {
+            var random = new Random();
+            var index = random.Next(0, this.Model.AllChannels.Count);
+            App.PlayingMedia.PlayingItem = this.Model.AllChannels[index];
         }
 
         #endregion
 
         #region ButtonFavorite
 
-        private List<MainViewModel.ChannelItem> TempFavorite = new List<MainViewModel.ChannelItem>();
-        private List<MainViewModel.ChannelItem> TempUnFavorite = new List<MainViewModel.ChannelItem>();
+        private List<ChannelItem> TempFavorite = new List<ChannelItem>();
+        private List<ChannelItem> TempUnFavorite = new List<ChannelItem>();
 
         private void ListViewChannels_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            foreach (MainViewModel.ChannelItem item in e.AddedItems)
+            foreach (ChannelItem item in e.AddedItems)
             {
                 if (this.Model.FavoriteChannels.Contains(item))
                 {
@@ -134,7 +105,7 @@ namespace DI.FM.View
                 }
             }
 
-            foreach (MainViewModel.ChannelItem item in e.RemovedItems)
+            foreach (ChannelItem item in e.RemovedItems)
             {
                 TempUnFavorite.Remove(item);
                 TempFavorite.Remove(item);
@@ -178,7 +149,7 @@ namespace DI.FM.View
             }
             else
             {
-                List<MainViewModel.ChannelItem> temp = new List<MainViewModel.ChannelItem>();
+                List<ChannelItem> temp = new List<ChannelItem>();
                 foreach (var unFavItem in TempUnFavorite)
                 {
                     temp.Add(unFavItem);
@@ -197,23 +168,58 @@ namespace DI.FM.View
             ListViewFavorite.SelectedItems.Clear();
             ListViewAllChannels.SelectedItems.Clear();
 
-            // Save to file
             await this.Model.SaveFavoriteChannels();
         }
 
         #endregion
 
-        #region Others
+        private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
+        {
+            if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
+            {
+                ButtonPlayStop.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
+            }
+            else
+            {
+                ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
+            }
+        }
+
+        private void ButtonPlayStop_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            App.PlayingMedia.TogglePlayStop();
+        }
+
+        private void ButtonNowPlaying_Click(object sender, RoutedEventArgs e)
+        {
+            Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
+            this.Frame.Navigate(typeof(ChannelPage));
+        }
+
+        private void ButtonFavorites_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(FavoritePage));
+        }
+
+        private void ListViewChannels_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var data = e.ClickedItem as ChannelItem;
+            if (data != null)
+            {
+                Model.NowPlayingItem = data;
+                this.Frame.Navigate(typeof(ChannelPage));
+            }
+        }
 
         private void SemanticZoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e)
         {
             if (!e.IsSourceZoomedInView)
             {
-                var sz = sender as SemanticZoom;
-                var zil = sz.ZoomedInView as GridView;
-                var zol = sz.ZoomedOutView as GridView;
-                var index = zol.Items.IndexOf(e.SourceItem.Item);
-                e.DestinationItem.Item = zil.Items[index];
+                var semantic = sender as SemanticZoom;
+                var view1 = semantic.ZoomedInView as GridView;
+                var view2 = semantic.ZoomedOutView as GridView;
+                var index = view2.Items.IndexOf(e.SourceItem.Item);
+                e.DestinationItem.Item = view1.Items[index];
 
                 Ad.Visibility = Visibility.Visible;
             }
@@ -223,49 +229,10 @@ namespace DI.FM.View
             }
         }
 
-        private void ListViewChannels_ItemClick(object sender, ItemClickEventArgs e)
+        /*protected override void OnKeyDown(KeyRoutedEventArgs e)
         {
-            var data = e.ClickedItem as MainViewModel.ChannelItem;
-            if (data != null)
-            {
-                this.Model.NowPlayingItem = data;
-                this.Frame.Navigate(typeof(ChannelPage), this.Model);
-            }
-        }
-
-        private void ButtonPlayPause_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            if (App.MediaPlayer.CurrentState == MediaElementState.Playing)
-            {
-                App.MediaPlayer.Source = null;
-                MediaControl.IsPlaying = false;
-            }
-            else
-            {
-                App.NowPlaying.PlayingItem = Model.NowPlayingItem;
-            }
-        }
-
-        private void ButtonFavorites_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(FavoritePage), this.Model);
-        }
-
-        #endregion
-        
-        protected override void OnKeyDown(KeyRoutedEventArgs e)
-        {
-            var c = (char)e.Key;
-            if (char.IsLetter(c))
-            {
-                SearchPane.GetForCurrentView().Show(c.ToString());
-            }
-        }
-
-        private void ButtonNowPlaying_Click(object sender, RoutedEventArgs e)
-        {
-            Model.NowPlayingItem = App.NowPlaying.PlayingItem;
-            this.Frame.Navigate(typeof(ChannelPage), Model);
-        }
+            SearchPane.GetForCurrentView().Show(e.Key.ToString());
+            this.Frame.Navigate(typeof(SearchPage));
+        }*/
     }
 }

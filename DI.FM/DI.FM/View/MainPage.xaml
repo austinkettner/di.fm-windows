@@ -1,5 +1,4 @@
 ﻿<common:LayoutAwarePage
-    x:Name="pageRoot"
     x:Class="DI.FM.View.MainPage"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -12,10 +11,7 @@
     mc:Ignorable="d" NavigationCacheMode="Enabled">
     
     <Page.BottomAppBar>
-        <AppBar BorderBrush="{x:Null}">
-            <AppBar.Background>
-                <SolidColorBrush Color="#3896FA" Opacity="0.9" />
-            </AppBar.Background>
+        <AppBar Background="#E53896FA" BorderBrush="{x:Null}">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button Style="{StaticResource SkipBackAppBarButtonStyle}" AutomationProperties.Name="Prev" Click="ButtonPrev_Click" />
@@ -60,7 +56,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="109" />
+            <RowDefinition Height="110" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <!-- Header -->
@@ -78,7 +74,7 @@
                         <TextBlock Margin="0,0,0,6" Text="NOW LISTENING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
                         <TextBlock Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21.33" FontWeight="Light" />
                     </StackPanel>
-                    <Button x:Name="bpp" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource StopIconButtonStyle}" Click="ButtonPlayPause_Click" />
+                    <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource StopIconButtonStyle}" Click="ButtonPlayStop_Click" />
                 </Grid>
             </Grid>
         </Border>

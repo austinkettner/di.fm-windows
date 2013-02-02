@@ -1826,7 +1826,7 @@
         </Setter>
     </Style>
 
-    <!-- Custom styles -->
+    <!-- Play/Stop button styles -->
 
     <Style x:Key="IconButtonStyle" TargetType="ButtonBase">
         <Setter Property="Foreground" Value="{StaticResource AppBarItemForegroundThemeBrush}"/>
@@ -1955,12 +1955,11 @@
         <Setter Property="Content" Value="&#xE102;"/>
     </Style>
 
-
     <Style x:Key="StopIconButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource IconButtonStyle}">
         <Setter Property="Content" Value="&#xE15B;"/>
     </Style>
-
-
+    
+    <!-- Button styles -->
 
     <Style x:Key="GroupButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="White" />
@@ -2008,7 +2007,6 @@
         </Setter>
     </Style>
 
-
     <Style x:Key="SimpleButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="20" />
@@ -2042,10 +2040,8 @@
         </Setter>
     </Style>
 
-
-
-
-
+    <!-- GridView styles -->
+    
     <Style x:Key="GridViewChannelItemStyle" TargetType="GridViewItem">
         <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}"/>
         <Setter Property="FontSize" Value="{StaticResource ControlContentThemeFontSize}"/>
@@ -2086,15 +2082,6 @@
                                     <Storyboard>
                                         <PointerDownThemeAnimation TargetName="ContentContainer"/>
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PointerOverBorder"/>
-                                        <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="SelectionBackground">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3e5688"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="SelectedBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3e5688"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="SelectedEarmark">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3e5688"/>
-        									</ObjectAnimationUsingKeyFrames>-->
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
@@ -2329,18 +2316,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </ResourceDictionary>
