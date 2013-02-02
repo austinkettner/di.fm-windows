@@ -2,11 +2,9 @@
 using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
-using Windows.ApplicationModel.Search;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
 namespace DI.FM.View
@@ -91,7 +89,7 @@ namespace DI.FM.View
         private List<ChannelItem> TempFavorite = new List<ChannelItem>();
         private List<ChannelItem> TempUnFavorite = new List<ChannelItem>();
 
-        private void ListViewChannels_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void GridViewChannels_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             foreach (ChannelItem item in e.AddedItems)
             {
@@ -165,8 +163,8 @@ namespace DI.FM.View
             TempFavorite.Clear();
             TempUnFavorite.Clear();
 
-            ListViewFavorite.SelectedItems.Clear();
-            ListViewAllChannels.SelectedItems.Clear();
+            GridViewFavorites.SelectedItems.Clear();
+            GridViewChannels.SelectedItems.Clear();
 
             await this.Model.SaveFavoriteChannels();
         }
@@ -201,7 +199,7 @@ namespace DI.FM.View
             this.Frame.Navigate(typeof(FavoritePage));
         }
 
-        private void ListViewChannels_ItemClick(object sender, ItemClickEventArgs e)
+        private void GridViewChannels_ItemClick(object sender, ItemClickEventArgs e)
         {
             var data = e.ClickedItem as ChannelItem;
             if (data != null)
@@ -227,6 +225,17 @@ namespace DI.FM.View
             {
                 Ad.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void ButtonSelectNone_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewFavorites.SelectedItems.Clear();
+            GridViewChannels.SelectedItems.Clear();
+        }
+
+        private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            Model.LoadAllChannels(true);
         }
 
         /*protected override void OnKeyDown(KeyRoutedEventArgs e)

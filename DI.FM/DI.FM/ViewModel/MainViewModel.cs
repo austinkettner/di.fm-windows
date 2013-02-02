@@ -95,18 +95,21 @@ namespace DI.FM.ViewModel
 
         #region Load + Save
 
-        private async void LoadAllChannels()
+        public async void LoadAllChannels(bool forceDownload = false)
         {
+            AllChannels.Clear();
+            FavoriteChannels.Clear();
+
             StorageFile file = null;
             try { file = await ApplicationData.Current.LocalFolder.GetFileAsync("channels.json"); }
             catch { }
 
             var data = "";
 
-            if (file == null)
+            if (file == null || forceDownload)
             {
                 data = await ChannelsHelper.DownloadJson(ChannelsHelper.CHANNELS_URL);
-                file = await ApplicationData.Current.LocalFolder.CreateFileAsync("channels.json");
+                file = await ApplicationData.Current.LocalFolder.CreateFileAsync("channels.json", CreationCollisionOption.ReplaceExisting);
                 var writer = new StreamWriter(await file.OpenStreamForWriteAsync());
                 await writer.WriteAsync(data);
                 writer.Dispose();

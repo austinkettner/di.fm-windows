@@ -84,7 +84,7 @@ namespace DI.FM.View
             }
         }
 
-        private void ButtonFavorite_Click(object sender, RoutedEventArgs e)
+        private async void ButtonFavorite_Click(object sender, RoutedEventArgs e)
         {
             if (Model.FavoriteChannels.Contains(Model.NowPlayingItem))
             {
@@ -96,6 +96,8 @@ namespace DI.FM.View
                 Model.FavoriteChannels.Insert(0, Model.NowPlayingItem);
                 ButtonFavorite.Style = App.Current.Resources["UnfavoriteAppBarButtonStyle"] as Style;
             }
+
+            await Model.SaveFavoriteChannels();
         }
     }
 }

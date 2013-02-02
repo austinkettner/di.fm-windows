@@ -20,10 +20,11 @@
                     <StackPanel x:Name="StackSelectedOptions" Orientation="Horizontal" Visibility="Collapsed">
                         <Rectangle Margin="20" Width="2" Fill="#64FFFFFF" />
                         <Button x:Name="ButtonFavorite" Style="{StaticResource FavoriteAppBarButtonStyle}" Click="ButtonFavorite_Click" />
+                        <Button Style="{StaticResource ClearSelectionAppBarButtonStyle}" Click="ButtonSelectNone_Click" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Style="{StaticResource RefreshAppBarButtonStyle}" />
+                    <Button Style="{StaticResource RefreshAppBarButtonStyle}" Click="ButtonRefresh_Click" />
                 </StackPanel>
             </Grid>
         </AppBar>
@@ -133,8 +134,8 @@
                                         <TranslateTransform X="6" />
                                     </TextBlock.RenderTransform>
                                 </TextBlock>
-                                <GridView x:Name="ListViewFavorite" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.MainFavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
-                                          ItemClick="ListViewChannels_ItemClick" SelectionChanged="ListViewChannels_SelectionChanged">
+                                <GridView x:Name="GridViewFavorites" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.MainFavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
+                                          ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                     <GridView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid Width="400" Height="150">
@@ -183,8 +184,8 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Button Content="All Radio Channels" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
-                                <GridView x:Name="ListViewAllChannels" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
-                                          ItemClick="ListViewChannels_ItemClick" SelectionChanged="ListViewChannels_SelectionChanged">
+                                <GridView x:Name="GridViewChannels" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
+                                          ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                     <GridView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid Width="150" Height="150">
