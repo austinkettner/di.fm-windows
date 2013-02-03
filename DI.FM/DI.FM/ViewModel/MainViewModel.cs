@@ -252,6 +252,8 @@ namespace DI.FM.ViewModel
         {
             if (NowPlayingItem.NowPlaying == null || NowPlayingItem.NowPlaying.Started == -1)
             {
+                // Reload one more time if last reload was not successful
+                LoadTrackHistory(NowPlayingItem);
                 nowPlayingRefresh.Stop();
                 return;
             }
@@ -259,7 +261,8 @@ namespace DI.FM.ViewModel
             var currentPosition = NowPlayingItem.NowPlaying.StartedTime;
             if (currentPosition > NowPlayingItem.NowPlaying.Duration)
             {
-                NowPlayingItem.NowPlaying.Position = 0;
+                // Reload now playing if music ended and set position to maximum
+                NowPlayingItem.NowPlaying.Position = NowPlayingItem.NowPlaying.Duration;
                 LoadTrackHistory(NowPlayingItem);
             }
             else

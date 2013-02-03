@@ -20,7 +20,11 @@ namespace DI.FM.View
             this.DefaultViewModel.Add("Favorites", Model.FavoriteChannels);
             this.DefaultViewModel.Add("NowPlaying", App.PlayingMedia);
             // Hook up media events
-            this.Loaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged; };
+            this.Loaded += (sender, e) =>
+            {
+                MediaPlayer_CurrentStateChanged(null, null);
+                App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
+            };
             this.Unloaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };
         }
 
