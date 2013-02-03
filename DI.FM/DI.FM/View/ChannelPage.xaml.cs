@@ -35,6 +35,8 @@ namespace DI.FM.View
                 {
                     ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
                 }
+
+                ButtonPlayStop1.Style = ButtonPlayStop.Style;
             }
         }
 
@@ -74,6 +76,8 @@ namespace DI.FM.View
                 ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
             }
 
+            ButtonPlayStop1.Style = ButtonPlayStop.Style;
+
             if (Model.FavoriteChannels.Contains(Model.NowPlayingItem))
             {
                 ButtonFavorite.Style = App.Current.Resources["UnfavoriteAppBarButtonStyle"] as Style;
@@ -86,6 +90,8 @@ namespace DI.FM.View
 
         private async void ButtonFavorite_Click(object sender, RoutedEventArgs e)
         {
+            this.BottomAppBar.IsOpen = false;
+
             if (Model.FavoriteChannels.Contains(Model.NowPlayingItem))
             {
                 Model.FavoriteChannels.Remove(Model.NowPlayingItem);
