@@ -53,7 +53,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <StackPanel Margin="0,0,34,0"  VerticalAlignment="Center">
-                        <TextBlock Margin="0,0,0,6" Text="NOW LISTENING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
+                        <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
                         <TextBlock Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21.33" FontWeight="Light" />
                     </StackPanel>
                     <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource StopIconButtonStyle}" Click="ButtonPlayStop_Click" />
@@ -75,7 +75,7 @@
                 <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
             </Border>
             <!-- Content -->
-            <TextBlock Margin="118,30,0,0" Text="There are no favorites yet..." Foreground="White" FontSize="26" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Favorites, Converter={StaticResource FavoritesHeaderVisibility}}" />
+            <TextBlock Margin="118,35,0,0" Text="There are no favorites yet..." Foreground="White" FontSize="22" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Favorites, Converter={StaticResource FavoritesHeaderVisibility}}" />
             <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding Favorites}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" SelectionChanged="GridView_SelectionChanged" ItemClick="GridViewFavorites_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate>

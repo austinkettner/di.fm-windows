@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
 namespace DI.FM.View
@@ -183,7 +184,7 @@ namespace DI.FM.View
             }
         }
 
-        private void ButtonPlayStop_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
         {
             App.PlayingMedia.TogglePlayStop();
         }
@@ -201,10 +202,10 @@ namespace DI.FM.View
 
         private void GridViewChannels_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var data = e.ClickedItem as ChannelItem;
-            if (data != null)
+            var item = e.ClickedItem as ChannelItem;
+            if (item != null)
             {
-                Model.NowPlayingItem = data;
+                Model.NowPlayingItem = item;
                 this.Frame.Navigate(typeof(ChannelPage));
             }
         }

@@ -8,7 +8,7 @@
     xmlns:ad="using:Microsoft.Advertising.WinRT.UI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" NavigationCacheMode="Enabled">
+    mc:Ignorable="d">
     
     <Page.BottomAppBar>
         <AppBar Background="#E53896FA" BorderBrush="{x:Null}">
@@ -72,7 +72,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <StackPanel Margin="0,0,34,0"  VerticalAlignment="Center">
-                        <TextBlock Margin="0,0,0,6" Text="NOW LISTENING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
+                        <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
                         <TextBlock Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21.33" FontWeight="Light" />
                     </StackPanel>
                     <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource StopIconButtonStyle}" Click="ButtonPlayStop_Click" />
@@ -129,10 +129,15 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
-                                <TextBlock Grid.Row="1" Text="Favorite your channels right here..." Foreground="White" FontSize="26" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Model.MainFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
+                                <TextBlock Grid.Row="1" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Model.MainFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
                                     <TextBlock.RenderTransform>
-                                        <TranslateTransform X="6" />
+                                        <TranslateTransform X="6" Y="10" />
                                     </TextBlock.RenderTransform>
+                                    <Span FontSize="18">Favorite any channel to the right and it will appear here!</Span>
+                                    <LineBreak /><LineBreak />
+                                    1. Select any channel<LineBreak />
+                                    2. Then click the "Favorite" button on the appbar<LineBreak />
+                                    3. Done!
                                 </TextBlock>
                                 <GridView x:Name="GridViewFavorites" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.MainFavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                           ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
@@ -175,7 +180,7 @@
                                     <RowDefinition Height="46" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <ad:AdControl x:Name="Ad" Grid.Row="1" Margin="0" Width="160" Height="600" ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" AdUnitId="114352" VerticalAlignment="Top" />
+                                <ad:AdControl x:Name="Ad" Grid.Row="1" Margin="0" Width="160" Height="500" ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" AdUnitId="114352" VerticalAlignment="Top" />
                             </Grid>
                             <!-- All Radio Channels -->
                             <Grid>
