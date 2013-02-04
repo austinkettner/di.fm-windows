@@ -57,6 +57,12 @@ namespace DI.FM
                 }
             }
 
+            public void SetSilentNowPlayingItem(ChannelItem item)
+            {
+                _playingItem = item;
+                OnPropertyChanged("PlayingItem");
+            }
+
             public void TogglePlayStop()
             {
                 if (MediaPlayer == null) return;
@@ -146,14 +152,29 @@ namespace DI.FM
             // Intialize MarkedUp Analytics Client
             MarkedUp.AnalyticClient.Initialize("1404b1d4-45d7-40dd-b259-d3ec3c0bb684");
 
-            // Load all channels
-            var model = this.Resources["Locator"] as ViewModelLocator;
-            await model.Main.LoadAllChannels();
-
             var rootFrame = Window.Current.Content as Frame;
 
             if (rootFrame == null)
             {
+                // Load all channels when first started
+                var model = this.Resources["Locator"] as ViewModelLocator;
+                await model.Main.LoadAllChannels();
+
+                // Load last played channel when first started
+                var channelKey = ApplicationData.Current.RoamingSettings.Values["LastPlayedChannel"];
+                if (channelKey != null)
+                {
+                    foreach (var channel in model.Main.AllChannels)
+                    {
+                        if (channel.Key.Equals(channelKey))
+                        {
+                            App.PlayingMedia.SetSilentNowPlayingItem(channel);
+                            model.Main.NowPlayingItem = channel;
+                            break;
+                        }
+                    }
+                }
+
                 rootFrame = new Frame();
 
                 if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)

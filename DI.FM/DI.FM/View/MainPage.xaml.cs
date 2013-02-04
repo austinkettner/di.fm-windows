@@ -28,25 +28,13 @@ namespace DI.FM.View
                 {
                     var rootGrid = VisualTreeHelper.GetChild(Window.Current.Content, 0);
                     App.PlayingMedia.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
-                    App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
                 }
+                App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
+                MediaPlayer_CurrentStateChanged(null, null);
             };
+            this.Unloaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };
             // Load saved settings
             ToggleShuffle.IsChecked = (bool?)ApplicationData.Current.RoamingSettings.Values["ShuffleChannels"];
-            // Load last played channel
-            var channelKey = ApplicationData.Current.RoamingSettings.Values["LastPlayedChannel"];
-            if (channelKey != null)
-            {
-                foreach (var channel in Model.AllChannels)
-                {
-                    if (channel.Key.Equals(channelKey))
-                    {
-                        App.PlayingMedia.PlayingItem = channel;
-                        Model.NowPlayingItem = channel;
-                        break;
-                    }
-                }
-            }
         }
 
         protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -253,6 +241,7 @@ namespace DI.FM.View
 
         private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
+            this.BottomAppBar.IsOpen = false;
             await Model.LoadAllChannels(true);
         }
 
