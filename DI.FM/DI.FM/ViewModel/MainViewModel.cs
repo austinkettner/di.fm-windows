@@ -87,7 +87,7 @@ namespace DI.FM.ViewModel
                 nowPlayingRefresh.Interval = TimeSpan.FromSeconds(1);
                 nowPlayingRefresh.Tick += NowPlayingRefresh_Tick;
                 // Load the channels
-                LoadAllChannels();
+                //LoadAllChannels();
             }
         }
 
@@ -95,7 +95,7 @@ namespace DI.FM.ViewModel
 
         #region Load + Save
 
-        public async void LoadAllChannels(bool forceDownload = false)
+        public async Task LoadAllChannels(bool forceDownload = false)
         {
             AllChannels.Clear();
             FavoriteChannels.Clear();

@@ -2,10 +2,10 @@
 using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
 namespace DI.FM.View
@@ -31,6 +31,22 @@ namespace DI.FM.View
                     App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
                 }
             };
+            // Load saved settings
+            ToggleShuffle.IsChecked = (bool?)ApplicationData.Current.RoamingSettings.Values["ShuffleChannels"];
+            // Load last played channel
+            var channelKey = ApplicationData.Current.RoamingSettings.Values["LastPlayedChannel"];
+            if (channelKey != null)
+            {
+                foreach (var channel in Model.AllChannels)
+                {
+                    if (channel.Key.Equals(channelKey))
+                    {
+                        App.PlayingMedia.PlayingItem = channel;
+                        Model.NowPlayingItem = channel;
+                        break;
+                    }
+                }
+            }
         }
 
         protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -44,6 +60,7 @@ namespace DI.FM.View
         {
             var button = (ToggleButton)sender;
             VisualStateManager.GoToState(button, button.IsChecked.Value ? "Checked" : "Unchecked", false);
+            ApplicationData.Current.RoamingSettings.Values["ShuffleChannels"] = button.IsChecked;
         }
 
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
@@ -234,9 +251,9 @@ namespace DI.FM.View
             GridViewChannels.SelectedItems.Clear();
         }
 
-        private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+        private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
-            Model.LoadAllChannels(true);
+            await Model.LoadAllChannels(true);
         }
 
         /*protected override void OnKeyDown(KeyRoutedEventArgs e)

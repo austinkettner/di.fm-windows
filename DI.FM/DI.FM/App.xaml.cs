@@ -1,11 +1,12 @@
-﻿using DI.FM.View;
+﻿using DI.FM.Common;
+using DI.FM.View;
 using DI.FM.ViewModel;
-using GalaSoft.MvvmLight;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Search;
 using Windows.Media;
+using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -19,7 +20,7 @@ namespace DI.FM
 
         public static NowPlayingItem PlayingMedia;
 
-        public class NowPlayingItem : ViewModelBase
+        public class NowPlayingItem : BindableBase
         {
             public MediaElement MediaPlayer { get; set; }
 
@@ -48,7 +49,11 @@ namespace DI.FM
                         }
                     }
 
-                    RaisePropertyChanged("PlayingItem");
+                    OnPropertyChanged("PlayingItem");
+
+                    // Save last played
+                    if (_playingItem == null) ApplicationData.Current.RoamingSettings.Values.Remove("LastPlayedChannel");
+                    else ApplicationData.Current.RoamingSettings.Values["LastPlayedChannel"] = _playingItem.Key;
                 }
             }
 
@@ -136,10 +141,14 @@ namespace DI.FM
 
         #endregion
 
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             // Intialize MarkedUp Analytics Client
             MarkedUp.AnalyticClient.Initialize("1404b1d4-45d7-40dd-b259-d3ec3c0bb684");
+
+            // Load all channels
+            var model = this.Resources["Locator"] as ViewModelLocator;
+            await model.Main.LoadAllChannels();
 
             var rootFrame = Window.Current.Content as Frame;
 
@@ -166,8 +175,6 @@ namespace DI.FM
             }
 
             Window.Current.Activate();
-
-            //MC.MetroGridHelper.MetroGridHelper.CreateGrid();
 
             SearchPane.GetForCurrentView().SearchHistoryEnabled = false;
         }
@@ -216,7 +223,7 @@ namespace DI.FM
                 }
             }
 
-            if(!(frame.Content is SearchPage)) frame.Navigate(typeof(SearchPage), args.QueryText);
+            if (!(frame.Content is SearchPage)) frame.Navigate(typeof(SearchPage), args.QueryText);
             Window.Current.Content = frame;
 
             // Ensure the current window is active

@@ -56,7 +56,7 @@
                         <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
                         <TextBlock Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21.33" FontWeight="Light" />
                     </StackPanel>
-                    <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource StopIconButtonStyle}" Click="ButtonPlayStop_Click" />
+                    <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
                 </Grid>
             </Grid>
         </Border>
