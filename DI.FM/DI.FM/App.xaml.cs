@@ -32,7 +32,7 @@ namespace DI.FM
                 get { return _playingItem; }
                 set
                 {
-                    _playingItem = value;
+                    SetSilentNowPlayingItem(value);
 
                     if (MediaPlayer != null)
                     {
@@ -51,14 +51,9 @@ namespace DI.FM
                         }
                     }
 
-                    OnPropertyChanged("PlayingItem");
-
                     // Save last played
                     if (_playingItem == null) ApplicationData.Current.RoamingSettings.Values.Remove("LastPlayedChannel");
                     else ApplicationData.Current.RoamingSettings.Values["LastPlayedChannel"] = _playingItem.Key;
-
-                    // Set live tile
-                    SetLiveTile(_playingItem);
                 }
             }
 
@@ -66,6 +61,7 @@ namespace DI.FM
             {
                 _playingItem = item;
                 OnPropertyChanged("PlayingItem");
+                SetLiveTile(item);
             }
 
             public void TogglePlayStop()
@@ -113,7 +109,7 @@ namespace DI.FM
                 // Set notification text
                 XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
                 textNodes[0].InnerText = channel.Name;
-                textNodes[1].InnerText = channel.NowPlaying.Track;
+                textNodes[1].InnerText = channel.Description;
 
                 return tileXml;
             }
@@ -130,7 +126,7 @@ namespace DI.FM
                 // Set notification text
                 XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
                 textNodes[0].InnerText = channel.Name;
-                textNodes[1].InnerText = channel.NowPlaying.Track;
+                textNodes[1].InnerText = channel.Description;
 
                 return tileXml;
             }

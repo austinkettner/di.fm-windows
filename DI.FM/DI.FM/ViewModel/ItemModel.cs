@@ -162,12 +162,6 @@ namespace DI.FM.ViewModel
             {
                 _nowPlaying = value;
                 RaisePropertyChanged("NowPlaying");
-
-                // Update live tile
-                if (App.PlayingMedia.PlayingItem == this)
-                {
-                    App.NowPlayingItem.SetLiveTile(this);
-                }
             }
         }
 
