@@ -66,16 +66,17 @@
                     <DataTemplate>
                         <Grid Width="400" Height="150">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="150" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Grid>
-                                <Image Source="{Binding Image}" Stretch="Uniform" />
-                                <Border Padding="6,3" VerticalAlignment="Bottom">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="Black" Opacity="0.75" />
-                                    </Border.Background>
-                                    <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14.67" FontWeight="SemiLight" TextTrimming="WordEllipsis" />
+                                <Image Stretch="Uniform">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="150" />
+                                    </Image.Source>
+                                </Image>
+                                <Border Padding="6,3" Background="#BF000000" VerticalAlignment="Bottom">
+                                    <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14.67" FontWeight="SemiLight" />
                                 </Border>
                             </Grid>
                             <Grid Grid.Column="1" Margin="10,25,10,10">

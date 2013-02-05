@@ -3,6 +3,7 @@ using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
 using Windows.Storage;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -187,6 +188,8 @@ namespace DI.FM.View
             {
                 ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
             }
+
+            ButtonPlayStop1.Style = ButtonPlayStop.Style;
         }
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
@@ -235,8 +238,15 @@ namespace DI.FM.View
 
         private void ButtonSelectNone_Click(object sender, RoutedEventArgs e)
         {
-            GridViewFavorites.SelectedItems.Clear();
-            GridViewChannels.SelectedItems.Clear();
+            if (ApplicationView.Value == ApplicationViewState.Snapped)
+            {
+                GridViewChannels1.SelectedItems.Clear();
+            }
+            else
+            {
+                GridViewFavorites.SelectedItems.Clear();
+                GridViewChannels.SelectedItems.Clear();
+            }
         }
 
         private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)

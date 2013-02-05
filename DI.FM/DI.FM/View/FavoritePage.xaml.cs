@@ -1,6 +1,7 @@
 ﻿using DI.FM.Common;
 using DI.FM.ViewModel;
 using System.Collections.Generic;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -78,19 +79,30 @@ namespace DI.FM.View
         private async void ButtonUnfavorite_Click(object sender, RoutedEventArgs e)
         {
             List<ChannelItem> items = new List<ChannelItem>();
-            foreach (ChannelItem item in GridViewFavorites.SelectedItems) items.Add(item);
+            
+            if (ApplicationView.Value == ApplicationViewState.Snapped)
+            {
+                foreach (ChannelItem item in GridViewFavorites1.SelectedItems) items.Add(item);
+            }
+            else
+            {
+                foreach (ChannelItem item in GridViewFavorites.SelectedItems) items.Add(item);
+            }
+
             foreach (var item in items) Model.FavoriteChannels.Remove(item);
             await Model.SaveFavoriteChannels();
         }
 
         private void ButtonSelectAll_Click(object sender, RoutedEventArgs e)
         {
-            GridViewFavorites.SelectAll();
+            if (ApplicationView.Value == ApplicationViewState.Snapped) GridViewFavorites1.SelectAll();
+            else GridViewFavorites.SelectAll();
         }
 
         private void ButtonSelectNone_Click(object sender, RoutedEventArgs e)
         {
-            GridViewFavorites.SelectedItems.Clear();
+            if (ApplicationView.Value == ApplicationViewState.Snapped) GridViewFavorites1.SelectedItems.Clear();
+            else GridViewFavorites.SelectedItems.Clear();
         }
     }
 }

@@ -63,7 +63,7 @@
                         <LineBreak />
                         <Run Text="{Binding NowPlayingItem.Description}" Foreground="#c3c3c3" FontSize="17.4" FontWeight="SemiLight" />
                     </TextBlock>
-                    <Image Grid.ColumnSpan="2" Source="../Assets/TopArt.png" Stretch="None" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                    <Image Grid.ColumnSpan="2" Source="../Assets/TopArt.png" Stretch="None" VerticalAlignment="Bottom" HorizontalAlignment="Right" Opacity="0.75" />
                 </Grid>
             </Border>
             <!-- Content -->
@@ -202,20 +202,20 @@
             </Border>
             <!-- Content -->
             <Grid Grid.Row="1">
-                <ScrollViewer>
-                    <StackPanel Margin="20,20,40,40">
+                <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20">
                         <Grid Margin="0,0,0,20">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="30" />
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="30" />
                             </Grid.ColumnDefinitions>
-                            <Button VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="{Binding Path=NowPlayingItem.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev_Click">
-                                <Path StrokeThickness="2" Stroke="White" Data="M 10 0 L 0 10 L 10 20" />
+                            <Button VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=NowPlayingItem.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev_Click">
+                                <Path StrokeThickness="2" Stroke="White" Data="M 10 0 L 0 10 L 10 20" HorizontalAlignment="Left" />
                             </Button>
                             <TextBlock Grid.Column="1" Text="Vocal trance" FontSize="24" FontWeight="SemiLight" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                            <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Path=NowPlayingItem.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext_Click">
-                                <Path StrokeThickness="2" Stroke="White" Data="M 0 0 L 10 10 L 0 20" />
+                            <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=NowPlayingItem.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext_Click">
+                                <Path StrokeThickness="2" Stroke="White" Data="M 0 0 L 10 10 L 0 20" HorizontalAlignment="Right" />
                             </Button>
                         </Grid>
                         <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold">
@@ -223,16 +223,14 @@
                                 <TranslateTransform X="-2" />
                             </TextBlock.RenderTransform>
                         </TextBlock>
-                        <Grid>
+                        <Grid Background="{Binding NowPlayingItem.Color2}">
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Image Grid.RowSpan="2" Source="{Binding NowPlayingItem.Image}" />
-                            <Grid Background="#66000000">
-                                <Button x:Name="ButtonPlayStop1" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
-                            </Grid>
-                            <Grid Grid.Row="1" Background="{Binding NowPlayingItem.Color2}">
+                            <Image Grid.RowSpan="2" Source="{Binding NowPlayingItem.Image}" Opacity="0.45" />
+                            <Button x:Name="ButtonPlayStop1" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
+                            <Grid Grid.Row="1">
                                 <Grid>
                                     <TextBlock Margin="8,5" Text="{Binding NowPlayingItem.NowPlaying.Track}" FontSize="16" FontWeight="Light" TextWrapping="Wrap">
                                         <TextBlock.RenderTransform>
