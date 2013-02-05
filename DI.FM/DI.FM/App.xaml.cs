@@ -5,9 +5,11 @@ using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Search;
+using Windows.Data.Xml.Dom;
 using Windows.Media;
 using Windows.Storage;
 using Windows.UI.Core;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -54,6 +56,9 @@ namespace DI.FM
                     // Save last played
                     if (_playingItem == null) ApplicationData.Current.RoamingSettings.Values.Remove("LastPlayedChannel");
                     else ApplicationData.Current.RoamingSettings.Values["LastPlayedChannel"] = _playingItem.Key;
+
+                    // Set live tile
+                    SetLiveTile(_playingItem);
                 }
             }
 
@@ -77,6 +82,57 @@ namespace DI.FM
                     if (PlayingItem != null) MediaPlayer.Source = new Uri(PlayingItem.Streams[0]);
                     MediaControl.IsPlaying = true;
                 }
+            }
+
+            public static void SetLiveTile(ChannelItem channel)
+            {
+                var update = TileUpdateManager.CreateTileUpdaterForApplication();
+
+                if (channel == null)
+                {
+                    update.Clear();
+                    return;
+                }
+
+                var smallXml = SmallLiveTile(channel);
+                update.Update(new TileNotification(smallXml));
+
+                var wideXml = WideLiveTile(channel);
+                update.Update(new TileNotification(wideXml));
+            }
+
+            private static XmlDocument SmallLiveTile(ChannelItem channel)
+            {
+                var tileTemplate = TileTemplateType.TileSquarePeekImageAndText02;
+                var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
+
+                // Set notification image
+                XmlNodeList imgNodes = tileXml.GetElementsByTagName("image");
+                imgNodes[0].Attributes[1].NodeValue = channel.Image;
+
+                // Set notification text
+                XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
+                textNodes[0].InnerText = channel.Name;
+                textNodes[1].InnerText = channel.NowPlaying.Track;
+
+                return tileXml;
+            }
+
+            private static XmlDocument WideLiveTile(ChannelItem channel)
+            {
+                var tileTemplate = TileTemplateType.TileWideSmallImageAndText04;
+                var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
+
+                // Set notification image
+                XmlNodeList imgNodes = tileXml.GetElementsByTagName("image");
+                imgNodes[0].Attributes[1].NodeValue = channel.Image;
+
+                // Set notification text
+                XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
+                textNodes[0].InnerText = channel.Name;
+                textNodes[1].InnerText = channel.NowPlaying.Track;
+
+                return tileXml;
             }
         }
 

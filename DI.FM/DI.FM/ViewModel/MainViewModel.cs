@@ -1,5 +1,6 @@
 using GalaSoft.MvvmLight;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -121,25 +122,28 @@ namespace DI.FM.ViewModel
                 reader.Dispose();
             }
 
-            var channels = JsonConvert.DeserializeObject(data) as dynamic;
+            var channels = JsonConvert.DeserializeObject(data) as JContainer;
 
-            foreach (var channel in channels)
+            foreach (var asset in ChannelsHelper.ChannelsAssets)
             {
-                var item = new ChannelItem()
-                {
-                    ID = channel["id"],
-                    Key = channel["key"],
-                    Name = channel["name"],
-                    Description = channel["description"]
-                };
+                var item = new ChannelItem();
+                item.Key = asset.Key;
+                item.Image = asset.Value[0];
+                item.Color1 = asset.Value[1];
+                item.Color2 = asset.Value[2];
 
-                var assets = ChannelsHelper.ChannelsAssets[item.Key];
-                item.Image = assets[0];
-                item.Color1 = assets[1];
-                item.Color2 = assets[2];
+                var channel = channels.FirstOrDefault((element) => element["key"].Value<string>() == asset.Key);
+
+                if (channel != null)
+                {
+                    item.ID = channel.Value<int>("id");
+                    item.Name = channel.Value<string>("name");
+                    item.Description = channel.Value<string>("description");
+                }
 
                 LoadChannelStreams(item);
                 LoadTrackHistory(item);
+
                 AllChannels.Add(item);
             }
 
@@ -162,11 +166,11 @@ namespace DI.FM.ViewModel
         {
             channel.Streams = new List<string>();
             var data = await ChannelsHelper.DownloadJson(ChannelsHelper.CHANNELS_URL + "/" + channel.Key);
-            var streams = JsonConvert.DeserializeObject(data) as dynamic;
+            var streams = JsonConvert.DeserializeObject(data) as JContainer;
 
-            foreach (var c in streams)
+            foreach (var stream in streams)
             {
-                channel.Streams.Add(c.ToString());
+                channel.Streams.Add(stream.ToObject<string>());
             }
         }
 
@@ -178,17 +182,18 @@ namespace DI.FM.ViewModel
             var tempTracks = new List<TrackItem>();
 
             var index = 0;
-            var tracks = JsonConvert.DeserializeObject(data) as dynamic;
+            var tracks = JsonConvert.DeserializeObject(data) as JContainer;
+
             foreach (var track in tracks)
             {
-                if (track["type"] == "track")
+                if (track["type"].Value<string>() == "track")
                 {
                     tempTracks.Add(new TrackItem()
                     {
                         Index = index + 1,
-                        Track = track["track"],
-                        Started = track["started"],
-                        Duration = track["duration"]
+                        Track = track.Value<string>("track"),
+                        Started = track.Value<long>("started"),
+                        Duration = track.Value<int>("duration")
                     });
 
                     if (index == 4) break;
