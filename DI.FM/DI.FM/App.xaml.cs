@@ -91,10 +91,14 @@ namespace DI.FM
                 }
 
                 var smallXml = SmallLiveTile(channel);
-                update.Update(new TileNotification(smallXml));
+                var smallTile = new TileNotification(smallXml);
+                smallTile.ExpirationTime = DateTime.Now + TimeSpan.FromMinutes(30);
+                update.Update(smallTile);
 
                 var wideXml = WideLiveTile(channel);
-                update.Update(new TileNotification(wideXml));
+                var wideTile = new TileNotification(wideXml);
+                wideTile.ExpirationTime = DateTime.Now + TimeSpan.FromMinutes(30);
+                update.Update(wideTile);
             }
 
             private static XmlDocument SmallLiveTile(ChannelItem channel)

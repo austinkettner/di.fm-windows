@@ -98,7 +98,7 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <StackPanel Margin="0,0,34,0"  VerticalAlignment="Center">
+                        <StackPanel Margin="0,0,34,0" VerticalAlignment="Center">
                             <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
                             <TextBlock Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21.33" FontWeight="Light" TextTrimming="WordEllipsis" />
                         </StackPanel>
