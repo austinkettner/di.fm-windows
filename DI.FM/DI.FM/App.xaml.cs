@@ -8,8 +8,11 @@ using Windows.ApplicationModel.Search;
 using Windows.Data.Xml.Dom;
 using Windows.Media;
 using Windows.Storage;
+using Windows.System;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Core;
 using Windows.UI.Notifications;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -254,6 +257,34 @@ namespace DI.FM
             Window.Current.Activate();
 
             SearchPane.GetForCurrentView().SearchHistoryEnabled = false;
+
+            // Init the charms options
+            SettingsPane.GetForCurrentView().CommandsRequested += App_CommandsRequested;
+        }
+
+        private void App_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            UICommandInvokedHandler handler = new UICommandInvokedHandler(onSettingsCommand);
+
+            SettingsCommand cmd2 = new SettingsCommand("ID_2", "Privacy", handler);
+            args.Request.ApplicationCommands.Add(cmd2);
+            SettingsCommand cmd3 = new SettingsCommand("ID_3", "Support", handler);
+            args.Request.ApplicationCommands.Add(cmd3);
+        }
+
+        private async void onSettingsCommand(IUICommand command)
+        {
+            switch (command.Id.ToString())
+            {
+                case "ID_2":
+                    await Launcher.LaunchUriAsync(new Uri("http://company.quixby.com/privacy"));
+                    break;
+                case "ID_3":
+                    await Launcher.LaunchUriAsync(new Uri("mailto:support@quixby.com?subject=Feedback on DI.FM for Windows 8"));
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void OnSuspending(object sender, SuspendingEventArgs e)
