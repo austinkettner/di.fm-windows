@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="2f237208-d2ad-4dcb-84dc-241f6e72af52" Publisher="CN=Adrian" Version="0.8.2.0" />
+  <Identity Name="Quixby.DI.FM" Publisher="CN=76437BF1-5D53-4B63-93DD-322829E91931" Version="0.9.4.1" />
   <Properties>
     <DisplayName>DI.FM</DisplayName>
-    <PublisherDisplayName>Adrian</PublisherDisplayName>
+    <PublisherDisplayName>Quixby</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
