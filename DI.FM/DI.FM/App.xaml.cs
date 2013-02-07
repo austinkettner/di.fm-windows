@@ -36,7 +36,7 @@ namespace DI.FM
 
                     if (MediaPlayer != null)
                     {
-                        if (_playingItem != null)
+                        if (_playingItem != null && _playingItem.Streams.Count > 0)
                         {
                             MediaPlayer.Source = new Uri(_playingItem.Streams[0]);
                             MediaControl.AlbumArt = new Uri(_playingItem.Image);

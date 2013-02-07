@@ -105,15 +105,18 @@ namespace DI.FM.ViewModel
             try { file = await ApplicationData.Current.LocalFolder.GetFileAsync("channels.json"); }
             catch { }
 
-            var data = "";
+            string data = null;
 
             if (file == null || forceDownload)
             {
                 data = await ChannelsHelper.DownloadJson(ChannelsHelper.CHANNELS_URL);
-                file = await ApplicationData.Current.LocalFolder.CreateFileAsync("channels.json", CreationCollisionOption.ReplaceExisting);
-                var writer = new StreamWriter(await file.OpenStreamForWriteAsync());
-                await writer.WriteAsync(data);
-                writer.Dispose();
+                if (data != null)
+                {
+                    file = await ApplicationData.Current.LocalFolder.CreateFileAsync("channels.json", CreationCollisionOption.ReplaceExisting);
+                    var writer = new StreamWriter(await file.OpenStreamForWriteAsync());
+                    await writer.WriteAsync(data);
+                    writer.Dispose();
+                }
             }
             else
             {
@@ -121,6 +124,8 @@ namespace DI.FM.ViewModel
                 data = await reader.ReadToEndAsync();
                 reader.Dispose();
             }
+
+            if (data == null) return;
 
             var channels = JsonConvert.DeserializeObject(data) as JContainer;
 
@@ -166,6 +171,9 @@ namespace DI.FM.ViewModel
         {
             channel.Streams = new List<string>();
             var data = await ChannelsHelper.DownloadJson(ChannelsHelper.CHANNELS_URL + "/" + channel.Key);
+            
+            if (data == null) return;
+            
             var streams = JsonConvert.DeserializeObject(data) as JContainer;
 
             foreach (var stream in streams)
