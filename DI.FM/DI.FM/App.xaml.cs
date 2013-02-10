@@ -209,7 +209,7 @@ namespace DI.FM
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             // Intialize MarkedUp Analytics Client
-            MarkedUp.AnalyticClient.Initialize("1404b1d4-45d7-40dd-b259-d3ec3c0bb684");
+            MarkedUp.AnalyticClient.Initialize("94e3584b-f3c5-4ef3-ac7b-383630ef6731");
 
             var rootFrame = Window.Current.Content as Frame;
 
