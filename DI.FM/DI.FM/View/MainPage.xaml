@@ -202,6 +202,7 @@
                                 <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Margin="0,5,61,0" Width="160">
                                     <UI:AdControl 
                                         x:Name="Ad"
+                                        UseStaticAnchor="True"
                                         ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" 
                                         AdUnitId="114352" 
                                         HorizontalAlignment="Left" 
