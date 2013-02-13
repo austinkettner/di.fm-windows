@@ -87,7 +87,7 @@
                         </Rectangle.Fill>
                     </Rectangle>
                 </Grid>
-                <!-- Info -->
+                <!-- Song Details and Controls  -->
                 <Grid Grid.Column="1" Margin="40,30,40,30">
                     <StackPanel>
                         <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold">
@@ -230,10 +230,11 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="30" />
                             </Grid.ColumnDefinitions>
+                            <!-- Current Channel Title + Arrows -->
                             <Button VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=NowPlayingItem.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev_Click">
                                 <Path StrokeThickness="2" Stroke="White" Data="M 10 0 L 0 10 L 10 20" HorizontalAlignment="Left" />
                             </Button>
-                            <TextBlock Grid.Column="1" Text="Vocal trance" FontSize="24" FontWeight="SemiLight" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <TextBlock Grid.Column="1" Text="{Binding NowPlayingItem.Name}" FontSize="24" FontWeight="SemiLight" VerticalAlignment="Center" HorizontalAlignment="Center" />
                             <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=NowPlayingItem.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext_Click">
                                 <Path StrokeThickness="2" Stroke="White" Data="M 0 0 L 10 10 L 0 20" HorizontalAlignment="Right" />
                             </Button>
@@ -243,6 +244,7 @@
                                 <TranslateTransform X="-2" />
                             </TextBlock.RenderTransform>
                         </TextBlock>
+                        <!-- Now Playing Info and Album Art -->
                         <Grid Background="{Binding NowPlayingItem.Color2}">
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -250,6 +252,7 @@
                             </Grid.RowDefinitions>
                             <Image Grid.RowSpan="2" Source="{Binding NowPlayingItem.Image}" Opacity="0.45" />
                             <Button x:Name="ButtonPlayStop1" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
+                            <!-- Now Playing Track -->
                             <Grid Grid.Row="1">
                                 <Grid>
                                     <TextBlock Margin="8,5" Text="{Binding NowPlayingItem.NowPlaying.Track}" FontSize="16" FontWeight="Light" TextWrapping="Wrap">
@@ -260,6 +263,7 @@
                                 </Grid>
                             </Grid>
                         </Grid>
+                        <!-- Track History -->
                         <TextBlock Margin="0,40,0,8" Text="TRACK HISTORY" FontSize="18.6" FontWeight="Bold">
                             <TextBlock.RenderTransform>
                                 <TranslateTransform X="-2" />
