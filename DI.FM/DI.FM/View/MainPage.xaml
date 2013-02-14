@@ -201,7 +201,7 @@
                                     </GridView>
                                 </Grid>
                                 <!-- Advertisment -->
-                                <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Margin="0,5,61,0" Width="160">
+                                <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Margin="0,5,61,0" Height="600" Width="160" VerticalAlignment="Top">
                                     <UI:AdControl 
                                         x:Name="Ad"
                                         UseStaticAnchor="True"
