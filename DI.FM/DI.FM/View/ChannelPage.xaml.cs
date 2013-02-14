@@ -1,7 +1,10 @@
-﻿using DI.FM.Common;
+﻿using Callisto.Controls;
+using DI.FM.Common;
+using DI.FM.Controls;
 using DI.FM.ViewModel;
 using Windows.Media;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
 
 namespace DI.FM.View
@@ -104,6 +107,17 @@ namespace DI.FM.View
             }
 
             await Model.SaveFavoriteChannels();
+        }
+
+        private void ButtonVolume_Click(object sender, RoutedEventArgs e)
+        {
+            var flyout = new Flyout()
+            {
+                Content = new VolumeControl(),
+                Placement = PlacementMode.Top,
+                PlacementTarget = sender as UIElement,
+                IsOpen = true
+            };
         }
     }
 }

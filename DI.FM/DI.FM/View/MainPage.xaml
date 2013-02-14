@@ -26,6 +26,8 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource VolumeAppBarButtonStyle}" Click="ButtonVolume_Click" />
+                    <Rectangle Margin="20" Width="2" Fill="#64FFFFFF" />
                     <Button Style="{StaticResource RefreshAppBarButtonStyle}" Click="ButtonRefresh_Click" />
                 </StackPanel>
             </Grid>

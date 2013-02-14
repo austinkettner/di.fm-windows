@@ -1,4 +1,6 @@
-﻿using DI.FM.Common;
+﻿using Callisto.Controls;
+using DI.FM.Common;
+using DI.FM.Controls;
 using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -249,16 +251,21 @@ namespace DI.FM.View
             }
         }
 
+        private void ButtonVolume_Click(object sender, RoutedEventArgs e)
+        {
+            var flyout = new Flyout()
+            {
+                Content = new VolumeControl(),
+                Placement = PlacementMode.Top,
+                PlacementTarget = sender as UIElement,
+                IsOpen = true
+            };
+        }
+
         private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
             this.BottomAppBar.IsOpen = false;
             await Model.LoadAllChannels(true);
         }
-
-        /*protected override void OnKeyDown(KeyRoutedEventArgs e)
-        {
-            SearchPane.GetForCurrentView().Show(e.Key.ToString());
-            this.Frame.Navigate(typeof(SearchPage));
-        }*/
     }
 }
