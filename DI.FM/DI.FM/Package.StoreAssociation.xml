@@ -363,6 +363,7 @@
     <MainPackageIdentityName>Quixby.Joystiq</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.Kotaku</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.MistsofPandaria</MainPackageIdentityName>
+    <MainPackageIdentityName>Quixby.official.fm</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.Pandoria</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.PCGamer</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.PCPartPicker</MainPackageIdentityName>
@@ -380,7 +381,7 @@
   <PackageInfoList LandingUrl="https://appdev.microsoft.com:443/StorePortals/Developer/Catalog/ReleaseAnchor/bd637ea1-e7ac-4004-8f54-d2caeef79664">
     <PackageInfo>
       <PackageArchitecture>neutral</PackageArchitecture>
-      <PackageMaxArchitectureVersion>0.9.3.1</PackageMaxArchitectureVersion>
+      <PackageMaxArchitectureVersion>0.9.5.3</PackageMaxArchitectureVersion>
     </PackageInfo>
   </PackageInfoList>
 </StoreAssociation>

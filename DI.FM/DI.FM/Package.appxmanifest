@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="Quixby.DI.FM" Publisher="CN=76437BF1-5D53-4B63-93DD-322829E91931" Version="0.9.4.2" />
+  <Identity Name="Quixby.DI.FM" Publisher="CN=76437BF1-5D53-4B63-93DD-322829E91931" Version="1.1.0.0" />
   <Properties>
     <DisplayName>DI.FM</DisplayName>
     <PublisherDisplayName>Quixby</PublisherDisplayName>
