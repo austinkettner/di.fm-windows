@@ -83,7 +83,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <!-- Filled view -->
+        <!-- Filled View -->
         <Grid x:Name="FilledGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="110" />
@@ -201,7 +201,7 @@
                                     </GridView>
                                 </Grid>
                                 <!-- Advertisment -->
-                                <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Margin="0,5,61,0" Height="600" Width="160" VerticalAlignment="Top">
+                                <Grid Margin="12,6,62,0" Width="160" Height="600" VerticalAlignment="Top">
                                     <UI:AdControl 
                                         x:Name="Ad"
                                         UseStaticAnchor="True"
