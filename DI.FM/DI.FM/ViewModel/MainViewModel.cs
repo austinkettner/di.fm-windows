@@ -171,9 +171,9 @@ namespace DI.FM.ViewModel
         {
             channel.Streams = new List<string>();
             var data = await ChannelsHelper.DownloadJson(ChannelsHelper.CHANNELS_URL + "/" + channel.Key);
-            
+
             if (data == null) return;
-            
+
             var streams = JsonConvert.DeserializeObject(data) as JContainer;
 
             foreach (var stream in streams)
@@ -231,32 +231,35 @@ namespace DI.FM.ViewModel
 
             if (file != null)
             {
-                var reader = new StreamReader(await file.OpenStreamForReadAsync());
-                var array = await reader.ReadToEndAsync();
-
-                foreach (var channel in AllChannels)
+                using (var reader = new StreamReader(await file.OpenStreamForReadAsync()))
                 {
-                    if (array.Contains(channel.Key))
+                    var favorites = await reader.ReadToEndAsync();
+                    var array = favorites.Split(';');
+
+                    foreach (var channel in AllChannels)
                     {
-                        FavoriteChannels.Add(channel);
+                        if (array.Contains(channel.Key))
+                        {
+                            FavoriteChannels.Add(channel);
+                        }
                     }
                 }
-
-                reader.Dispose();
             }
         }
 
         public async Task SaveFavoriteChannels()
         {
             var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("favorites.txt", CreationCollisionOption.ReplaceExisting);
-            var writer = new StreamWriter(await file.OpenStreamForWriteAsync());
 
-            foreach (var channel in FavoriteChannels)
+            using (var writer = new StreamWriter(await file.OpenStreamForWriteAsync()))
             {
-                await writer.WriteLineAsync(channel.Key);
-            }
+                foreach (var channel in FavoriteChannels)
+                {
+                    await writer.WriteAsync(channel.Key + ";");
+                }
 
-            writer.Dispose();
+                await writer.FlushAsync();
+            }
         }
 
         #endregion

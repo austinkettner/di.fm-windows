@@ -55,8 +55,8 @@ namespace DI.FM
                     }
 
                     // Save last played
-                    if (_playingItem == null) ApplicationData.Current.RoamingSettings.Values.Remove("LastPlayedChannel");
-                    else ApplicationData.Current.RoamingSettings.Values["LastPlayedChannel"] = _playingItem.Key;
+                    if (_playingItem == null) ApplicationData.Current.LocalSettings.Values.Remove("LastPlayedChannel");
+                    else ApplicationData.Current.LocalSettings.Values["LastPlayedChannel"] = _playingItem.Key;
                 }
             }
 
@@ -220,7 +220,7 @@ namespace DI.FM
                 await model.Main.LoadAllChannels();
 
                 // Load last played channel when first started
-                var channelKey = ApplicationData.Current.RoamingSettings.Values["LastPlayedChannel"];
+                var channelKey = ApplicationData.Current.LocalSettings.Values["LastPlayedChannel"];
                 if (channelKey != null)
                 {
                     foreach (var channel in model.Main.AllChannels)
