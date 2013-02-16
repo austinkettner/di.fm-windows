@@ -277,7 +277,7 @@ namespace DI.FM
             switch (command.Id.ToString())
             {
                 case "ID_2":
-                    await Launcher.LaunchUriAsync(new Uri("http://company.quixby.com/privacy"));
+                    await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));
                     break;
                 case "ID_3":
                     await Launcher.LaunchUriAsync(new Uri("mailto:support@quixby.com?subject=Feedback on DI.FM for Windows 8"));
