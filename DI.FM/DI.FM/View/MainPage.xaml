@@ -128,7 +128,7 @@
                         <GridView>
                             <GridView.Items>
                                 <!-- Now Playing -->
-                                <Grid Margin="0,0,61,0" Width="366" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                <Grid Margin="0,0,61,0" Width="450" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -146,8 +146,8 @@
                                                 <TextBlock Text="{Binding Path=NowPlaying.PlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
                                                 <TextBlock Text="{Binding Path=NowPlaying.PlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
                                             </Grid>
-                                            <TextBlock Margin="0,0,0,5" Text="{Binding NowPlaying.PlayingItem.Name}" Foreground="White" FontSize="16" FontWeight="Bold" />
-                                            <TextBlock Margin="0,0,0,2" Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18.67" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                            <TextBlock Margin="0,0,0,5" Text="{Binding NowPlaying.PlayingItem.Name}" Foreground="White" FontSize="20" FontWeight="Bold" />
+                                            <TextBlock Margin="0,0,0,2" Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" />
                                         </StackPanel>
                                     </Grid>
                                 </Grid>
@@ -160,7 +160,7 @@
                                     <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
                                     <TextBlock Grid.Row="1" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Model.MainFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
                                         <TextBlock.RenderTransform>
-                                            <TranslateTransform X="6" Y="10" />
+                                            <TranslateTransform X="6" Y="0" />
                                         </TextBlock.RenderTransform>
                                     <Span FontSize="18">Favorite any channel on the right and it will appear here!</Span>
                                     <LineBreak /><LineBreak />
@@ -200,19 +200,6 @@
                                         </GridView.ItemTemplate>
                                     </GridView>
                                 </Grid>
-                                <!-- Advertisment -->
-                                <Grid Margin="12,6,62,0" Width="160" Height="600" VerticalAlignment="Top">
-                                    <UI:AdControl 
-                                        x:Name="Ad"
-                                        UseStaticAnchor="True"
-                                        ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" 
-                                        AdUnitId="114352" 
-                                        HorizontalAlignment="Left" 
-                                        Height="600" 
-                                        Margin="0,0,0,0" 
-                                        VerticalAlignment="Top" 
-                                        Width="160" />
-                                </Grid>
                                 <!-- All Radio Channels -->
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -237,6 +224,26 @@
                                             </DataTemplate>
                                         </GridView.ItemTemplate>
                                     </GridView>
+                                </Grid>
+                                <!-- Advertisment -->
+                                <Grid Margin="40,0,12,0" Width="170">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="700" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Button Content="Advertisement" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
+                                    <Grid VerticalAlignment="Top">
+                                        <UI:AdControl 
+                                                x:Name="Ad"
+                                                UseStaticAnchor="True"
+                                                ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" 
+                                                AdUnitId="114352" 
+                                                HorizontalAlignment="Left" 
+                                                Height="600" 
+                                                Margin="6,45,0,0" 
+                                                VerticalAlignment="Top" 
+                                                Width="160" />
+                                    </Grid>
                                 </Grid>
                             </GridView.Items>
                             <GridView.ItemContainerStyle>
