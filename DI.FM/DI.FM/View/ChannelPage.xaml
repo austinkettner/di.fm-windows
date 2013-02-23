@@ -2,7 +2,6 @@
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DI.FM.View"
     xmlns:common="using:DI.FM.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -45,7 +44,8 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <!-- Filled view -->
+        
+        <!-- Filled View -->
         <Grid x:Name="FilledGrid" Background="{Binding NowPlayingItem.Color1}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="110" />
@@ -73,7 +73,7 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <!-- Image -->
+                <!-- Channel Album Artwork (Large) -->
                 <Grid HorizontalAlignment="Left">
                     <Image Source="{Binding NowPlayingItem.Image}" Stretch="UniformToFill" Opacity="0.75" />
                     <Rectangle Width="400" HorizontalAlignment="Right">
@@ -114,6 +114,7 @@
                                 <Button x:Name="ButtonPlayStop" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,6" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
                             </Grid>
                         </Grid>
+                        <!-- Prev/Next Buttons -->
                         <Grid Margin="0,30,0,0">
                             <Button HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding Path=NowPlayingItem.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev_Click">
                                 <Grid>
@@ -181,29 +182,11 @@
                                 </Style>
                             </ListView.ItemContainerStyle>
                         </ListView>
-                        <!-- 
-                        Advertisement Unit. 
-                        Commenting Out until design update allows for more vertical space, as
-                        currently 1366x768 barely shows a sliver of the ad unit.
-                        
-                        <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Margin="0,10,0,0" Width="Auto">
-                            <UI:AdControl 
-                                x:Name="Ad"
-                                UseStaticAnchor="True"
-                                ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" 
-                                AdUnitId="115146" 
-                                HorizontalAlignment="Left" 
-                                Height="130" 
-                                Margin="0,0,0,0" 
-                                VerticalAlignment="Top" 
-                                Width="500" />
-                        </Grid>
-                        -->
                     </StackPanel>
                 </Grid>
             </Grid>
         </Grid>
-        <!-- Snapped view -->
+        <!-- Snapped View -->
         <Grid x:Name="SnappedGrid" Background="{Binding NowPlayingItem.Color1}" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100" />
@@ -305,5 +288,4 @@
             </Grid>
         </Grid>
     </Grid>
-
 </common:LayoutAwarePage>
