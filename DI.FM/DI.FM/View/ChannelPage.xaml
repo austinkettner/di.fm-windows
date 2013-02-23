@@ -6,7 +6,6 @@
     xmlns:common="using:DI.FM.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
     x:Name="PageRoot"
     x:Class="DI.FM.View.ChannelPage"
     mc:Ignorable="d">
