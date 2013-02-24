@@ -91,7 +91,7 @@
             </Grid.RowDefinitions>
             <!-- Header -->
             <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
-                <Grid Margin="118,0,56,0" Style="{StaticResource LayoutRootStyle}">
+                <Grid Margin="110,0,56,0" Style="{StaticResource LayoutRootStyle}">
                     <Grid HorizontalAlignment="Left">
                         <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
                     </Grid>
@@ -128,7 +128,7 @@
                         <GridView>
                             <GridView.Items>
                                 <!-- Now Playing -->
-                                <Grid Margin="0,0,61,0" Width="450" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                <Grid Margin="0,0,70,0" Width="450" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -152,7 +152,7 @@
                                     </Grid>
                                 </Grid>
                                 <!-- Favorite Channels -->
-                                <Grid Margin="0,0,61,0">
+                                <Grid Margin="0,0,70,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="40" />
                                         <RowDefinition />
@@ -201,7 +201,7 @@
                                     </GridView>
                                 </Grid>
                                 <!-- All Radio Channels -->
-                                <Grid>
+                                <Grid Margin="0,0,70,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="40" />
                                         <RowDefinition />
@@ -226,7 +226,7 @@
                                     </GridView>
                                 </Grid>
                                 <!-- Advertisment -->
-                                <Grid Margin="40,0,12,0" Width="170">
+                                <Grid Margin="0,0,35,0" Width="170">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="700" />
                                         <RowDefinition />
@@ -234,15 +234,15 @@
                                     <Button Content="Advertisement" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
                                     <Grid VerticalAlignment="Top">
                                         <UI:AdControl 
-                                                x:Name="Ad"
-                                                UseStaticAnchor="True"
-                                                ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" 
-                                                AdUnitId="114352" 
-                                                HorizontalAlignment="Left" 
-                                                Height="600" 
-                                                Margin="6,45,0,0" 
-                                                VerticalAlignment="Top" 
-                                                Width="160" />
+                                            x:Name="Ad"
+                                            UseStaticAnchor="True"
+                                            ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" 
+                                            AdUnitId="114352" 
+                                            HorizontalAlignment="Left" 
+                                            Height="600" 
+                                            Margin="6,45,0,0" 
+                                            VerticalAlignment="Top" 
+                                            Width="160" />
                                     </Grid>
                                 </Grid>
                             </GridView.Items>

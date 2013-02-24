@@ -1963,7 +1963,7 @@
 
     <Style x:Key="GroupButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontSize" Value="21" />
         <Setter Property="FontWeight" Value="SemiLight" />
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="RenderTransform">
@@ -1997,10 +1997,10 @@
                         </VisualStateManager.VisualStateGroups>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="13" />
                         </Grid.ColumnDefinitions>
                         <ContentPresenter />
-                        <Path x:Name="Arrow" Margin="0,3,0,0" Grid.Column="1" Data="M 0 0 L 7 6 L 0 12" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                        <Path x:Name="Arrow" Margin="0,5,0,0" Grid.Column="1" Data="M 0 0 L 5 5 L 0 10" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" VerticalAlignment="Center" HorizontalAlignment="Right" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
