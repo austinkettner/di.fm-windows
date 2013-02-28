@@ -269,8 +269,8 @@
                             <GridView.Items>
                                 <x:String>Now Playing</x:String>
                                 <x:String>Favorite Channels</x:String>
-                                <x:String>Advertisment</x:String>
                                 <x:String>All Radio Channels</x:String>
+                                <x:String>Advertisment</x:String>
                             </GridView.Items>
                             <GridView.ItemTemplate>
                                 <DataTemplate>
