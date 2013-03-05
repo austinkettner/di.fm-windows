@@ -2,11 +2,10 @@
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DI.FM.View"
     xmlns:common="using:DI.FM.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
+    xmlns:ui="using:Microsoft.Advertising.WinRT.UI"
     x:Class="DI.FM.View.MainPage"
     mc:Ignorable="d">
     
@@ -141,13 +140,15 @@
                                     <Grid Grid.Row="1">
                                         <StackPanel>
                                             <Image Source="{Binding NowPlaying.PlayingItem.Image}" />
-                                            <ProgressBar Height="5" Foreground="#3896FA" Value="{Binding NowPlaying.PlayingItem.NowPlaying.Position}" Maximum="{Binding NowPlaying.PlayingItem.NowPlaying.Duration}" />
-                                            <Grid Margin="0,0,0,23">
-                                                <TextBlock Text="{Binding Path=NowPlaying.PlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
-                                                <TextBlock Text="{Binding Path=NowPlaying.PlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
-                                            </Grid>
-                                            <TextBlock Margin="0,0,0,5" Text="{Binding NowPlaying.PlayingItem.Name}" Foreground="White" FontSize="20" FontWeight="Bold" />
-                                            <TextBlock Margin="0,0,0,2" Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                            <ProgressBar Height="5" Foreground="#0fa7ff" Value="{Binding NowPlaying.PlayingItem.NowPlaying.Position}" Maximum="{Binding NowPlaying.PlayingItem.NowPlaying.Duration}" />
+                                            <StackPanel Background="#121212">
+                                                <Grid Margin="10,5,10,12">
+                                                    <TextBlock Text="{Binding Path=NowPlaying.PlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
+                                                    <TextBlock Text="{Binding Path=NowPlaying.PlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
+                                                </Grid>
+                                                <TextBlock Margin="10,0,20,3" Text="{Binding NowPlaying.PlayingItem.Name}" Foreground="White" FontSize="18.6" FontWeight="Bold" />
+                                                <TextBlock Margin="10,0,20,16" Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                            </StackPanel>
                                         </StackPanel>
                                     </Grid>
                                 </Grid>
@@ -208,17 +209,17 @@
                                     </Grid.RowDefinitions>
                                     <Button Content="All Radio Channels" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
                                     <GridView x:Name="GridViewChannels" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
-                                          ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
+                                            ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                         <GridView.ItemTemplate>
                                             <DataTemplate>
-                                                <Grid Width="150" Height="150">
+                                                <Grid Width="150" Height="150" Margin="0">
                                                     <Image Stretch="UniformToFill">
                                                         <Image.Source>
                                                             <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="150" />
                                                         </Image.Source>
                                                     </Image>
-                                                    <Border Padding="6,3" Background="#BF000000" VerticalAlignment="Bottom">
-                                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="15" FontWeight="Light" TextWrapping="NoWrap" />
+                                                    <Border Padding="5,1,5,1" Background="#121212" VerticalAlignment="Bottom">
+                                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="15" FontWeight="SemiLight" TextWrapping="NoWrap" />
                                                     </Border>
                                                 </Grid>
                                             </DataTemplate>
@@ -226,14 +227,14 @@
                                     </GridView>
                                 </Grid>
                                 <!-- Advertisment -->
-                                <Grid Margin="0,0,35,0" Width="170">
+                                <Grid Margin="0,0,35,0">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="700" />
+                                        <RowDefinition Height="40" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <Button Content="Advertisement" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
                                     <Grid VerticalAlignment="Top">
-                                        <UI:AdControl 
+                                        <ui:AdControl 
                                             x:Name="Ad"
                                             UseStaticAnchor="True"
                                             ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" 
