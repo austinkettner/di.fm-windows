@@ -85,11 +85,11 @@
         <!-- Filled View -->
         <Grid x:Name="FilledGrid">
             <Grid.RowDefinitions>
-                <RowDefinition Height="110" />
+                <RowDefinition Height="90" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <!-- Header -->
-            <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
+            <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
                 <Grid Margin="110,0,56,0" Style="{StaticResource LayoutRootStyle}">
                     <Grid HorizontalAlignment="Left">
                         <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
@@ -100,7 +100,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <StackPanel Margin="0,0,34,0" VerticalAlignment="Center">
-                            <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold" />
+                            <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#C3C3C3" FontSize="16" FontWeight="Bold" />
                             <TextBlock Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21.33" FontWeight="Light" TextTrimming="WordEllipsis" />
                         </StackPanel>
                         <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
@@ -127,7 +127,7 @@
                         <GridView>
                             <GridView.Items>
                                 <!-- Now Playing -->
-                                <Grid Margin="0,0,70,0" Width="450" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                <Grid Margin="0,0,70,0" Width="452" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -165,36 +165,36 @@
                                         </TextBlock.RenderTransform>
                                     <Span FontSize="18">Favorite any channel on the right and it will appear here!</Span>
                                     <LineBreak /><LineBreak />
-                                    1. Select any channel<LineBreak />
-                                    2. Then click the "Favorite" button on the appbar<LineBreak />
-                                    3. Done!
+                                    1. Select (Right-Click) any channel<LineBreak />
+                                    2. Click the "Favorite" button on the appbar<LineBreak />
+                                    3. Your done! It will show up right here.
                                     </TextBlock>
                                     <GridView x:Name="GridViewFavorites" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.MainFavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                           ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                         <GridView.ItemTemplate>
                                             <DataTemplate>
-                                                <Grid Width="400" Height="150">
+                                                <Grid Width="425" Height="85" Background="#60121212">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="150" />
+                                                        <ColumnDefinition Width="85" />
                                                         <ColumnDefinition />
                                                     </Grid.ColumnDefinitions>
                                                     <Grid>
                                                         <Image Stretch="Uniform">
                                                             <Image.Source>
-                                                                <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="150" />
+                                                                <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="85" />
                                                             </Image.Source>
                                                         </Image>
-                                                        <Border Padding="6,3" Background="#BF000000" VerticalAlignment="Bottom">
-                                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14.67" FontWeight="SemiLight" />
+                                                        <Border Padding="5,1" Background="#121212" VerticalAlignment="Bottom">
+                                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="15" FontWeight="SemiLight" TextWrapping="NoWrap" />
                                                         </Border>
                                                     </Grid>
-                                                    <Grid Grid.Column="1" Margin="10,25,10,10">
+                                                    <Grid Grid.Column="1" Margin="10,0" VerticalAlignment="Center">
                                                         <Grid.RowDefinitions>
                                                             <RowDefinition Height="Auto" />
                                                             <RowDefinition />
                                                         </Grid.RowDefinitions>
-                                                        <TextBlock Text="NOW PLAYING" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
-                                                        <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                                                        <TextBlock Text="Currently Playing" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
+                                                        <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
                                                     </Grid>
                                                 </Grid>
                                             </DataTemplate>
@@ -218,7 +218,7 @@
                                                             <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="150" />
                                                         </Image.Source>
                                                     </Image>
-                                                    <Border Padding="5,1,5,1" Background="#121212" VerticalAlignment="Bottom">
+                                                    <Border Padding="5,1" Background="#121212" VerticalAlignment="Bottom">
                                                         <TextBlock Text="{Binding Name}" Foreground="White" FontSize="15" FontWeight="SemiLight" TextWrapping="NoWrap" />
                                                     </Border>
                                                 </Grid>

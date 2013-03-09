@@ -48,11 +48,11 @@
         <!-- Filled View -->
         <Grid x:Name="FilledGrid" Background="{Binding NowPlayingItem.Color1}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="110" />
+                <RowDefinition Height="90" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <!-- Header -->
-            <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
+            <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -101,6 +101,11 @@
                             </Grid.Background>
                             <Border BorderThickness="1" BorderBrush="#16FFFFFF" />
                             <Grid Margin="15,10">
+                                <Grid.ChildrenTransitions>
+                                    <TransitionCollection>
+                                        <ContentThemeTransition/>
+                                    </TransitionCollection>
+                                </Grid.ChildrenTransitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="Auto" />
@@ -154,6 +159,13 @@
                         <ListView ItemsSource="{Binding NowPlayingItem.TrackHistory}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
+                                    <Setter Property="Transitions">
+                                        <Setter.Value>
+                                            <TransitionCollection>
+                                                <ContentThemeTransition/>
+                                            </TransitionCollection>
+                                        </Setter.Value>
+                                    </Setter>
                                     <Setter Property="Margin" Value="0,1" />
                                     <Setter Property="Height" Value="48" />
                                     <Setter Property="Template">

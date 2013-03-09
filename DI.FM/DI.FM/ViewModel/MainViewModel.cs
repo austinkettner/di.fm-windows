@@ -46,7 +46,7 @@ namespace DI.FM.ViewModel
 
         public IEnumerable<ChannelItem> MainFavoriteChannels
         {
-            get { return this.FavoriteChannels.Take(3).ToList(); }
+            get { return this.FavoriteChannels.Take(6).ToList(); }
         }
 
         private ChannelItem _nowPlayingItem;
