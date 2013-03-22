@@ -1546,15 +1546,15 @@
         <Setter Property="VerticalAlignment" Value="Bottom"/>
         <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
         <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="FontSize" Value="26.66667"/>
+        <Setter Property="FontSize" Value="30"/>
         <Setter Property="AutomationProperties.AutomationId" Value="BackButton"/>
         <Setter Property="AutomationProperties.Name" Value="Back"/>
         <Setter Property="AutomationProperties.ItemType" Value="Navigation Button"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Grid x:Name="RootGrid" Width="36" Height="36" Margin="-3,0,7,3">
-                        <Grid Margin="-1,-1,0,0">
+                    <Grid x:Name="RootGrid" Width="42" Height="42" Margin="-3,0,7,3">
+                        <Grid Margin="0,0,0,0">
                             <TextBlock x:Name="BackgroundGlyph" Text="&#xE0D4;" Foreground="{StaticResource BackButtonBackgroundThemeBrush}"/>
                             <TextBlock x:Name="NormalGlyph" Text="{StaticResource BackButtonSnappedGlyph}" Foreground="{StaticResource BackButtonForegroundThemeBrush}"/>
                             <TextBlock x:Name="ArrowGlyph" Text="&#xE0C4;" Foreground="{StaticResource BackButtonPressedForegroundThemeBrush}" Opacity="0"/>
@@ -1839,9 +1839,9 @@
                 <ControlTemplate TargetType="ButtonBase">
                     <Grid x:Name="RootGrid" Background="Transparent">
                         <Grid Width="48" Height="48" HorizontalAlignment="Center">
-                            <TextBlock x:Name="BackgroundGlyph" Text="&#xE0A8;" FontFamily="Segoe UI Symbol" FontSize="64" Margin="-4,-22,0,0" Foreground="{StaticResource AppBarItemBackgroundThemeBrush}"/>
-                            <TextBlock x:Name="OutlineGlyph" Text="&#xE0A7;" FontFamily="Segoe UI Symbol" FontSize="64" Margin="-4,-22,0,0"/>
-                            <ContentPresenter x:Name="Content" HorizontalAlignment="Center" Margin="-1,-1,0,0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="BackgroundGlyph" Text="&#xE0A8;" FontFamily="Segoe UI Symbol" FontSize="62" Margin="-5,-22,0,0" Foreground="{StaticResource AppBarItemBackgroundThemeBrush}"/>
+                            <TextBlock x:Name="OutlineGlyph" Text="&#xE0A7;" FontFamily="Segoe UI Symbol" FontSize="62" Margin="-4,-22,0,0"/>
+                            <ContentPresenter x:Name="Content" HorizontalAlignment="Center" Margin="-3,-2,0,0" VerticalAlignment="Center"/>
                         </Grid>
 
                         <VisualStateManager.VisualStateGroups>

@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     
     <Page.BottomAppBar>
-        <AppBar Background="#E53896FA" BorderBrush="{x:Null}">
+        <AppBar Background="#212121" BorderBrush="{x:Null}">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <StackPanel x:Name="StackControls" Orientation="Horizontal">
@@ -101,7 +101,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Margin="0,0,34,0" VerticalAlignment="Center">
                             <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#C3C3C3" FontSize="16" FontWeight="Bold" />
-                            <TextBlock Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21.33" FontWeight="Light" TextTrimming="WordEllipsis" />
+                            <TextBlock Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="Light" TextTrimming="WordEllipsis" />
                         </StackPanel>
                         <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
                     </Grid>
@@ -127,7 +127,7 @@
                         <GridView>
                             <GridView.Items>
                                 <!-- Now Playing -->
-                                <Grid Margin="0,0,70,0" Width="452" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                <Grid Margin="0,0,70,0" Width="426" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -146,8 +146,8 @@
                                                     <TextBlock Text="{Binding Path=NowPlaying.PlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
                                                     <TextBlock Text="{Binding Path=NowPlaying.PlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
                                                 </Grid>
-                                                <TextBlock Margin="10,0,20,3" Text="{Binding NowPlaying.PlayingItem.Name}" Foreground="White" FontSize="18.6" FontWeight="Bold" />
-                                                <TextBlock Margin="10,0,20,16" Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                                <TextBlock Margin="10,0,20,3" Text="{Binding NowPlaying.PlayingItem.Name}" Foreground="White" FontSize="18" FontWeight="Bold" />
+                                                <TextBlock Margin="10,0,20,16" Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
                                             </StackPanel>
                                         </StackPanel>
                                     </Grid>
@@ -173,19 +173,19 @@
                                           ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                         <GridView.ItemTemplate>
                                             <DataTemplate>
-                                                <Grid Width="425" Height="85" Background="#60121212">
+                                                <Grid Width="425" Height="80" Background="#60121212">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="85" />
+                                                        <ColumnDefinition Width="80" />
                                                         <ColumnDefinition />
                                                     </Grid.ColumnDefinitions>
                                                     <Grid>
                                                         <Image Stretch="Uniform">
                                                             <Image.Source>
-                                                                <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="85" />
+                                                                <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="80" />
                                                             </Image.Source>
                                                         </Image>
                                                         <Border Padding="5,1" Background="#121212" VerticalAlignment="Bottom">
-                                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="15" FontWeight="SemiLight" TextWrapping="NoWrap" />
+                                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="12" FontWeight="SemiLight" TextWrapping="NoWrap" />
                                                         </Border>
                                                     </Grid>
                                                     <Grid Grid.Column="1" Margin="10,0" VerticalAlignment="Center">
@@ -193,7 +193,7 @@
                                                             <RowDefinition Height="Auto" />
                                                             <RowDefinition />
                                                         </Grid.RowDefinitions>
-                                                        <TextBlock Text="Currently Playing" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
+                                                        <TextBlock Text="CURRENTLY PLAYING" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
                                                         <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
                                                     </Grid>
                                                 </Grid>
@@ -212,14 +212,14 @@
                                             ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                         <GridView.ItemTemplate>
                                             <DataTemplate>
-                                                <Grid Width="150" Height="150" Margin="0">
+                                                <Grid Width="153" Height="153" Margin="0">
                                                     <Image Stretch="UniformToFill">
                                                         <Image.Source>
-                                                            <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="150" />
+                                                            <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="153" />
                                                         </Image.Source>
                                                     </Image>
                                                     <Border Padding="5,1" Background="#121212" VerticalAlignment="Bottom">
-                                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="15" FontWeight="SemiLight" TextWrapping="NoWrap" />
+                                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14" FontWeight="SemiLight" TextWrapping="NoWrap" />
                                                     </Border>
                                                 </Grid>
                                             </DataTemplate>
@@ -227,24 +227,17 @@
                                     </GridView>
                                 </Grid>
                                 <!-- Advertisment -->
-                                <Grid Margin="0,0,35,0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="40" />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Button Content="Advertisement" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
-                                    <Grid VerticalAlignment="Top">
-                                        <ui:AdControl 
-                                            x:Name="Ad"
-                                            UseStaticAnchor="True"
-                                            ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" 
-                                            AdUnitId="114352" 
-                                            HorizontalAlignment="Left" 
-                                            Height="600" 
-                                            Margin="6,45,0,0" 
-                                            VerticalAlignment="Top" 
-                                            Width="160" />
-                                    </Grid>
+                                <Grid VerticalAlignment="Top">
+                                    <ui:AdControl 
+                                        x:Name="Ad"
+                                        UseStaticAnchor="True"
+                                        ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" 
+                                        AdUnitId="114352" 
+                                        HorizontalAlignment="Left" 
+                                        Height="600" 
+                                        Margin="6,45,0,0" 
+                                        VerticalAlignment="Top" 
+                                        Width="160" />
                                 </Grid>
                             </GridView.Items>
                             <GridView.ItemContainerStyle>
@@ -271,11 +264,10 @@
                                 <x:String>Now Playing</x:String>
                                 <x:String>Favorite Channels</x:String>
                                 <x:String>All Radio Channels</x:String>
-                                <x:String>Advertisment</x:String>
                             </GridView.Items>
                             <GridView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Width="280" Height="120" Background="#3896FA" Opacity="0.95">
+                                    <Grid Width="310" Height="120" Background="#3896FA" Opacity="0.95">
                                         <TextBlock Margin="20,10" Text="{Binding}" Foreground="White" FontSize="18" FontWeight="Normal" VerticalAlignment="Top" HorizontalAlignment="Left" />
                                     </Grid>
                                 </DataTemplate>
@@ -293,11 +285,11 @@
         <!-- Snapped view -->
         <Grid x:Name="SnappedGrid" Visibility="Collapsed">
             <Grid.RowDefinitions>
-                <RowDefinition Height="100" />
+                <RowDefinition Height="90" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <!-- Header -->
-            <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
+            <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
                 <Grid Margin="0,0,20,0" Style="{StaticResource LayoutRootStyle}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />

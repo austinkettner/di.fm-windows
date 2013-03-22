@@ -135,11 +135,11 @@
         <!-- Snapped view -->
         <Grid x:Name="SnappedGrid" Visibility="Collapsed">
             <Grid.RowDefinitions>
-                <RowDefinition Height="100" />
+                <RowDefinition Height="90" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <!-- Header -->
-            <Border Background="#212121" BorderThickness="0,0,0,5" BorderBrush="White">
+            <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
                 <Grid Style="{StaticResource LayoutRootStyle}">
                     <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>

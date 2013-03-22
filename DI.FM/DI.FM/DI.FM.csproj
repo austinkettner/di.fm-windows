@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Background.png" />
+    <Content Include="Assets\Channels\bigroomhouse.png" />
     <Content Include="Assets\Channels\channel1.png" />
     <Content Include="Assets\Channels\channel10.png" />
     <Content Include="Assets\Channels\channel11.png" />
@@ -197,6 +198,9 @@
     <Content Include="Assets\Channels\channel7.png" />
     <Content Include="Assets\Channels\channel8.png" />
     <Content Include="Assets\Channels\channel9.png" />
+    <Content Include="Assets\Channels\eclectronica.png" />
+    <Content Include="Assets\Channels\mainstage.png" />
+    <Content Include="Assets\Channels\russianclubhits.png" />
     <Content Include="Assets\HeaderLogo.png" />
     <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\Logo.scale-140.png" />
@@ -267,9 +271,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\winrt45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="WinRTXamlToolkit">
-      <HintPath>..\packages\winrtxamltoolkit.1.3.5.3\lib\netcore45\WinRTXamlToolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
