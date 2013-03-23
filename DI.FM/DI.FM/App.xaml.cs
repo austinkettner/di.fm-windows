@@ -44,7 +44,7 @@ namespace DI.FM
                             MediaPlayer.Source = new Uri(_playingItem.Streams[0]);
                             MediaControl.AlbumArt = new Uri(_playingItem.Image);
                             MediaControl.TrackName = _playingItem.Name;
-                            MediaControl.ArtistName = _playingItem.Description;
+                            MediaControl.ArtistName = _playingItem.NowPlaying.Track;
                             MediaControl.IsPlaying = true;
                         }
                         else
