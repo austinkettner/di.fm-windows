@@ -13,7 +13,7 @@ namespace DI.FM.ViewModel
         public static Dictionary<string, string[]> ChannelsAssets = new Dictionary<string, string[]>()
         {
             {"mainstage", new string[]{"ms-appx:///Assets/Channels/mainstage.png", "#3de9df", "#0011a4"}},
-            {"bigroomhouse", new string[]{"ms-appx:///Assets/Channels/bigroomhouse.png", "#4f4f4f", "#ff5a1b"}},
+            {"bigroomhouse", new string[]{"ms-appx:///Assets/Channels/bigroomhouse.png", "#837873", "#ff5a1b"}},
             {"eclectronica", new string[]{"ms-appx:///Assets/Channels/eclectronica.png", "#e1d457", "#28770b"}},
             {"russianclubhits", new string[]{"ms-appx:///Assets/Channels/russianclubhits.png", "#ef136b", "#3454ab"}},
             {"deeptech", new string[]{"ms-appx:///Assets/Channels/channel1.png", "#3a3a3a", "#c66a33"}},

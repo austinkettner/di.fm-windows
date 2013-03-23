@@ -106,7 +106,7 @@
                                     <RowDefinition />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding NowPlayingItem.NowPlaying.Track}" FontSize="28.3" FontWeight="Light" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                                <TextBlock Text="{Binding NowPlayingItem.NowPlaying.Track}" FontSize="26.1" FontWeight="Light" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
                                 <TextBlock Grid.Row="1" FontSize="21.3" FontWeight="Normal" VerticalAlignment="Bottom" HorizontalAlignment="Left">
                                     <Run Text="{Binding Path=NowPlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" />
                                     <Run Text="/" />
