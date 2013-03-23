@@ -163,11 +163,11 @@
                                         <TextBlock.RenderTransform>
                                             <TranslateTransform X="6" Y="0" />
                                         </TextBlock.RenderTransform>
-                                    <Span FontSize="18">Favorite any channel on the right and it will appear here!</Span>
+                                    <Span FontSize="18">Favorite any channel and it will appear here!</Span>
                                     <LineBreak /><LineBreak />
-                                    1. Select (Right-Click) any channel<LineBreak />
-                                    2. Click the "Favorite" button on the appbar<LineBreak />
-                                    3. Your done! It will show up right here.
+                                    1. Select any channel by right clicking.<LineBreak />
+                                    2. Click "Favorite" on the app bar.<LineBreak />
+                                    3. Finished! Quick access to your favorite channels.
                                     </TextBlock>
                                     <GridView x:Name="GridViewFavorites" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.MainFavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                           ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
