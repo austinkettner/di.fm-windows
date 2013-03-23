@@ -185,7 +185,7 @@
                                                             </Image.Source>
                                                         </Image>
                                                         <Border Padding="5,1" Background="#121212" VerticalAlignment="Bottom">
-                                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="12" FontWeight="SemiLight" TextWrapping="NoWrap" />
+                                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="12.1" FontWeight="SemiLight" TextWrapping="NoWrap" />
                                                         </Border>
                                                     </Grid>
                                                     <Grid Grid.Column="1" Margin="10,0" VerticalAlignment="Center">
@@ -329,9 +329,9 @@
                                     </Image>
                                     <Border Padding="6,3" VerticalAlignment="Bottom">
                                         <Border.Background>
-                                            <SolidColorBrush Color="Black" Opacity="0.75" />
+                                            <SolidColorBrush Color="#212121" />
                                         </Border.Background>
-                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14.67" FontWeight="SemiLight" />
+                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="12.1" FontWeight="SemiLight" TextTrimming="WordEllipsis" />
                                     </Border>
                                 </Grid>
                                 <Grid Grid.Column="1" Margin="10">
