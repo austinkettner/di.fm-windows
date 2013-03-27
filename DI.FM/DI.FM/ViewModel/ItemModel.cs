@@ -208,5 +208,17 @@ namespace DI.FM.ViewModel
                 RaisePropertyChanged("Next");
             }
         }
+
+
+        private bool _isPremium = false;
+        public bool IsPremium
+        {
+            get { return _isPremium; }
+            set
+            {
+                _isPremium = value;
+                RaisePropertyChanged("IsPremium");
+            }
+        }
     }
 }
