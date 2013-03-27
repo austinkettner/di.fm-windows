@@ -77,6 +77,8 @@ namespace DI.FM.ViewModel
 
     public class ChannelItem : ObservableObject
     {
+        // Channel info
+
         private int _id;
         public int ID
         {
@@ -109,6 +111,23 @@ namespace DI.FM.ViewModel
                 RaisePropertyChanged("Name");
             }
         }
+
+        private string _description;
+        public string Description
+        {
+            get { return _description; }
+            set
+            {
+                _description = value;
+                RaisePropertyChanged("Description");
+            }
+        }
+
+        public void GetChannelInfo()
+        {
+        }
+
+        // Channel theme
 
         private string _image;
         public string Image
@@ -143,16 +162,37 @@ namespace DI.FM.ViewModel
             }
         }
 
-        private string _description;
-        public string Description
+        private ChannelItem _prev;
+        public ChannelItem Prev
         {
-            get { return _description; }
+            get { return _prev; }
             set
             {
-                _description = value;
-                RaisePropertyChanged("Description");
+                _prev = value;
+                RaisePropertyChanged("Prev");
             }
         }
+
+        private ChannelItem _next;
+        public ChannelItem Next
+        {
+            get { return _next; }
+            set
+            {
+                _next = value;
+                RaisePropertyChanged("Next");
+            }
+        }
+
+        // Channel streams
+
+        public List<string> Streams;
+
+        public void GetStreams()
+        {
+        }
+
+        // Track history
 
         private TrackItem _nowPlaying;
         public TrackItem NowPlaying
@@ -176,37 +216,8 @@ namespace DI.FM.ViewModel
             }
         }
 
-        private List<string> _streams;
-        public List<string> Streams
+        public void GetTrackHistory()
         {
-            get { return _streams; }
-            set
-            {
-                _streams = value;
-                RaisePropertyChanged("Streams");
-            }
-        }
-
-        private ChannelItem _prev;
-        public ChannelItem Prev
-        {
-            get { return _prev; }
-            set
-            {
-                _prev = value;
-                RaisePropertyChanged("Prev");
-            }
-        }
-
-        private ChannelItem _next;
-        public ChannelItem Next
-        {
-            get { return _next; }
-            set
-            {
-                _next = value;
-                RaisePropertyChanged("Next");
-            }
         }
     }
 }

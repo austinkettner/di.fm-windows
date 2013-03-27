@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 
 namespace DI.FM.ViewModel
@@ -80,7 +82,7 @@ namespace DI.FM.ViewModel
             if (!IsInDesignMode)
             {
                 // Init the arrays
-                AllChannels = new ObservableCollection<ChannelItem>();
+                //AllChannels = new ObservableCollection<ChannelItem>();
                 FavoriteChannels = new ObservableCollection<ChannelItem>();
                 FavoriteChannels.CollectionChanged += (sender, e) => { RaisePropertyChanged("MainFavoriteChannels"); };
                 // Init the timer
@@ -89,6 +91,8 @@ namespace DI.FM.ViewModel
                 nowPlayingRefresh.Tick += NowPlayingRefresh_Tick;
                 // Load the channels
                 //LoadAllChannels();
+
+                //IsPremium();
             }
         }
 
@@ -98,7 +102,9 @@ namespace DI.FM.ViewModel
 
         public async Task LoadAllChannels(bool forceDownload = false)
         {
-            AllChannels.Clear();
+            CreateEmptyChannels();
+
+            /*AllChannels.Clear();
             FavoriteChannels.Clear();
 
             StorageFile file = null;
@@ -164,7 +170,7 @@ namespace DI.FM.ViewModel
                 AllChannels[i].Next = AllChannels[i + 1];
             }
 
-            await LoadFavoriteChannels();
+            await LoadFavoriteChannels();*/
         }
 
         private async void LoadChannelStreams(ChannelItem channel)
@@ -285,6 +291,114 @@ namespace DI.FM.ViewModel
             {
                 NowPlayingItem.NowPlaying.Position = (int)currentPosition;
             }
+        }
+
+
+
+
+
+
+
+
+        private void CreateEmptyChannels()
+        {
+            AllChannels = new ObservableCollection<ChannelItem>();
+
+            int i = 0;
+
+            foreach (var item in ChannelsHelper.ChannelsAssets)
+            {
+                var chn = new ChannelItem()
+                {
+                    Key = item.Key,
+                    Image = item.Value[0],
+                    Color1 = item.Value[1],
+                    Color2 = item.Value[2],
+                    Streams = new List<string>()
+                };
+
+                if (i > 0)
+                {
+                    chn.Prev = AllChannels[AllChannels.Count - 1];
+                    AllChannels[AllChannels.Count - 1].Next = chn;
+                }
+
+                AllChannels.Add(chn);
+
+                i++;
+            }
+
+            UpdateChannels();
+        }
+
+        private async void UpdateChannels()
+        {
+            var isPrem = await IsPremium();
+
+            //await new MessageDialog("Invalid dsa").ShowAsync();
+
+            string data = null;
+            if (isPrem) data = await ChannelsHelper.DownloadJson(ChannelsHelper.PREMIUM_CHANNELS_URL);
+            else data = await ChannelsHelper.DownloadJson(ChannelsHelper.FREE_CHANNELS_URL);
+
+            if (data != null)
+            {
+                var chns = JsonConvert.DeserializeObject(data) as JContainer;
+
+                foreach (var item in AllChannels)
+                {
+                    var chn = chns.FirstOrDefault((e) => e.Value<string>("key") == item.Key);
+
+                    item.ID = chn.Value<int>("id");
+                    item.Name = chn.Value<string>("name");
+                    item.Description = chn.Value<string>("description");
+
+                    GetChannelStream(item, isPrem);
+                }
+            }
+        }
+
+        private async void GetChannelStream(ChannelItem channel, bool premium)
+        {
+            await Task.Factory.StartNew(async () =>
+            {
+                string data = null;
+                if (premium) data = await ChannelsHelper.DownloadJson(ChannelsHelper.PREMIUM_CHANNELS_URL + @"\" + channel.Key + "?" + ListenKey);
+                else data = await ChannelsHelper.DownloadJson(ChannelsHelper.FREE_CHANNELS_URL + @"\" + channel.Key);
+                if (data != null)
+                {
+                    var streams = JsonConvert.DeserializeObject(data) as JContainer;
+                    foreach (var stream in streams)
+                    {
+                        channel.Streams.Add(stream.Value<string>());
+                    }
+                }
+            });
+        }
+
+        
+
+        private string ListenKey
+        {
+            get
+            {
+                return ApplicationData.Current.LocalSettings.Values["ListenKey"] as string;
+                return "31c818d91fe2eae4814bbc2f";
+            }
+        }
+
+        private async Task<bool> IsPremium()
+        {
+            var key = ListenKey;
+
+            if (key == null) return false;
+
+            var url = "http://listen.di.fm/premium/favorites?" + key;
+
+            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
+            var x = await client.GetAsync(url);
+
+            return x.IsSuccessStatusCode;
         }
     }
 }

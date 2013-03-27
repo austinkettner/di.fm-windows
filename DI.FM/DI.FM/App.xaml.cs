@@ -94,48 +94,62 @@ namespace DI.FM
                 }
 
                 var smallXml = SmallLiveTile(channel);
-                var smallTile = new TileNotification(smallXml);
-                smallTile.ExpirationTime = DateTime.Now + TimeSpan.FromMinutes(30);
-                update.Update(smallTile);
+                if (smallXml != null)
+                {
+                    var smallTile = new TileNotification(smallXml);
+                    smallTile.ExpirationTime = DateTime.Now + TimeSpan.FromMinutes(30);
+                    update.Update(smallTile);
+                }
 
                 var wideXml = WideLiveTile(channel);
-                var wideTile = new TileNotification(wideXml);
-                wideTile.ExpirationTime = DateTime.Now + TimeSpan.FromMinutes(30);
-                update.Update(wideTile);
+                if (wideXml != null)
+                {
+                    var wideTile = new TileNotification(wideXml);
+                    wideTile.ExpirationTime = DateTime.Now + TimeSpan.FromMinutes(30);
+                    update.Update(wideTile);
+                }
             }
 
             private static XmlDocument SmallLiveTile(ChannelItem channel)
             {
-                var tileTemplate = TileTemplateType.TileSquarePeekImageAndText02;
-                var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
+                try
+                {
+                    var tileTemplate = TileTemplateType.TileSquarePeekImageAndText02;
+                    var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
 
-                // Set notification image
-                XmlNodeList imgNodes = tileXml.GetElementsByTagName("image");
-                imgNodes[0].Attributes[1].NodeValue = channel.Image;
+                    // Set notification image
+                    XmlNodeList imgNodes = tileXml.GetElementsByTagName("image");
+                    imgNodes[0].Attributes[1].NodeValue = channel.Image;
 
-                // Set notification text
-                XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
-                textNodes[0].InnerText = channel.Name;
-                textNodes[1].InnerText = channel.Description;
+                    // Set notification text
+                    XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
+                    textNodes[0].InnerText = channel.Name;
+                    textNodes[1].InnerText = channel.Description;
 
-                return tileXml;
+                    return tileXml;
+                }
+                catch { return null; }
             }
 
             private static XmlDocument WideLiveTile(ChannelItem channel)
             {
-                var tileTemplate = TileTemplateType.TileWideSmallImageAndText04;
-                var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
+                try
+                {
+                    var tileTemplate = TileTemplateType.TileWideSmallImageAndText04;
+                    var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
 
-                // Set notification image
-                XmlNodeList imgNodes = tileXml.GetElementsByTagName("image");
-                imgNodes[0].Attributes[1].NodeValue = channel.Image;
+                    // Set notification image
+                    XmlNodeList imgNodes = tileXml.GetElementsByTagName("image");
+                    imgNodes[0].Attributes[1].NodeValue = channel.Image;
 
-                // Set notification text
-                XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
-                textNodes[0].InnerText = channel.Name;
-                textNodes[1].InnerText = channel.Description;
+                    // Set notification text
+                    XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
+                    textNodes[0].InnerText = channel.Name;
+                    textNodes[1].InnerText = channel.Description;
 
-                return tileXml;
+                    return tileXml;
+                }
+                catch { return null; }
             }
         }
 

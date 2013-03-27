@@ -7,6 +7,9 @@ namespace DI.FM.ViewModel
 {
     public class ChannelsHelper
     {
+        public const string FREE_CHANNELS_URL = "http://listen.di.fm/public3"; // MP3 96kbps - FREE
+        public const string PREMIUM_CHANNELS_URL = "http://listen.di.fm/premium_high"; // MP3 256kbps - PREMIUM
+
         public const string CHANNELS_URL = "http://listen.di.fm/public3";
         public const string TRACK_URL = "http://api.v2.audioaddict.com/v1/di/track_history/channel/{0}.json";
 
