@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
@@ -380,7 +381,7 @@ namespace DI.FM.ViewModel
 
         public void PlayChannel(ChannelItem channel)
         {
-            if (MediaPlayer != null)
+            if (channel.Streams.Count > 0)
             {
                 MediaPlayer.Source = new Uri(channel.Streams[0]);
                 NowPlayingItem = channel;
@@ -437,12 +438,14 @@ namespace DI.FM.ViewModel
                     item.Name = chn.Value<string>("name");
                     item.Description = chn.Value<string>("description");
 
-                    GetChannelStream(item, IsPremium);
+                    //GetChannelStream(item, IsPremium);
                 }
             }
+
+            GetChannelsStresms();
         }
 
-        public void ReUpdateChannelStreams()
+        /*public void ReUpdateChannelStreams()
         {
             foreach (var item in AllChannels)
             {
@@ -460,12 +463,65 @@ namespace DI.FM.ViewModel
                 if (data != null)
                 {
                     var streams = JsonConvert.DeserializeObject(data) as JContainer;
+
+                    channel.Streams.Clear();
                     foreach (var stream in streams)
                     {
                         channel.Streams.Add(stream.Value<string>());
                     }
                 }
             });
+        }*/
+
+        public AuthenticationHeaderValue CreateBasicHeader(string username, string password)
+        {
+            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(username + ":" + password);
+            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+        }
+
+        public async void GetChannelsStresms()
+        {
+            var url = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3,premium_high";
+            string data = null;
+
+            var cli = new HttpClient();
+            cli.DefaultRequestHeaders.Authorization = CreateBasicHeader("ephemeron", "dayeiph0ne@pp");
+            data = await cli.GetStringAsync(url);
+
+            if (data != null)
+            {
+                var batch = JsonConvert.DeserializeObject(data) as JContainer;
+                var listsd = batch["streamlists"];
+
+                JToken chn = null;
+                if (IsPremium) chn = listsd["premium_high"];
+                else chn = listsd["public3"];
+
+                if (chn != null)
+                {
+                    var strms = chn["channels"];
+
+                    foreach (var item in AllChannels)
+                    {
+                        var urls = strms.FirstOrDefault((e) => e.Value<int>("id") == item.ID);
+
+                        item.Streams.Clear();
+                        var li = urls["streams"];
+
+                        foreach (var urll in li)
+                        {
+                            if (IsPremium)
+                            {
+                                item.Streams.Add(urll.Value<string>("url") + "?" + ListenKey);
+                            }
+                            else
+                            {
+                                item.Streams.Add(urll.Value<string>("url"));
+                            }
+                        }
+                    }
+                }
+            }
         }
 
 

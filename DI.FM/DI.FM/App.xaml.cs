@@ -335,6 +335,7 @@ namespace DI.FM
                     var model = this.Resources["Locator"] as ViewModelLocator;
                     model.Main.ListenKey = null;
                     model.Main.GetIsPremium();
+                    model.Main.GetChannelsStresms();
                     break;
                 case "ID_2":
                     await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));

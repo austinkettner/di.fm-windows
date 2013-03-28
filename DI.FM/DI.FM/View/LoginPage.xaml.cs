@@ -53,17 +53,12 @@ namespace DI.FM.View
                 var loc = App.Current.Resources["Locator"] as ViewModelLocator;
                 loc.Main.ListenKey = lk;
                 loc.Main.GetIsPremium();
-                loc.Main.ReUpdateChannelStreams();
+                loc.Main.GetChannelsStresms();
             }
             else
             {
                 await new MessageDialog("Error").ShowAsync();
             }
-        }
-
-        private void ButtonRemoveKey_Click(object sender, RoutedEventArgs e)
-        {
-            ApplicationData.Current.LocalSettings.Values.Remove("ListenKey");
         }
     }
 }
