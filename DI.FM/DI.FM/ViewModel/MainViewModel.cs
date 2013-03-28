@@ -100,6 +100,7 @@ namespace DI.FM.ViewModel
             }
         }
 
+
         #endregion
 
         #region Load + Save
@@ -309,12 +310,58 @@ namespace DI.FM.ViewModel
             {
                 _mediaPlayer = value;
                 _mediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
+                _mediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
+            }
+        }
+
+        private async void MediaPlayer_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            if (NowPlayingItem != null)
+            {
+                StreamIndex++;
+
+                if (StreamIndex < NowPlayingItem.Streams.Count)
+                {
+                    MediaPlayer.Source = new Uri(NowPlayingItem.Streams[StreamIndex]);
+                }
+                else
+                {
+                    var msg = new MessageDialog("Could not connect on any of available streams!", "Cannot play channel");
+                    await msg.ShowAsync();
+                }
             }
         }
 
         private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
         {
             IsPlaying = MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Playing;
+            IsBuffering = MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Buffering || MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Opening;
+
+        }
+
+        private int _streamIndex;
+        public int StreamIndex
+        {
+            get { return _streamIndex; }
+            set
+            {
+                _streamIndex = value;
+                RaisePropertyChanged("StreamIndex");
+            }
+        }
+
+        private bool _isBuffering;
+        public bool IsBuffering
+        {
+            get { return _isBuffering; }
+            set
+            {
+                if (_isBuffering != value)
+                {
+                    _isBuffering = value;
+                    RaisePropertyChanged("IsBuffering");
+                }
+            }
         }
 
         private bool _isPlaying;
@@ -323,8 +370,11 @@ namespace DI.FM.ViewModel
             get { return _isPlaying; }
             set
             {
-                _isPlaying = value;
-                RaisePropertyChanged("IsPlaying");
+                if (_isPlaying != value)
+                {
+                    _isPlaying = value;
+                    RaisePropertyChanged("IsPlaying");
+                }
             }
         }
 
@@ -334,6 +384,7 @@ namespace DI.FM.ViewModel
             {
                 MediaPlayer.Source = new Uri(channel.Streams[0]);
                 NowPlayingItem = channel;
+                StreamIndex = 0;
             }
         }
 
@@ -417,14 +468,18 @@ namespace DI.FM.ViewModel
             });
         }
 
-        
 
-        private string ListenKey
+
+        public string ListenKey
         {
             get
             {
                 return ApplicationData.Current.LocalSettings.Values["ListenKey"] as string;
                 //return "31c818d91fe2eae4814bbc2f";
+            }
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["ListenKey"] = value;
             }
         }
 

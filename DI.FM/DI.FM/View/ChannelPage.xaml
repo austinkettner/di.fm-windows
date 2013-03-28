@@ -12,6 +12,7 @@
     <Page.Resources>
         <common:DurationConverter x:Key="DurationConverter" />
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+        <common:BooleanNegationConverter x:Key="BooleanNegationConverter" />
     </Page.Resources>
     
     <Page.BottomAppBar>
@@ -97,11 +98,11 @@
                             </Grid.Background>
                             <Border BorderThickness="1" BorderBrush="#16FFFFFF" />
                             <Grid Margin="15,10">
-                                <Grid.ChildrenTransitions>
+                                <!--<Grid.ChildrenTransitions>
                                     <TransitionCollection>
                                         <ContentThemeTransition/>
                                     </TransitionCollection>
-                                </Grid.ChildrenTransitions>
+                                </Grid.ChildrenTransitions>-->
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="Auto" />
@@ -111,8 +112,10 @@
                                     <Run Text="{Binding Path=NowPlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" />
                                     <Run Text="/" />
                                     <Run Text="{Binding Path=NowPlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" />
+                                    Buffering: <Run Text="{Binding Path=IsBuffering}" /> at index: <Run Text="{Binding StreamIndex}" />
                                 </TextBlock>
-                                <Button x:Name="ButtonPlayStop" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,4" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
+                                <Button x:Name="ButtonPlayStop" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,4" Style="{StaticResource PlayIconButtonStyle}"
+                                        IsEnabled="{Binding Path=IsBuffering, Converter={StaticResource BooleanNegationConverter}}" Click="ButtonPlayStop_Click" />
                             </Grid>
                         </Grid>
                         <!-- Prev/Next Buttons -->

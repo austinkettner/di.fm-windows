@@ -23,14 +23,22 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <StackPanel Margin="0,0,34,0" VerticalAlignment="Center">
-            <Grid>
+            <Grid Margin="0,0,0,6" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#C3C3C3" FontSize="16" FontWeight="Bold" />
+                <TextBlock Text="NOW PLAYING" Foreground="#C3C3C3" FontSize="16" FontWeight="Bold">
+                    <TextBlock.RenderTransform>
+                        <TranslateTransform Y="1" />
+                    </TextBlock.RenderTransform>
+                </TextBlock>
                 <Border Grid.Column="1" Margin="20,0,0,0" BorderThickness="1" BorderBrush="Red" Visibility="{Binding Path=Model.IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <TextBlock Margin="10,5" Text="64kbs AAC" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <TextBlock Margin="5,2" Text="PREMIUM" Foreground="Red" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform Y="1" />
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
                 </Border>
             </Grid>
             <TextBlock Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="Light" TextTrimming="WordEllipsis" />

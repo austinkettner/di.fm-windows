@@ -299,8 +299,19 @@ namespace DI.FM
         {
             UICommandInvokedHandler handler = new UICommandInvokedHandler(onSettingsCommand);
 
-            SettingsCommand cmd1 = new SettingsCommand("ID_1", "Premium", handler);
-            args.Request.ApplicationCommands.Add(cmd1);
+            var model = this.Resources["Locator"] as ViewModelLocator;
+            if (model.Main.ListenKey == null)
+            {
+                // No licence, not logged in
+                SettingsCommand cmd1 = new SettingsCommand("ID_1", "Login", handler);
+                args.Request.ApplicationCommands.Add(cmd1);
+            }
+            else
+            {
+                SettingsCommand cmd4 = new SettingsCommand("ID_4", "Logout", handler);
+                args.Request.ApplicationCommands.Add(cmd4);
+            }
+
             SettingsCommand cmd2 = new SettingsCommand("ID_2", "Privacy", handler);
             args.Request.ApplicationCommands.Add(cmd2);
             SettingsCommand cmd3 = new SettingsCommand("ID_3", "Support", handler);
@@ -319,6 +330,11 @@ namespace DI.FM
                     settings.Background = new SolidColorBrush(Colors.White);
                     settings.HeaderText = command.Label;
                     settings.IsOpen = true;
+                    break;
+                case "ID_4":
+                    var model = this.Resources["Locator"] as ViewModelLocator;
+                    model.Main.ListenKey = null;
+                    model.Main.GetIsPremium();
                     break;
                 case "ID_2":
                     await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));
