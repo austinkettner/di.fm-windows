@@ -25,7 +25,7 @@ namespace DI.FM.View
             this.DefaultViewModel.Add("Model", Model);
             this.DefaultViewModel.Add("NowPlaying", App.PlayingMedia);
             // Init the player
-            this.Loaded += (sender, e) =>
+            /*this.Loaded += (sender, e) =>
             {
                 if (App.PlayingMedia.MediaPlayer == null)
                 {
@@ -35,7 +35,7 @@ namespace DI.FM.View
                 App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
                 MediaPlayer_CurrentStateChanged(null, null);
             };
-            this.Unloaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };
+            this.Unloaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };*/
             // Load saved settings
             ToggleShuffle.IsChecked = (bool?)ApplicationData.Current.RoamingSettings.Values["ShuffleChannels"];
         }

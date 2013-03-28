@@ -1,0 +1,18 @@
+﻿<Page
+    x:Class="DI.FM.View.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DI.FM.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="Listen key" FontSize="18" Foreground="Black" />
+            <TextBox x:Name="TextListenKey" Background="White" BorderBrush="#FF4D4D4D" />
+            <Button Content="Save" Click="Button_Click" Background="#FF3062E8" BorderBrush="#BF13449B" />
+            <Button Content="Delete" Click="ButtonRemoveKey_Click" Background="#FF3062E8" BorderBrush="#BF13449B" />
+        </StackPanel>
+    </Grid>
+</Page>

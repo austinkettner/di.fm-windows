@@ -22,8 +22,8 @@ namespace DI.FM.View
             this.DataContext = Model;
             CheckTrackStates();
             // Hook up media events
-            this.Loaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged; };
-            this.Unloaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };
+           /* this.Loaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged; };
+            this.Unloaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };*/
         }
 
         private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
@@ -45,7 +45,7 @@ namespace DI.FM.View
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
         {
-            if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing && Model.NowPlayingItem == App.PlayingMedia.PlayingItem)
+           /* if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing && Model.NowPlayingItem == App.PlayingMedia.PlayingItem)
             {
                 App.PlayingMedia.MediaPlayer.Source = null;
                 MediaControl.IsPlaying = false;
@@ -53,7 +53,9 @@ namespace DI.FM.View
             else
             {
                 App.PlayingMedia.PlayingItem = Model.NowPlayingItem;
-            }
+            }*/
+
+            Model.PlayChannel(Model.NowPlayingItem);
         }
 
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)

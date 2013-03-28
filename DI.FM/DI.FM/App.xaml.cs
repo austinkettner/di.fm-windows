@@ -1,4 +1,5 @@
-﻿using DI.FM.Common;
+﻿using Callisto.Controls;
+using DI.FM.Common;
 using DI.FM.View;
 using DI.FM.ViewModel;
 using System;
@@ -9,6 +10,7 @@ using Windows.Data.Xml.Dom;
 using Windows.Media;
 using Windows.Storage;
 using Windows.System;
+using Windows.UI;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Core;
 using Windows.UI.Notifications;
@@ -227,11 +229,19 @@ namespace DI.FM
 
             var rootFrame = Window.Current.Content as Frame;
 
+            var model = this.Resources["Locator"] as ViewModelLocator;
+            await model.Main.UpdateChannels();
+
             if (rootFrame == null)
             {
                 // Load all channels when first started
-                var model = this.Resources["Locator"] as ViewModelLocator;
-                await model.Main.LoadAllChannels();
+                
+                //await model.Main.LoadAllChannels();
+                
+
+
+               
+
 
                 // Load last played channel when first started
                 var channelKey = ApplicationData.Current.LocalSettings.Values["LastPlayedChannel"];
@@ -270,6 +280,15 @@ namespace DI.FM
 
             Window.Current.Activate();
 
+            rootFrame.Loaded += (sender, e) =>
+            {
+                // Media
+                var rootGrid = VisualTreeHelper.GetChild(Window.Current.Content, 0);
+                model.Main.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
+            };
+
+
+
             SearchPane.GetForCurrentView().SearchHistoryEnabled = false;
 
             // Init the charms options
@@ -280,6 +299,8 @@ namespace DI.FM
         {
             UICommandInvokedHandler handler = new UICommandInvokedHandler(onSettingsCommand);
 
+            SettingsCommand cmd1 = new SettingsCommand("ID_1", "Premium", handler);
+            args.Request.ApplicationCommands.Add(cmd1);
             SettingsCommand cmd2 = new SettingsCommand("ID_2", "Privacy", handler);
             args.Request.ApplicationCommands.Add(cmd2);
             SettingsCommand cmd3 = new SettingsCommand("ID_3", "Support", handler);
@@ -290,6 +311,15 @@ namespace DI.FM
         {
             switch (command.Id.ToString())
             {
+                case "ID_1":
+                    var settings = new SettingsFlyout();
+                    settings.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                    settings.Content = new LoginPage();
+                    settings.HeaderBrush = new SolidColorBrush(Color.FromArgb(255, 0, 77, 96));
+                    settings.Background = new SolidColorBrush(Colors.White);
+                    settings.HeaderText = command.Label;
+                    settings.IsOpen = true;
+                    break;
                 case "ID_2":
                     await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));
                     break;

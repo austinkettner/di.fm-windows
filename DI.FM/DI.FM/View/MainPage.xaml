@@ -17,6 +17,8 @@
                         <Button Style="{StaticResource SkipBackAppBarButtonStyle}" AutomationProperties.Name="Prev" Click="ButtonPrev_Click" />
                         <Button Style="{StaticResource SkipAheadAppBarButtonStyle}" AutomationProperties.Name="Next" Click="ButtonNext_Click" />
                         <ToggleButton x:Name="ToggleShuffle" Style="{StaticResource ShuffleAppBarButtonStyle}" Click="ToggleShuffle_Click" />
+                        <TextBlock Text="{Binding Model.IsPremium}" />
+                        <TextBlock Text="{Binding Model.IsPlaying}" />
                     </StackPanel>
                     <StackPanel x:Name="StackSelectedOptions" Orientation="Horizontal" Visibility="Collapsed">
                         <Rectangle x:Name="RectangleSeparator" Margin="20" Width="2" Fill="#64FFFFFF" />

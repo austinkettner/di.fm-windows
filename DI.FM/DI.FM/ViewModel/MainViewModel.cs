@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace DI.FM.ViewModel
 {
@@ -93,6 +94,9 @@ namespace DI.FM.ViewModel
                 //LoadAllChannels();
 
                 //IsPremium();
+
+                GetIsPremium();
+                CreateEmptyChannels();
             }
         }
 
@@ -297,6 +301,42 @@ namespace DI.FM.ViewModel
 
 
 
+        private MediaElement _mediaPlayer;
+        public MediaElement MediaPlayer
+        {
+            get { return _mediaPlayer; }
+            set
+            {
+                _mediaPlayer = value;
+                _mediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
+            }
+        }
+
+        private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
+        {
+            IsPlaying = MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Playing;
+        }
+
+        private bool _isPlaying;
+        public bool IsPlaying
+        {
+            get { return _isPlaying; }
+            set
+            {
+                _isPlaying = value;
+                RaisePropertyChanged("IsPlaying");
+            }
+        }
+
+        public void PlayChannel(ChannelItem channel)
+        {
+            if (MediaPlayer != null)
+            {
+                MediaPlayer.Source = new Uri(channel.Streams[0]);
+                NowPlayingItem = channel;
+            }
+        }
+
 
 
 
@@ -327,19 +367,12 @@ namespace DI.FM.ViewModel
 
                 i++;
             }
-
-            UpdateChannels();
         }
 
-        private async void UpdateChannels()
+        public async Task UpdateChannels()
         {
-            var isPrem = await IsPremium();
-
-            //await new MessageDialog("Invalid dsa").ShowAsync();
-
             string data = null;
-            if (isPrem) data = await ChannelsHelper.DownloadJson(ChannelsHelper.PREMIUM_CHANNELS_URL);
-            else data = await ChannelsHelper.DownloadJson(ChannelsHelper.FREE_CHANNELS_URL);
+            data = await ChannelsHelper.DownloadJson(ChannelsHelper.FREE_CHANNELS_URL);
 
             if (data != null)
             {
@@ -353,8 +386,16 @@ namespace DI.FM.ViewModel
                     item.Name = chn.Value<string>("name");
                     item.Description = chn.Value<string>("description");
 
-                    GetChannelStream(item, isPrem);
+                    GetChannelStream(item, IsPremium);
                 }
+            }
+        }
+
+        public void ReUpdateChannelStreams()
+        {
+            foreach (var item in AllChannels)
+            {
+                GetChannelStream(item, IsPremium);
             }
         }
 
@@ -383,22 +424,35 @@ namespace DI.FM.ViewModel
             get
             {
                 return ApplicationData.Current.LocalSettings.Values["ListenKey"] as string;
-                return "31c818d91fe2eae4814bbc2f";
+                //return "31c818d91fe2eae4814bbc2f";
             }
         }
 
-        private async Task<bool> IsPremium()
+        public async void GetIsPremium()
         {
             var key = ListenKey;
-
-            if (key == null) return false;
+            if (key == null)
+            {
+                IsPremium = false;
+                return;
+            }
 
             var url = "http://listen.di.fm/premium/favorites?" + key;
-
             var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
             var x = await client.GetAsync(url);
 
-            return x.IsSuccessStatusCode;
+            IsPremium = x.IsSuccessStatusCode;
+        }
+
+        private bool _isPremium;
+        public bool IsPremium
+        {
+            get { return _isPremium; }
+            set
+            {
+                _isPremium = value;
+                RaisePropertyChanged("IsPremium");
+            }
         }
     }
 }
