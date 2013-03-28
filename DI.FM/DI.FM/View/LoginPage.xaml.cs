@@ -53,6 +53,7 @@ namespace DI.FM.View
                 var loc = App.Current.Resources["Locator"] as ViewModelLocator;
                 loc.Main.ListenKey = lk;
                 loc.Main.GetIsPremium();
+                loc.Main.ReUpdateChannelStreams();
             }
             else
             {
