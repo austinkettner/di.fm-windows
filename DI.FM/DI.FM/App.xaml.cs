@@ -25,7 +25,7 @@ namespace DI.FM
     {
         #region Variables
 
-        public static NowPlayingItem PlayingMedia;
+        /*public static NowPlayingItem PlayingMedia;
 
         public class NowPlayingItem : BindableBase
         {
@@ -153,7 +153,7 @@ namespace DI.FM
                 }
                 catch { return null; }
             }
-        }
+        }*/
 
         #endregion
 
@@ -164,7 +164,7 @@ namespace DI.FM
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             // Init the now playing item
-            PlayingMedia = new NowPlayingItem();
+            //PlayingMedia = new NowPlayingItem();
             // Init the windows 8 mini player
             MediaControl.PlayPressed += MediaControl_PlayPressed;
             MediaControl.PausePressed += MediaControl_PausePressed;
@@ -178,7 +178,7 @@ namespace DI.FM
 
         private async void MediaControl_PlayPauseTogglePressed(object sender, object e)
         {
-            await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            /*await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 if (PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
                 {
@@ -190,34 +190,34 @@ namespace DI.FM
                     MediaControl_PlayPressed(sender, e);
                     MediaControl.IsPlaying = true;
                 }
-            });
+            });*/
         }
 
         private async void MediaControl_PlayPressed(object sender, object e)
         {
-            await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            /*await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 PlayingMedia.MediaPlayer.Source = new Uri(PlayingMedia.PlayingItem.Streams[0]);
                 MediaControl.IsPlaying = true;
-            });
+            });*/
         }
 
         private async void MediaControl_PausePressed(object sender, object e)
         {
-            await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            /*await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 PlayingMedia.MediaPlayer.Source = null;
                 MediaControl.IsPlaying = false;
-            });
+            });*/
         }
 
         private async void MediaControl_StopPressed(object sender, object e)
         {
-            await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            /*await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 PlayingMedia.MediaPlayer.Source = null;
                 MediaControl.IsPlaying = false;
-            });
+            });*/
         }
 
         #endregion
@@ -251,7 +251,7 @@ namespace DI.FM
                     {
                         if (channel.Key.Equals(channelKey))
                         {
-                            App.PlayingMedia.SetSilentNowPlayingItem(channel);
+                           // App.PlayingMedia.SetSilentNowPlayingItem(channel);
                             model.Main.NowPlayingItem = channel;
                             break;
                         }

@@ -1,12 +1,13 @@
 ﻿<common:LayoutAwarePage
+    x:Class="DI.FM.View.MainPage"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:common="using:DI.FM.Common"
+    xmlns:controls="using:DI.FM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:Microsoft.Advertising.WinRT.UI"
-    x:Class="DI.FM.View.MainPage"
     mc:Ignorable="d">
     
     <Page.BottomAppBar>
@@ -40,6 +41,10 @@
         <common:DurationConverter x:Key="DurationConverter" />
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
         <common:FavoritesHeaderVisibility x:Key="FavoritesHeaderVisibility" />
+
+        <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <common:PlayStopButtonConverter x:Key="PlayStopButtonConverter" />
+        
         <!-- Styles -->
         <Style x:Key="GroupGridView" TargetType="GridView">
             <Setter Property="ItemContainerStyle" Value="{StaticResource GridViewChannelItemStyle}" />
@@ -96,17 +101,28 @@
                     <Grid HorizontalAlignment="Left">
                         <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
                     </Grid>
-                    <Grid MaxWidth="800" HorizontalAlignment="Right" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                    <controls:MediaController />
+                    <!--<Grid MaxWidth="800" HorizontalAlignment="Right" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <StackPanel Margin="0,0,34,0" VerticalAlignment="Center">
-                            <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#C3C3C3" FontSize="16" FontWeight="Bold" />
-                            <TextBlock Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="Light" TextTrimming="WordEllipsis" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#C3C3C3" FontSize="16" FontWeight="Bold" />
+                                <Border Grid.Column="1" Margin="20,0,0,0" BorderThickness="1" BorderBrush="Red" Visibility="{Binding Path=Model.IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Margin="10,5" Text="64kbs AAC" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </Grid>
+                            <TextBlock Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="Light" TextTrimming="WordEllipsis" />
                         </StackPanel>
-                        <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
-                    </Grid>
+                        <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{Binding Path=Model.IsPlaying, Converter={StaticResource PlayStopButtonConverter}}"
+                                Click="ButtonPlayStop_Click" />
+                    </Grid>-->
                 </Grid>
             </Border>
             <!-- Content -->
@@ -129,7 +145,7 @@
                         <GridView>
                             <GridView.Items>
                                 <!-- Now Playing -->
-                                <Grid Margin="0,0,70,0" Width="426" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                <Grid Margin="0,0,70,0" Width="426" Visibility="{Binding Path=Model.NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -142,14 +158,14 @@
                                     <Grid Grid.Row="1">
                                         <StackPanel>
                                             <Image Source="{Binding NowPlaying.PlayingItem.Image}" />
-                                            <ProgressBar Height="5" Foreground="#0fa7ff" Value="{Binding NowPlaying.PlayingItem.NowPlaying.Position}" Maximum="{Binding NowPlaying.PlayingItem.NowPlaying.Duration}" />
+                                            <ProgressBar Height="5" Foreground="#0fa7ff" Value="{Binding Model.NowPlayingItem.NowPlaying.Position}" Maximum="{Binding NowPlaying.PlayingItem.NowPlaying.Duration}" />
                                             <StackPanel Background="#121212">
                                                 <Grid Margin="10,5,10,12">
-                                                    <TextBlock Text="{Binding Path=NowPlaying.PlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
-                                                    <TextBlock Text="{Binding Path=NowPlaying.PlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
+                                                    <TextBlock Text="{Binding Path=Model.NowPlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
+                                                    <TextBlock Text="{Binding Path=Model.NowPlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
                                                 </Grid>
-                                                <TextBlock Margin="10,0,20,3" Text="{Binding NowPlaying.PlayingItem.Name}" Foreground="White" FontSize="18" FontWeight="Bold" />
-                                                <TextBlock Margin="10,0,20,16" Text="{Binding NowPlaying.PlayingItem.NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                                <TextBlock Margin="10,0,20,3" Text="{Binding Model.NowPlayingItem.Name}" Foreground="White" FontSize="18" FontWeight="Bold" />
+                                                <TextBlock Margin="10,0,20,16" Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
                                             </StackPanel>
                                         </StackPanel>
                                     </Grid>

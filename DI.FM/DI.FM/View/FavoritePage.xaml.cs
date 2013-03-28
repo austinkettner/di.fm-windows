@@ -19,31 +19,24 @@ namespace DI.FM.View
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
             // Bind the model
             this.DefaultViewModel.Add("Favorites", Model.FavoriteChannels);
-            this.DefaultViewModel.Add("NowPlaying", App.PlayingMedia);
-            // Hook up media events
-            this.Loaded += (sender, e) =>
-            {
-                MediaPlayer_CurrentStateChanged(null, null);
-                App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged;
-            };
-            this.Unloaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };
+            //this.DefaultViewModel.Add("NowPlaying", App.PlayingMedia);
         }
 
         private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
         {
-            if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
+            /*if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
             {
                 ButtonPlayStop.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
             }
             else
             {
                 ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
-            }
+            }*/
         }
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
         {
-            App.PlayingMedia.TogglePlayStop();
+            /*App.PlayingMedia.TogglePlayStop();*/
         }
 
         private void GridViewFavorites_ItemClick(object sender, ItemClickEventArgs e)

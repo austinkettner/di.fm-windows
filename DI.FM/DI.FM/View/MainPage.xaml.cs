@@ -23,7 +23,7 @@ namespace DI.FM.View
             // Init the model
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
             this.DefaultViewModel.Add("Model", Model);
-            this.DefaultViewModel.Add("NowPlaying", App.PlayingMedia);
+            //this.DefaultViewModel.Add("NowPlaying", App.PlayingMedia);
             // Init the player
             /*this.Loaded += (sender, e) =>
             {
@@ -42,7 +42,7 @@ namespace DI.FM.View
 
         protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
         {
-            this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
+            //this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
         }
 
         #region Next/Prev/Shuffle
@@ -56,7 +56,7 @@ namespace DI.FM.View
 
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
         {
-            if (ToggleShuffle.IsChecked == true)
+            /*if (ToggleShuffle.IsChecked == true)
             {
                 ShuffleChannel();
             }
@@ -66,12 +66,12 @@ namespace DI.FM.View
                 if (index != -1 && index > 0) App.PlayingMedia.PlayingItem = this.Model.AllChannels[index - 1];
             }
 
-            this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
+            this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;*/
         }
 
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
-            if (ToggleShuffle.IsChecked == true)
+           /* if (ToggleShuffle.IsChecked == true)
             {
                 ShuffleChannel();
             }
@@ -81,14 +81,14 @@ namespace DI.FM.View
                 if (index != -1 && index < this.Model.AllChannels.Count - 1) App.PlayingMedia.PlayingItem = this.Model.AllChannels[index + 1];
             }
 
-            this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
+            this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;*/
         }
 
         private void ShuffleChannel()
         {
-            var random = new Random();
+            /*var random = new Random();
             var index = random.Next(0, this.Model.AllChannels.Count);
-            App.PlayingMedia.PlayingItem = this.Model.AllChannels[index];
+            App.PlayingMedia.PlayingItem = this.Model.AllChannels[index];*/
         }
 
         #endregion
@@ -182,7 +182,7 @@ namespace DI.FM.View
 
         private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
         {
-            if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
+           /* if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
             {
                 ButtonPlayStop.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
             }
@@ -191,18 +191,18 @@ namespace DI.FM.View
                 ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
             }
 
-            ButtonPlayStop1.Style = ButtonPlayStop.Style;
+            ButtonPlayStop1.Style = ButtonPlayStop.Style;*/
         }
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
         {
-            App.PlayingMedia.TogglePlayStop();
+            //App.PlayingMedia.TogglePlayStop();
         }
 
         private void ButtonNowPlaying_Click(object sender, RoutedEventArgs e)
         {
-            Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
-            this.Frame.Navigate(typeof(ChannelPage));
+           // Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
+            //this.Frame.Navigate(typeof(ChannelPage));
         }
 
         private void ButtonFavorites_Click(object sender, RoutedEventArgs e)

@@ -1,0 +1,42 @@
+﻿<UserControl
+    x:Class="DI.FM.Controls.MediaController"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DI.FM.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:common="using:DI.FM.Common"
+    mc:Ignorable="d" MaxWidth="800" HorizontalAlignment="Right">
+    
+    <UserControl.Resources>
+        <common:DurationConverter x:Key="DurationConverter" />
+        <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+        <common:FavoritesHeaderVisibility x:Key="FavoritesHeaderVisibility" />
+
+        <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <common:PlayStopButtonConverter x:Key="PlayStopButtonConverter" />
+    </UserControl.Resources>
+
+    <Grid Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="0,0,34,0" VerticalAlignment="Center">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#C3C3C3" FontSize="16" FontWeight="Bold" />
+                <Border Grid.Column="1" Margin="20,0,0,0" BorderThickness="1" BorderBrush="Red" Visibility="{Binding Path=Model.IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Margin="10,5" Text="64kbs AAC" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+            </Grid>
+            <TextBlock Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="Light" TextTrimming="WordEllipsis" />
+        </StackPanel>
+        <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{Binding Path=Model.IsPlaying, Converter={StaticResource PlayStopButtonConverter}}"
+                                 />
+    </Grid>
+    
+</UserControl>

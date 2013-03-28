@@ -28,7 +28,7 @@ namespace DI.FM.View
 
         private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
         {
-            if (App.PlayingMedia.PlayingItem == Model.NowPlayingItem)
+            /*if (App.PlayingMedia.PlayingItem == Model.NowPlayingItem)
             {
                 if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
                 {
@@ -40,7 +40,7 @@ namespace DI.FM.View
                 }
 
                 ButtonPlayStop1.Style = ButtonPlayStop.Style;
-            }
+            }*/
         }
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
@@ -72,7 +72,7 @@ namespace DI.FM.View
 
         private void CheckTrackStates()
         {
-            if (Model.NowPlayingItem != null && Model.NowPlayingItem == App.PlayingMedia.PlayingItem && App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
+            /*if (Model.NowPlayingItem != null && Model.NowPlayingItem == App.PlayingMedia.PlayingItem && App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
             {
                 ButtonPlayStop.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
             }
@@ -90,7 +90,7 @@ namespace DI.FM.View
             else
             {
                 ButtonFavorite.Style = App.Current.Resources["FavoriteAppBarButtonStyle"] as Style;
-            }
+            }*/
         }
 
         private async void ButtonFavorite_Click(object sender, RoutedEventArgs e)
