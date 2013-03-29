@@ -47,7 +47,7 @@
         </VisualStateManager.VisualStateGroups>
         
         <!-- Filled View -->
-        <Grid x:Name="FilledGrid" Background="{Binding NowPlayingItem.Color1}">
+        <Grid x:Name="FilledGrid" Background="{Binding Channel.Color1}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="90" />
                 <RowDefinition />
@@ -61,9 +61,9 @@
                     </Grid.ColumnDefinitions>
                     <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" VerticalAlignment="Center" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
                     <TextBlock Grid.Column="1" VerticalAlignment="Center">
-                        <Run Text="{Binding NowPlayingItem.Name}" Foreground="White" FontSize="40.2" FontWeight="SemiLight" />
+                        <Run Text="{Binding Channel.Name}" Foreground="White" FontSize="40.2" FontWeight="SemiLight" />
                         <LineBreak />
-                        <Run Text="{Binding NowPlayingItem.Description}" Foreground="#c3c3c3" FontSize="17.4" FontWeight="SemiLight" />
+                        <Run Text="{Binding Channel.Description}" Foreground="#c3c3c3" FontSize="17.4" FontWeight="SemiLight" />
                     </TextBlock>
                     <Image Grid.ColumnSpan="2" Source="../Assets/TopArt.png" Stretch="None" VerticalAlignment="Bottom" HorizontalAlignment="Right" Opacity="0.75" />
                 </Grid>
@@ -76,13 +76,13 @@
                 </Grid.ColumnDefinitions>
                 <!-- Channel Album Artwork (Large) -->
                 <Grid HorizontalAlignment="Left">
-                    <Image Source="{Binding NowPlayingItem.Image}" Stretch="UniformToFill" Opacity="0.75" />
+                    <Image Source="{Binding Channel.Image}" Stretch="UniformToFill" Opacity="0.75" />
                     <Rectangle Width="400" HorizontalAlignment="Right">
                         <Rectangle.Fill>
                             <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
                                 <GradientStopCollection>
                                     <GradientStop Offset="0" />
-                                    <GradientStop Color="{Binding NowPlayingItem.Color1}" Offset="1" />
+                                    <GradientStop Color="{Binding Channel.Color1}" Offset="1" />
                                 </GradientStopCollection>
                             </LinearGradientBrush>
                         </Rectangle.Fill>
@@ -94,7 +94,7 @@
                         <TextBlock Margin="0,0,0,8" Text="CURRENTLY PLAYING" FontSize="18.6" FontWeight="Bold" />
                         <Grid Height="170">
                             <Grid.Background>
-                                <SolidColorBrush Color="{Binding NowPlayingItem.Color2}" Opacity="0.7" />
+                                <SolidColorBrush Color="{Binding Channel.Color2}" Opacity="0.7" />
                             </Grid.Background>
                             <Border BorderThickness="1" BorderBrush="#16FFFFFF" />
                             <Grid Margin="15,10">
@@ -107,20 +107,17 @@
                                     <RowDefinition />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding NowPlayingItem.NowPlaying.Track}" FontSize="26.1" FontWeight="Light" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                                <TextBlock Text="{Binding Channel.NowPlaying.Track}" FontSize="26.1" FontWeight="Light" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
                                 <TextBlock Grid.Row="1" FontSize="21.3" FontWeight="Normal" VerticalAlignment="Bottom" HorizontalAlignment="Left">
-                                    <Run Text="{Binding Path=NowPlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" />
-                                    <Run Text="/" />
-                                    <Run Text="{Binding Path=NowPlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" />
-                                    Buffering: <Run Text="{Binding Path=IsBuffering}" /> at index: <Run Text="{Binding StreamIndex}" />
+                                    <Run Text="{Binding Path=Channel.NowPlaying.Position, Converter={StaticResource DurationConverter}}" />/<Run Text="{Binding Path=Channel.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" />
                                 </TextBlock>
                                 <Button x:Name="ButtonPlayStop" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,4" Style="{StaticResource PlayIconButtonStyle}"
-                                        IsEnabled="{Binding Path=IsBuffering, Converter={StaticResource BooleanNegationConverter}}" Click="ButtonPlayStop_Click" />
+                                        IsEnabled="{Binding Path=Model.IsBuffering, Converter={StaticResource BooleanNegationConverter}}" Click="ButtonPlayStop_Click" />
                             </Grid>
                         </Grid>
                         <!-- Prev/Next Buttons -->
                         <Grid Margin="0,30,0,0">
-                            <Button HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding Path=NowPlayingItem.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev_Click">
+                            <Button HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding Path=Channel.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev_Click">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
@@ -130,11 +127,11 @@
                                     <TextBlock Grid.Column="1" TextAlignment="Left" LineStackingStrategy="BlockLineHeight" LineHeight="18" >
                                         <Run Text="PREV" FontSize="16.2" FontWeight="Bold" />
                                         <LineBreak/>
-                                        <Run Text="{Binding NowPlayingItem.Prev.Name}" FontSize="16.2" FontWeight="Normal" />
+                                        <Run Text="{Binding Channel.Prev.Name}" FontSize="16.2" FontWeight="Normal" />
                                     </TextBlock>
                                 </Grid>
                             </Button>
-                            <Button HorizontalAlignment="Right" Visibility="{Binding Path=NowPlayingItem.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext_Click">
+                            <Button HorizontalAlignment="Right" Visibility="{Binding Path=Channel.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext_Click">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
@@ -143,7 +140,7 @@
                                     <TextBlock TextAlignment="Right" LineStackingStrategy="BlockLineHeight" LineHeight="18" >
                                         <Run Text="NEXT" FontSize="16.2" FontWeight="Bold" />
                                         <LineBreak />
-                                        <Run Text="{Binding NowPlayingItem.Next.Name}" FontSize="16.2" FontWeight="Normal" />
+                                        <Run Text="{Binding Channel.Next.Name}" FontSize="16.2" FontWeight="Normal" />
                                     </TextBlock>
                                     <Path Grid.Column="1" Margin="8,0,0,0" StrokeThickness="2" Stroke="White"  Data="M 1 1 L 9 9 L 1 16" VerticalAlignment="Center" />
                                 </Grid>
@@ -151,7 +148,7 @@
                         </Grid>
                         <!-- Track History -->
                         <TextBlock Margin="0,30,0,8" Text="TRACK HISTORY" FontSize="18.6" FontWeight="Bold" />
-                        <ListView ItemsSource="{Binding NowPlayingItem.TrackHistory}">
+                        <ListView ItemsSource="{Binding Channel.TrackHistory}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="Transitions">
@@ -194,7 +191,7 @@
             </Grid>
         </Grid>
         <!-- Snapped View -->
-        <Grid x:Name="SnappedGrid" Background="{Binding NowPlayingItem.Color1}" Visibility="Collapsed">
+        <Grid x:Name="SnappedGrid" Background="{Binding Channel.Color1}" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="90" />
                 <RowDefinition />

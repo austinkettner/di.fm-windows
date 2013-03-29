@@ -231,7 +231,7 @@ namespace DI.FM
             var rootFrame = Window.Current.Content as Frame;
 
             var model = this.Resources["Locator"] as ViewModelLocator;
-            await model.Main.UpdateChannels();
+            //await model.Main.UpdateChannels();
 
             if (rootFrame == null)
             {

@@ -384,16 +384,28 @@ namespace DI.FM.ViewModel
         {
             if (channel.Streams.Count > 0)
             {
-                MediaPlayer.Source = new Uri(channel.Streams[0]);
-                NowPlayingItem = channel;
                 StreamIndex = 0;
+                NowPlayingItem = channel;
+                MediaPlayer.Source = new Uri(channel.Streams[0]);                
+            }
+        }
+
+        public void TogglePlay()
+        {
+            if (MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Playing)
+            {
+                MediaPlayer.Source = null;
+            }
+            else
+            {
+                PlayChannel(NowPlayingItem);
             }
         }
 
 
 
 
-        private void CreateEmptyChannels()
+        private async void CreateEmptyChannels()
         {
             AllChannels = new ObservableCollection<ChannelItem>();
 
@@ -420,64 +432,98 @@ namespace DI.FM.ViewModel
 
                 i++;
             }
+
+            UpdateChannels();
         }
 
-        public async Task UpdateChannels()
+        public async void UpdateChannels()
         {
+            var url = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3,premium_high";
             string data = null;
-            data = await ChannelsHelper.DownloadJson(ChannelsHelper.FREE_CHANNELS_URL);
+
+            var cli = new HttpClient();
+            cli.DefaultRequestHeaders.Authorization = CreateBasicHeader("ephemeron", "dayeiph0ne@pp");
+            data = await cli.GetStringAsync(url);
 
             if (data != null)
             {
-                var chns = JsonConvert.DeserializeObject(data) as JContainer;
-
-                foreach (var item in AllChannels)
-                {
-                    var chn = chns.FirstOrDefault((e) => e.Value<string>("key") == item.Key);
-
-                    item.ID = chn.Value<int>("id");
-                    item.Name = chn.Value<string>("name");
-                    item.Description = chn.Value<string>("description");
-
-                    //GetChannelStream(item, IsPremium);
-                }
+                var batch = JsonConvert.DeserializeObject(data) as JContainer;
+                GetChannelsInfo(batch["channel_filters"].First["channels"]);
+                GetChannelsStreams(batch["streamlists"]);
+                GetChannelsNowPlaying(batch["track_history"]);
             }
-
-            GetChannelsStresms();
         }
 
-        /*public void ReUpdateChannelStreams()
+        private void GetChannelsInfo(JToken token)
         {
             foreach (var item in AllChannels)
             {
-                GetChannelStream(item, IsPremium);
+                var chn = token.FirstOrDefault((e) => e.Value<string>("key") == item.Key);
+                if (chn != null)
+                {
+                    item.ID = chn.Value<int>("id");
+                    item.Name = chn.Value<string>("name");
+                    item.Description = chn.Value<string>("description");
+                }
             }
         }
 
-        private async void GetChannelStream(ChannelItem channel, bool premium)
+        public void GetChannelsStreams(JToken token)
         {
-            await Task.Factory.StartNew(async () =>
-            {
-                string data = null;
-                if (premium) data = await ChannelsHelper.DownloadJson(ChannelsHelper.PREMIUM_CHANNELS_URL + @"\" + channel.Key + "?" + ListenKey);
-                else data = await ChannelsHelper.DownloadJson(ChannelsHelper.FREE_CHANNELS_URL + @"\" + channel.Key);
-                if (data != null)
-                {
-                    var streams = JsonConvert.DeserializeObject(data) as JContainer;
+            JToken chn = null;
+            if (IsPremium) chn = token["premium_high"];
+            else chn = token["public3"];
 
-                    channel.Streams.Clear();
-                    foreach (var stream in streams)
+            if (chn != null)
+            {
+                var strms = chn["channels"];
+
+                foreach (var item in AllChannels)
+                {
+                    var urls = strms.FirstOrDefault((e) => e.Value<int>("id") == item.ID);
+
+                    item.Streams.Clear();
+                    var li = urls["streams"];
+
+                    if (li == null) continue;
+
+                    foreach (var urll in li)
                     {
-                        channel.Streams.Add(stream.Value<string>());
+                        if (IsPremium)
+                        {
+                            item.Streams.Add(urll.Value<string>("url") + "?" + ListenKey);
+                        }
+                        else
+                        {
+                            item.Streams.Add(urll.Value<string>("url"));
+                        }
                     }
                 }
-            });
-        }*/
+            }
+        }
 
-        public AuthenticationHeaderValue CreateBasicHeader(string username, string password)
+
+        private void GetChannelsNowPlaying(JToken token)
         {
-            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(username + ":" + password);
-            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            foreach (var item in AllChannels)
+            {
+                var chn = token.FirstOrDefault((e) =>
+                {
+                    var x = e.First.Value<int>("channel_id");
+                    return x == item.ID;
+                }).First;
+
+                if (chn != null)
+                {
+                    
+                    item.NowPlaying = new TrackItem()
+                    {
+                        Track = chn.Value<string>("track"),
+                        Started = chn.Value<int>("started"),
+                        Duration = chn.Value<int>("duration")
+                    };
+                }
+            }
         }
 
         public async void GetChannelsStresms()
@@ -525,6 +571,47 @@ namespace DI.FM.ViewModel
             }
         }
 
+
+
+
+
+
+
+        /*public void ReUpdateChannelStreams()
+        {
+            foreach (var item in AllChannels)
+            {
+                GetChannelStream(item, IsPremium);
+            }
+        }
+
+        private async void GetChannelStream(ChannelItem channel, bool premium)
+        {
+            await Task.Factory.StartNew(async () =>
+            {
+                string data = null;
+                if (premium) data = await ChannelsHelper.DownloadJson(ChannelsHelper.PREMIUM_CHANNELS_URL + @"\" + channel.Key + "?" + ListenKey);
+                else data = await ChannelsHelper.DownloadJson(ChannelsHelper.FREE_CHANNELS_URL + @"\" + channel.Key);
+                if (data != null)
+                {
+                    var streams = JsonConvert.DeserializeObject(data) as JContainer;
+
+                    channel.Streams.Clear();
+                    foreach (var stream in streams)
+                    {
+                        channel.Streams.Add(stream.Value<string>());
+                    }
+                }
+            });
+        }*/
+
+        public AuthenticationHeaderValue CreateBasicHeader(string username, string password)
+        {
+            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(username + ":" + password);
+            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+        }
+
+        
 
 
         public string ListenKey

@@ -5,6 +5,7 @@ using DI.FM.ViewModel;
 using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 
 namespace DI.FM.View
@@ -12,18 +13,29 @@ namespace DI.FM.View
     public sealed partial class ChannelPage : LayoutAwarePage
     {
         private MainViewModel Model;
+        private ChannelItem SelectedItem;
 
         public ChannelPage()
         {
             this.InitializeComponent();
             // Get the model
-            Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+            
             // Bind the model
-            this.DataContext = Model;
-            CheckTrackStates();
+            //this.DataContext = Model;
+            
             // Hook up media events
            /* this.Loaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged; };
             this.Unloaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };*/
+        }
+
+        protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        {
+            Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+            SelectedItem = e.Parameter as ChannelItem;
+
+            this.DefaultViewModel.Add("Model", Model);
+            this.DefaultViewModel.Add("Channel", SelectedItem);
+            CheckTrackStates();
         }
 
         private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
@@ -55,23 +67,46 @@ namespace DI.FM.View
                 App.PlayingMedia.PlayingItem = Model.NowPlayingItem;
             }*/
 
-            Model.PlayChannel(Model.NowPlayingItem);
+            if (Model.NowPlayingItem == SelectedItem)
+            {
+                Model.TogglePlay();
+            }
+            else
+            {
+                Model.PlayChannel(SelectedItem);
+                CheckTrackStates();
+            }
         }
 
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
         {
-            Model.NowPlayingItem = Model.NowPlayingItem.Prev;
+            SelectedItem = SelectedItem.Prev;
+            this.DefaultViewModel["Channel"] = SelectedItem;
             CheckTrackStates();
         }
 
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
-            Model.NowPlayingItem = Model.NowPlayingItem.Next;
+            SelectedItem = SelectedItem.Next;
+            this.DefaultViewModel["Channel"] = SelectedItem;
             CheckTrackStates();
         }
 
         private void CheckTrackStates()
         {
+            if (Model.NowPlayingItem == SelectedItem)
+            {
+                var binding = new Binding();
+                binding.Path = new PropertyPath("Model.IsPlaying");
+                binding.Converter = new PlayStopButtonConverter();
+                ButtonPlayStop.SetBinding(FrameworkElement.StyleProperty, binding);
+            }
+            else
+            {
+                //ButtonPlayStop.SetBinding(FrameworkElement.StyleProperty, null);
+                ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
+            }
+
             /*if (Model.NowPlayingItem != null && Model.NowPlayingItem == App.PlayingMedia.PlayingItem && App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
             {
                 ButtonPlayStop.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
