@@ -96,33 +96,12 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <!-- Header -->
-            <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
+            <Border Background="#212121">
                 <Grid Margin="110,0,56,0" Style="{StaticResource LayoutRootStyle}">
                     <Grid HorizontalAlignment="Left">
                         <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
                     </Grid>
                     <controls:MediaController />
-                    <!--<Grid MaxWidth="800" HorizontalAlignment="Right" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Margin="0,0,34,0" VerticalAlignment="Center">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Margin="0,0,0,6" Text="NOW PLAYING" Foreground="#C3C3C3" FontSize="16" FontWeight="Bold" />
-                                <Border Grid.Column="1" Margin="20,0,0,0" BorderThickness="1" BorderBrush="Red" Visibility="{Binding Path=Model.IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <TextBlock Margin="10,5" Text="64kbs AAC" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Border>
-                            </Grid>
-                            <TextBlock Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="Light" TextTrimming="WordEllipsis" />
-                        </StackPanel>
-                        <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{Binding Path=Model.IsPlaying, Converter={StaticResource PlayStopButtonConverter}}"
-                                Click="ButtonPlayStop_Click" />
-                    </Grid>-->
                 </Grid>
             </Border>
             <!-- Content -->
@@ -136,16 +115,31 @@
                     </LinearGradientBrush>
                 </Grid.Background>
                 <!-- Background -->
-                <Border>
-                    <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
-                </Border>
+                <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
                 <!-- Items -->
                 <SemanticZoom Padding="0" ViewChangeStarted="SemanticZoom_ViewChangeStarted">
                     <SemanticZoom.ZoomedInView>
                         <GridView>
                             <GridView.Items>
+                                <!-- Login -->
+                                <Grid Margin="0,0,70,0" Width="370">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="46" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="1" Background="#0fa7ff">
+                                        <Grid Margin="40">
+                                            <StackPanel>
+                                                <TextBlock Margin="0,0,0,25" Text="Login to DI.FM" FontSize="32" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                                <TextBlock Margin="0,0,0,15" Text="Login to your existing account or create a new one to get started." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                                <TextBlock Text="Premium members have the flexibility to listen to crystal-clear audio using the most popular audio formats. No matter how you choose to connect to your favorite channels, higher quality audio streaming is just a click away." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                            </StackPanel>
+                                            <Button Content="Login" Width="105" Height="42" VerticalAlignment="Bottom" HorizontalAlignment="Left" />
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
                                 <!-- Now Playing -->
-                                <Grid Margin="0,0,70,0" Width="426" Visibility="{Binding Path=Model.NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                <Grid Margin="0,0,70,0" Width="370" Visibility="{Binding Path=Model.NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -155,14 +149,14 @@
                                             <TranslateTransform X="-2" />
                                         </Button.RenderTransform>
                                     </Button>
-                                    <Grid Grid.Row="1">
+                                    <Grid Grid.Row="1" Background="#121212">
                                         <StackPanel>
-                                            <Image Source="{Binding NowPlaying.PlayingItem.Image}" />
+                                            <Image Source="{Binding Model.NowPlayingItem.Image}" />
                                             <ProgressBar Height="5" Foreground="#0fa7ff" Value="{Binding Model.NowPlayingItem.NowPlaying.Position}" Maximum="{Binding NowPlaying.PlayingItem.NowPlaying.Duration}" />
-                                            <StackPanel Background="#121212">
+                                            <StackPanel>
                                                 <Grid Margin="10,5,10,12">
-                                                    <TextBlock Text="{Binding Path=Model.NowPlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
-                                                    <TextBlock Text="{Binding Path=Model.NowPlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="18" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
+                                                    <TextBlock Text="{Binding Path=Model.NowPlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
+                                                    <TextBlock Text="{Binding Path=Model.NowPlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
                                                 </Grid>
                                                 <TextBlock Margin="10,0,20,3" Text="{Binding Model.NowPlayingItem.Name}" Foreground="White" FontSize="18" FontWeight="Bold" />
                                                 <TextBlock Margin="10,0,20,16" Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
@@ -171,53 +165,58 @@
                                     </Grid>
                                 </Grid>
                                 <!-- Favorite Channels -->
-                                <Grid Margin="0,0,70,0">
+                                <Grid Margin="0,0,70,0" Width="370">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="40" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
-                                    <TextBlock Grid.Row="1" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Model.MainFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
-                                        <TextBlock.RenderTransform>
-                                            <TranslateTransform X="6" Y="0" />
-                                        </TextBlock.RenderTransform>
-                                    <Span FontSize="18">Favorite any channel and it will appear here!</Span>
-                                    <LineBreak /><LineBreak />
-                                    1. Select any channel by right clicking.<LineBreak />
-                                    2. Click "Favorite" on the app bar.<LineBreak />
-                                    3. Finished! Quick access to your favorite channels.
-                                    </TextBlock>
-                                    <GridView x:Name="GridViewFavorites" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.MainFavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
-                                          ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
-                                        <GridView.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid Width="425" Height="80" Background="#60121212">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="80" />
-                                                        <ColumnDefinition />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid>
-                                                        <Image Stretch="Uniform">
-                                                            <Image.Source>
-                                                                <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="80" />
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <Border Padding="5,1" Background="#121212" VerticalAlignment="Bottom">
-                                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="12.1" FontWeight="SemiLight" TextWrapping="NoWrap" />
-                                                        </Border>
+                                    <Grid Grid.Row="1" Background="#212121" Height="{Binding ElementName=GridViewChannels, Path=ActualHeight}">
+                                        <TextBlock TextWrapping="Wrap" Margin="40" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Model.MainFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
+                                            <Span FontSize="18">Favorite any channel and it will appear here!</Span>
+                                            <LineBreak /><LineBreak />
+                                            1. Select any channel by right clicking.<LineBreak />
+                                            2. Click "Favorite" on the app bar.<LineBreak />
+                                            3. Finished! Quick access to your favorite channels.
+                                        </TextBlock>
+                                        <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding Model.FavoriteChannels}" IsItemClickEnabled="True" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}"
+                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollMode="Disabled"
+                                                  ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Enabled"
+                                                  ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
+                                            <GridView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Height="80">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="80" />
+                                                            <ColumnDefinition />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid>
+                                                            <Image Stretch="Uniform">
+                                                                <Image.Source>
+                                                                    <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="80" />
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </Grid>
+                                                        <Grid Grid.Column="1" Margin="10,5">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition />
+                                                            </Grid.RowDefinitions>
+                                                            <TextBlock Foreground="White" FontSize="16" FontWeight="Bold">
+                                                                <Run Text="{Binding Name}" /> - <Run Text="Curently Playing" FontSize="13.5" Foreground="#10a1f6" FontWeight="Normal" />
+                                                            </TextBlock>
+                                                            <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                                                        </Grid>
                                                     </Grid>
-                                                    <Grid Grid.Column="1" Margin="10,0" VerticalAlignment="Center">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto" />
-                                                            <RowDefinition />
-                                                        </Grid.RowDefinitions>
-                                                        <TextBlock Text="CURRENTLY PLAYING" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
-                                                        <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
-                                                    </Grid>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </GridView.ItemTemplate>
-                                    </GridView>
+                                                </DataTemplate>
+                                            </GridView.ItemTemplate>
+                                            <GridView.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel />
+                                                </ItemsPanelTemplate>
+                                            </GridView.ItemsPanel>
+                                        </GridView>
+                                    </Grid>
                                 </Grid>
                                 <!-- All Radio Channels -->
                                 <Grid Margin="0,0,70,0">

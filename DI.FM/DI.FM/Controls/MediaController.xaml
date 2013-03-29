@@ -6,45 +6,49 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:common="using:DI.FM.Common"
-    mc:Ignorable="d" MaxWidth="800" HorizontalAlignment="Right">
+    mc:Ignorable="d" MaxWidth="800" HorizontalAlignment="Right" d:DesignWidth="500" d:DesignHeight="100">
     
     <UserControl.Resources>
         <common:DurationConverter x:Key="DurationConverter" />
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
-        <common:FavoritesHeaderVisibility x:Key="FavoritesHeaderVisibility" />
-
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <common:PlayStopButtonConverter x:Key="PlayStopButtonConverter" />
     </UserControl.Resources>
 
-    <Grid Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+    <Grid Height="60" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60" />
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <StackPanel Margin="0,0,34,0" VerticalAlignment="Center">
-            <Grid Margin="0,0,0,6" HorizontalAlignment="Left">
+        <Image Stretch="Uniform">
+            <Image.Source>
+                <BitmapImage UriSource="{Binding Model.NowPlayingItem.Image}" DecodePixelHeight="60" />
+            </Image.Source>
+        </Image>
+        <StackPanel Grid.Column="1" Margin="15,0,35,0" VerticalAlignment="Center">
+            <Grid Margin="0,0,0,6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="NOW PLAYING" Foreground="#C3C3C3" FontSize="16" FontWeight="Bold">
+                <TextBlock Foreground="#c3c3c3" FontSize="16" FontWeight="Bold">
+                     NOW PLAYING: <Run Text="{Binding Model.NowPlayingItem.Name}" />
                     <TextBlock.RenderTransform>
-                        <TranslateTransform Y="1" />
+                        <TranslateTransform Y="2" />
                     </TextBlock.RenderTransform>
                 </TextBlock>
-                <Border Grid.Column="1" Margin="20,0,0,0" BorderThickness="1" BorderBrush="Red" Visibility="{Binding Path=Model.IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <TextBlock Margin="5,2" Text="PREMIUM" Foreground="Red" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="#0fa7ff" Visibility="{Binding Path=Model.IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Margin="5,0" Text="PREMIUM" Foreground="#0fa7ff" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.RenderTransform>
                             <TranslateTransform Y="1" />
                         </TextBlock.RenderTransform>
                     </TextBlock>
                 </Border>
             </Grid>
-            <TextBlock Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="18" FontWeight="Light" TextTrimming="WordEllipsis" />
+            <TextBlock Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21" FontWeight="Light" />
         </StackPanel>
-        <Button x:Name="ButtonPlayStop" Grid.Column="1" VerticalAlignment="Center" Style="{Binding Path=Model.IsPlaying, Converter={StaticResource PlayStopButtonConverter}}"
-                                 />
+        <Button x:Name="ButtonPlayStop" Grid.Column="2" VerticalAlignment="Center" Style="{Binding Path=Model.IsPlaying, Converter={StaticResource PlayStopButtonConverter}}" />
     </Grid>
     
 </UserControl>
