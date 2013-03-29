@@ -122,7 +122,7 @@
                         <GridView>
                             <GridView.Items>
                                 <!-- Login -->
-                                <Grid Margin="0,0,70,0" Width="370">
+                                <Grid x:Name="LoginFeature" Margin="0,0,70,0" Width="370" Visibility="Collapsed">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -134,7 +134,7 @@
                                                 <TextBlock Margin="0,0,0,15" Text="Login to your existing account or create a new one to get started." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
                                                 <TextBlock Text="Premium members have the flexibility to listen to crystal-clear audio using the most popular audio formats. No matter how you choose to connect to your favorite channels, higher quality audio streaming is just a click away." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
                                             </StackPanel>
-                                            <Button Content="Login" Width="105" Height="42" VerticalAlignment="Bottom" HorizontalAlignment="Left" />
+                                            <Button Content="Login" Width="105" Height="42" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="ButtonLogin_Click" />
                                         </Grid>
                                     </Grid>
                                 </Grid>

@@ -2,14 +2,13 @@
     x:Class="DI.FM.Controls.MediaController"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DI.FM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:common="using:DI.FM.Common"
-    mc:Ignorable="d" MaxWidth="800" HorizontalAlignment="Right" d:DesignWidth="500" d:DesignHeight="100">
+    mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="100"
+    MaxWidth="800" HorizontalAlignment="Right">
     
     <UserControl.Resources>
-        <common:DurationConverter x:Key="DurationConverter" />
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <common:PlayStopButtonConverter x:Key="PlayStopButtonConverter" />
@@ -29,22 +28,22 @@
         <StackPanel Grid.Column="1" Margin="15,0,35,0" VerticalAlignment="Center">
             <Grid Margin="0,0,0,6">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock Foreground="#c3c3c3" FontSize="16" FontWeight="Bold">
-                     NOW PLAYING: <Run Text="{Binding Model.NowPlayingItem.Name}" />
-                    <TextBlock.RenderTransform>
-                        <TranslateTransform Y="2" />
-                    </TextBlock.RenderTransform>
-                </TextBlock>
-                <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="#0fa7ff" Visibility="{Binding Path=Model.IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border Margin="0,0,10,0" BorderThickness="1" BorderBrush="#0fa7ff" Visibility="{Binding Path=Model.IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <TextBlock Margin="5,0" Text="PREMIUM" Foreground="#0fa7ff" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.RenderTransform>
                             <TranslateTransform Y="1" />
                         </TextBlock.RenderTransform>
                     </TextBlock>
                 </Border>
+                <TextBlock Grid.Column="1" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold">
+                     NOW PLAYING: <Run Text="{Binding Model.NowPlayingItem.Name}" />
+                    <TextBlock.RenderTransform>
+                        <TranslateTransform Y="2" />
+                    </TextBlock.RenderTransform>
+                </TextBlock>
             </Grid>
             <TextBlock Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21" FontWeight="Light" />
         </StackPanel>

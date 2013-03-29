@@ -38,6 +38,18 @@ namespace DI.FM.View
             this.Unloaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };*/
             // Load saved settings
             ToggleShuffle.IsChecked = (bool?)ApplicationData.Current.RoamingSettings.Values["ShuffleChannels"];
+
+
+
+
+            this.Loaded += (sender, e) =>
+            {
+                var showLogin = ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] as bool?;
+                if (!showLogin.HasValue)
+                {
+                    LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                }
+            };
         }
 
         protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -71,17 +83,17 @@ namespace DI.FM.View
 
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
-           /* if (ToggleShuffle.IsChecked == true)
-            {
-                ShuffleChannel();
-            }
-            else
-            {
-                var index = this.Model.AllChannels.IndexOf(App.PlayingMedia.PlayingItem);
-                if (index != -1 && index < this.Model.AllChannels.Count - 1) App.PlayingMedia.PlayingItem = this.Model.AllChannels[index + 1];
-            }
+            /* if (ToggleShuffle.IsChecked == true)
+             {
+                 ShuffleChannel();
+             }
+             else
+             {
+                 var index = this.Model.AllChannels.IndexOf(App.PlayingMedia.PlayingItem);
+                 if (index != -1 && index < this.Model.AllChannels.Count - 1) App.PlayingMedia.PlayingItem = this.Model.AllChannels[index + 1];
+             }
 
-            this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;*/
+             this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;*/
         }
 
         private void ShuffleChannel()
@@ -182,16 +194,16 @@ namespace DI.FM.View
 
         private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
         {
-           /* if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
-            {
-                ButtonPlayStop.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
-            }
-            else
-            {
-                ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
-            }
+            /* if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
+             {
+                 ButtonPlayStop.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
+             }
+             else
+             {
+                 ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
+             }
 
-            ButtonPlayStop1.Style = ButtonPlayStop.Style;*/
+             ButtonPlayStop1.Style = ButtonPlayStop.Style;*/
         }
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
@@ -201,7 +213,7 @@ namespace DI.FM.View
 
         private void ButtonNowPlaying_Click(object sender, RoutedEventArgs e)
         {
-           // Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
+            // Model.NowPlayingItem = App.PlayingMedia.PlayingItem;
             //this.Frame.Navigate(typeof(ChannelPage));
         }
 
@@ -266,6 +278,13 @@ namespace DI.FM.View
         {
             this.BottomAppBar.IsOpen = false;
             await Model.LoadAllChannels(true);
+        }
+
+        private void ButtonLogin_Click(object sender, RoutedEventArgs e)
+        {
+            ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] = false;
+            LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            App.ShowLoginWindow();
         }
     }
 }

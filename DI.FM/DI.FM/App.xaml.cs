@@ -1,5 +1,6 @@
 ﻿using Callisto.Controls;
 using DI.FM.Common;
+using DI.FM.Controls;
 using DI.FM.View;
 using DI.FM.ViewModel;
 using System;
@@ -235,12 +236,12 @@ namespace DI.FM
             if (rootFrame == null)
             {
                 // Load all channels when first started
-                
+
                 //await model.Main.LoadAllChannels();
-                
 
 
-               
+
+
 
 
                 // Load last played channel when first started
@@ -251,7 +252,7 @@ namespace DI.FM
                     {
                         if (channel.Key.Equals(channelKey))
                         {
-                           // App.PlayingMedia.SetSilentNowPlayingItem(channel);
+                            // App.PlayingMedia.SetSilentNowPlayingItem(channel);
                             model.Main.NowPlayingItem = channel;
                             break;
                         }
@@ -302,20 +303,20 @@ namespace DI.FM
             var model = this.Resources["Locator"] as ViewModelLocator;
             if (model.Main.ListenKey == null)
             {
-                // No licence, not logged in
+                // No licence, not logged in (even if it's not premium)
                 SettingsCommand cmd1 = new SettingsCommand("ID_1", "Login", handler);
                 args.Request.ApplicationCommands.Add(cmd1);
             }
             else
             {
-                SettingsCommand cmd4 = new SettingsCommand("ID_4", "Logout", handler);
-                args.Request.ApplicationCommands.Add(cmd4);
+                SettingsCommand cmd2 = new SettingsCommand("ID_2", "Logout", handler);
+                args.Request.ApplicationCommands.Add(cmd2);
             }
 
-            SettingsCommand cmd2 = new SettingsCommand("ID_2", "Privacy", handler);
-            args.Request.ApplicationCommands.Add(cmd2);
-            SettingsCommand cmd3 = new SettingsCommand("ID_3", "Support", handler);
+            SettingsCommand cmd3 = new SettingsCommand("ID_3", "Privacy", handler);
             args.Request.ApplicationCommands.Add(cmd3);
+            SettingsCommand cmd4 = new SettingsCommand("ID_4", "Support", handler);
+            args.Request.ApplicationCommands.Add(cmd4);
         }
 
         private async void onSettingsCommand(IUICommand command)
@@ -323,28 +324,37 @@ namespace DI.FM
             switch (command.Id.ToString())
             {
                 case "ID_1":
-                    var settings = new SettingsFlyout();
-                    settings.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-                    settings.Content = new LoginPage();
-                    settings.HeaderBrush = new SolidColorBrush(Color.FromArgb(255, 0, 77, 96));
-                    settings.Background = new SolidColorBrush(Colors.White);
-                    settings.HeaderText = command.Label;
-                    settings.IsOpen = true;
-                    break;
-                case "ID_4":
-                    var model = this.Resources["Locator"] as ViewModelLocator;
-                    model.Main.ListenKey = null;
-                    model.Main.GetIsPremium();
-                    model.Main.GetChannelsStresms();
+                    ShowLoginWindow();
                     break;
                 case "ID_2":
-                    await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));
+                    var locator = this.Resources["Locator"] as ViewModelLocator;
+                    locator.Main.ListenKey = null;
+                    locator.Main.GetIsPremium();
+                    locator.Main.GetChannelsStresms();
                     break;
                 case "ID_3":
+                    await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));
+                    break;
+                case "ID_4":
                     await Launcher.LaunchUriAsync(new Uri("mailto:support@quixby.com?subject=Feedback on DI.FM for Windows 8"));
                     break;
                 default:
                     break;
+            }
+        }
+
+        public static void ShowLoginWindow()
+        {
+            var frame = Window.Current.Content as Frame;
+            if (frame != null)
+            {
+                var page = frame.Content as Page;
+                if (page != null)
+                {
+                    var login = new LoginPage();
+                    var grid = page.Content as Grid;
+                    grid.Children.Add(login);
+                }
             }
         }
 
