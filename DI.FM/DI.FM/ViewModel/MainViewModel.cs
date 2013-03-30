@@ -22,6 +22,9 @@ namespace DI.FM.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        // TO-DO: Must do cleanup!
+
+
         #region Variables
 
         private DispatcherTimer nowPlayingRefresh;

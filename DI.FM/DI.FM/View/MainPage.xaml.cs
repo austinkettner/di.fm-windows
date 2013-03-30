@@ -53,32 +53,32 @@ namespace DI.FM.View
 
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
         {
-            /*if (ToggleShuffle.IsChecked == true)
+            if (ToggleShuffle.IsChecked == true)
             {
                 ShuffleChannel();
             }
             else
             {
-                var index = this.Model.AllChannels.IndexOf(App.PlayingMedia.PlayingItem);
-                if (index != -1 && index > 0) App.PlayingMedia.PlayingItem = this.Model.AllChannels[index - 1];
+                if (Model.NowPlayingItem != null && Model.NowPlayingItem.Prev != null)
+                {
+                    Model.PlayChannel(Model.NowPlayingItem.Prev);
+                }
             }
-
-            this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;*/
         }
 
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
-            /* if (ToggleShuffle.IsChecked == true)
+             if (ToggleShuffle.IsChecked == true)
              {
                  ShuffleChannel();
              }
              else
              {
-                 var index = this.Model.AllChannels.IndexOf(App.PlayingMedia.PlayingItem);
-                 if (index != -1 && index < this.Model.AllChannels.Count - 1) App.PlayingMedia.PlayingItem = this.Model.AllChannels[index + 1];
+                 if (Model.NowPlayingItem != null && Model.NowPlayingItem.Next != null)
+                 {
+                     Model.PlayChannel(Model.NowPlayingItem.Next);
+                 }
              }
-
-             this.Model.NowPlayingItem = App.PlayingMedia.PlayingItem;*/
         }
 
         private void ShuffleChannel()
@@ -151,7 +151,7 @@ namespace DI.FM.View
             {
                 foreach (var favItem in TempFavorite)
                 {
-                    this.Model.FavoriteChannels.Insert(0, favItem);
+                    Model.FavoriteChannels.Insert(0, favItem);
                 }
             }
             else
@@ -163,7 +163,7 @@ namespace DI.FM.View
                 }
                 foreach (var unFavItem in temp)
                 {
-                    this.Model.FavoriteChannels.Remove(unFavItem);
+                    Model.FavoriteChannels.Remove(unFavItem);
                 }
             }
 
@@ -174,8 +174,10 @@ namespace DI.FM.View
 
             GridViewFavorites.SelectedItems.Clear();
             GridViewChannels.SelectedItems.Clear();
+            GridViewFavorites1.SelectedItems.Clear();
+            GridViewChannels1.SelectedItems.Clear();
 
-            await this.Model.SaveFavoriteChannels();
+            await Model.SaveFavoriteChannels();
         }
 
         #endregion
@@ -221,6 +223,7 @@ namespace DI.FM.View
         {
             if (ApplicationView.Value == ApplicationViewState.Snapped)
             {
+                GridViewFavorites1.SelectedItems.Clear();
                 GridViewChannels1.SelectedItems.Clear();
             }
             else
@@ -252,6 +255,11 @@ namespace DI.FM.View
             ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] = false;
             LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             App.ShowLoginWindow();
+        }
+
+        private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
+        {
+            Model.TogglePlay();
         }
     }
 }

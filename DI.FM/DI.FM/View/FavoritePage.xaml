@@ -21,7 +21,7 @@
     </Page.Resources>
     
     <Page.BottomAppBar>
-        <AppBar Background="#E53896FA" BorderBrush="{x:Null}">
+        <AppBar Background="#161616" BorderBrush="{x:Null}">
             <Grid>
                 <Button x:Name="ButtonUnfavorite" HorizontalAlignment="Left" Visibility="Collapsed" Style="{StaticResource UnfavoriteAppBarButtonStyle}" Click="ButtonUnfavorite_Click" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

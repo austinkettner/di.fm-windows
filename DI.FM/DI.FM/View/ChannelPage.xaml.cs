@@ -85,10 +85,12 @@ namespace DI.FM.View
                 binding.Path = new PropertyPath("Model.IsPlaying");
                 binding.Converter = new PlayStopButtonConverter();
                 ButtonPlayStop.SetBinding(FrameworkElement.StyleProperty, binding);
+                ButtonPlayStop1.SetBinding(FrameworkElement.StyleProperty, binding);
             }
             else
             {
                 ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
+                ButtonPlayStop1.Style = ButtonPlayStop.Style;
             }
         }
 
