@@ -39,7 +39,7 @@ namespace DI.FM.Controls
 
                 var locator = App.Current.Resources["Locator"] as ViewModelLocator;
                 locator.Main.ListenKey = key;
-                locator.Main.GetIsPremium();
+                locator.Main.CheckPremiumStatus();
                 locator.Main.GetChannelsStresms();
 
                 RemoveWindow();

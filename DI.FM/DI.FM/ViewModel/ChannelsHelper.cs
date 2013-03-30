@@ -7,6 +7,12 @@ namespace DI.FM.ViewModel
 {
     public class ChannelsHelper
     {
+
+        public const string BATCH_UPDATE_URL = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3,premium_high";
+        public const string BATCH_USER = "ephemeron";
+        public const string BATCH_PASS = "dayeiph0ne@pp";
+
+
         public const string FREE_CHANNELS_URL = "http://listen.di.fm/public3"; // MP3 96kbps - FREE
         public const string PREMIUM_CHANNELS_URL = "http://listen.di.fm/premium_high"; // MP3 256kbps - PREMIUM
 

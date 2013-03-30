@@ -2,11 +2,9 @@
 using DI.FM.Common;
 using DI.FM.Controls;
 using DI.FM.ViewModel;
-using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
 
 namespace DI.FM.View
 {
@@ -18,14 +16,6 @@ namespace DI.FM.View
         public ChannelPage()
         {
             this.InitializeComponent();
-            // Get the model
-            
-            // Bind the model
-            //this.DataContext = Model;
-            
-            // Hook up media events
-           /* this.Loaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged += MediaPlayer_CurrentStateChanged; };
-            this.Unloaded += (sender, e) => { App.PlayingMedia.MediaPlayer.CurrentStateChanged -= MediaPlayer_CurrentStateChanged; };*/
         }
 
         protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -35,38 +25,13 @@ namespace DI.FM.View
 
             this.DefaultViewModel.Add("Model", Model);
             this.DefaultViewModel.Add("Channel", SelectedItem);
-            CheckTrackStates();
-        }
 
-        private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
-        {
-            /*if (App.PlayingMedia.PlayingItem == Model.NowPlayingItem)
-            {
-                if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
-                {
-                    ButtonPlayStop.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
-                }
-                else
-                {
-                    ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
-                }
-
-                ButtonPlayStop1.Style = ButtonPlayStop.Style;
-            }*/
+            UpdatePlayStatus();
+            UpdateFavoriteStatus();
         }
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
         {
-           /* if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing && Model.NowPlayingItem == App.PlayingMedia.PlayingItem)
-            {
-                App.PlayingMedia.MediaPlayer.Source = null;
-                MediaControl.IsPlaying = false;
-            }
-            else
-            {
-                App.PlayingMedia.PlayingItem = Model.NowPlayingItem;
-            }*/
-
             if (Model.NowPlayingItem == SelectedItem)
             {
                 Model.TogglePlay();
@@ -74,7 +39,7 @@ namespace DI.FM.View
             else
             {
                 Model.PlayChannel(SelectedItem);
-                CheckTrackStates();
+                UpdatePlayStatus();
             }
         }
 
@@ -82,17 +47,37 @@ namespace DI.FM.View
         {
             SelectedItem = SelectedItem.Prev;
             this.DefaultViewModel["Channel"] = SelectedItem;
-            CheckTrackStates();
+
+            UpdatePlayStatus();
+            UpdateFavoriteStatus();
         }
 
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
             SelectedItem = SelectedItem.Next;
             this.DefaultViewModel["Channel"] = SelectedItem;
-            CheckTrackStates();
+
+            UpdatePlayStatus();
+            UpdateFavoriteStatus();
         }
 
-        private void CheckTrackStates()
+        private void UpdateFavoriteStatus()
+        {
+            if (Model.FavoriteChannels.Contains(Model.NowPlayingItem))
+            {
+                ButtonFavorite.Style = App.Current.Resources["UnfavoriteAppBarButtonStyle"] as Style;
+            }
+            else
+            {
+                ButtonFavorite.Style = App.Current.Resources["FavoriteAppBarButtonStyle"] as Style;
+            }
+
+            // Add to the live update list
+            Model.LiveUpdateList.Clear();
+            Model.LiveUpdateList.Add(SelectedItem);
+        }
+
+        private void UpdatePlayStatus()
         {
             if (Model.NowPlayingItem == SelectedItem)
             {
@@ -103,45 +88,17 @@ namespace DI.FM.View
             }
             else
             {
-                //ButtonPlayStop.SetBinding(FrameworkElement.StyleProperty, null);
                 ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
             }
-
-            /*if (Model.NowPlayingItem != null && Model.NowPlayingItem == App.PlayingMedia.PlayingItem && App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
-            {
-                ButtonPlayStop.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
-            }
-            else
-            {
-                ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
-            }
-
-            ButtonPlayStop1.Style = ButtonPlayStop.Style;
-
-            if (Model.FavoriteChannels.Contains(Model.NowPlayingItem))
-            {
-                ButtonFavorite.Style = App.Current.Resources["UnfavoriteAppBarButtonStyle"] as Style;
-            }
-            else
-            {
-                ButtonFavorite.Style = App.Current.Resources["FavoriteAppBarButtonStyle"] as Style;
-            }*/
         }
 
         private async void ButtonFavorite_Click(object sender, RoutedEventArgs e)
         {
             this.BottomAppBar.IsOpen = false;
 
-            if (Model.FavoriteChannels.Contains(Model.NowPlayingItem))
-            {
-                Model.FavoriteChannels.Remove(Model.NowPlayingItem);
-                ButtonFavorite.Style = App.Current.Resources["FavoriteAppBarButtonStyle"] as Style;
-            }
-            else
-            {
-                Model.FavoriteChannels.Insert(0, Model.NowPlayingItem);
-                ButtonFavorite.Style = App.Current.Resources["UnfavoriteAppBarButtonStyle"] as Style;
-            }
+            if (Model.FavoriteChannels.Contains(Model.NowPlayingItem)) Model.FavoriteChannels.Remove(Model.NowPlayingItem);
+            else Model.FavoriteChannels.Insert(0, Model.NowPlayingItem);
+            UpdateFavoriteStatus();
 
             await Model.SaveFavoriteChannels();
         }

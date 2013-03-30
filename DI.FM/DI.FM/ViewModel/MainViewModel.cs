@@ -10,10 +10,13 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Windows.Media;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace DI.FM.ViewModel
 {
@@ -92,14 +95,77 @@ namespace DI.FM.ViewModel
                 nowPlayingRefresh = new DispatcherTimer();
                 nowPlayingRefresh.Interval = TimeSpan.FromSeconds(1);
                 nowPlayingRefresh.Tick += NowPlayingRefresh_Tick;
+                nowPlayingRefresh.Start();
                 // Load the channels
                 //LoadAllChannels();
 
                 //IsPremium();
 
-                GetIsPremium();
+                CheckPremiumStatus();
                 CreateEmptyChannels();
+
+                MediaControl.PlayPauseTogglePressed += MediaControl_PlayPauseTogglePressed;
+                MediaControl.PlayPressed += MediaControl_PlayPressed;
+                MediaControl.PausePressed += MediaControl_PausePressed;
+                MediaControl.StopPressed += MediaControl_StopPressed;
+                MediaControl.NextTrackPressed += MediaControl_NextTrackPressed;
+                MediaControl.PreviousTrackPressed += MediaControl_PreviousTrackPressed;
             }
+        }
+
+
+        private async void MediaControl_PlayPauseTogglePressed(object sender, object e)
+        {
+            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                if (MediaPlayer.CurrentState == MediaElementState.Playing)
+                {
+                    MediaControl_PausePressed(sender, e);
+                    MediaControl.IsPlaying = false;
+                }
+                else
+                {
+                    MediaControl_PlayPressed(sender, e);
+                    MediaControl.IsPlaying = true;
+                }
+            });
+        }
+
+        private async void MediaControl_PlayPressed(object sender, object e)
+        {
+            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                PlayChannel(NowPlayingItem);
+                MediaControl.IsPlaying = true;
+            });
+        }
+
+        private async void MediaControl_PausePressed(object sender, object e)
+        {
+            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                MediaPlayer.Source = null;
+                MediaControl.IsPlaying = false;
+            });
+        }
+
+        private async void MediaControl_StopPressed(object sender, object e)
+        {
+            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                MediaPlayer.Source = null;
+                MediaControl.IsPlaying = false;
+            });
+        }
+
+        private void MediaControl_NextTrackPressed(object sender, object e)
+        {
+
+        }
+
+        private void MediaControl_PreviousTrackPressed(object sender, object e)
+        {
+
         }
 
 
@@ -277,26 +343,30 @@ namespace DI.FM.ViewModel
 
         #endregion
 
+        public List<ChannelItem> LiveUpdateList = new List<ChannelItem>();
+
         private void NowPlayingRefresh_Tick(object sender, object e)
         {
-            if (NowPlayingItem.NowPlaying == null || NowPlayingItem.NowPlaying.Started == -1)
+            foreach (var item in LiveUpdateList)
             {
-                // Reload one more time if last reload was not successful
-                LoadTrackHistory(NowPlayingItem);
-                nowPlayingRefresh.Stop();
-                return;
-            }
+                if (item.NowPlaying == null || item.NowPlaying.Started == -1)
+                {
+                    // Reload one more time if last reload was not successful
+                    LoadTrackHistory(item);
+                    continue;
+                }
 
-            var currentPosition = NowPlayingItem.NowPlaying.StartedTime;
-            if (currentPosition > NowPlayingItem.NowPlaying.Duration)
-            {
-                // Reload now playing if music ended and set position to maximum
-                NowPlayingItem.NowPlaying.Position = NowPlayingItem.NowPlaying.Duration;
-                LoadTrackHistory(NowPlayingItem);
-            }
-            else
-            {
-                NowPlayingItem.NowPlaying.Position = (int)currentPosition;
+                var currentPosition = item.NowPlaying.StartedTime;
+                if (currentPosition > item.NowPlaying.Duration)
+                {
+                    // Reload now playing if music ended and set position to maximum
+                    item.NowPlaying.Position = item.NowPlaying.Duration;
+                    LoadTrackHistory(item);
+                }
+                else
+                {
+                    item.NowPlaying.Position = (int)currentPosition;
+                }
             }
         }
 
@@ -382,11 +452,16 @@ namespace DI.FM.ViewModel
 
         public void PlayChannel(ChannelItem channel)
         {
-            if (channel.Streams.Count > 0)
+            if (channel != null && channel.Streams.Count > 0)
             {
                 StreamIndex = 0;
                 NowPlayingItem = channel;
-                MediaPlayer.Source = new Uri(channel.Streams[0]);                
+                MediaPlayer.Source = new Uri(channel.Streams[0]);
+
+                MediaControl.AlbumArt = new Uri(channel.Image);
+                MediaControl.TrackName = channel.Name;
+                MediaControl.ArtistName = channel.NowPlaying.Track;
+                MediaControl.IsPlaying = true;
             }
         }
 
@@ -405,7 +480,7 @@ namespace DI.FM.ViewModel
 
 
 
-        private async void CreateEmptyChannels()
+        private void CreateEmptyChannels()
         {
             AllChannels = new ObservableCollection<ChannelItem>();
 
@@ -429,102 +504,92 @@ namespace DI.FM.ViewModel
                 }
 
                 AllChannels.Add(chn);
-
                 i++;
             }
-
-            UpdateChannels();
         }
 
-        public async void UpdateChannels()
-        {
-            var url = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3,premium_high";
-            string data = null;
+        // BEGIN BATCH_UPDATE
 
-            var cli = new HttpClient();
-            cli.DefaultRequestHeaders.Authorization = CreateBasicHeader("ephemeron", "dayeiph0ne@pp");
-            data = await cli.GetStringAsync(url);
+        public async Task UpdateChannels()
+        {
+            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
+            client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
+
+            string data = null;
+            try { data = await client.GetStringAsync(ChannelsHelper.BATCH_UPDATE_URL); }
+            catch { }
 
             if (data != null)
             {
-                var batch = JsonConvert.DeserializeObject(data) as JContainer;
-                GetChannelsInfo(batch["channel_filters"].First["channels"]);
-                GetChannelsStreams(batch["streamlists"]);
-                GetChannelsNowPlaying(batch["track_history"]);
+                var token = JsonConvert.DeserializeObject(data) as JContainer;
+                UpdateChannelsInfo(token["channel_filters"].First["channels"]);
+                UpdateChannelsStreams(token["streamlists"]);
+                UpdateChannelsTrack(token["track_history"]);
             }
         }
 
-        private void GetChannelsInfo(JToken token)
+        private void UpdateChannelsInfo(JToken token)
         {
             foreach (var item in AllChannels)
             {
-                var chn = token.FirstOrDefault((e) => e.Value<string>("key") == item.Key);
-                if (chn != null)
+                var jChannel = token.FirstOrDefault((e) => e.Value<string>("key") == item.Key);
+                if (jChannel != null)
                 {
-                    item.ID = chn.Value<int>("id");
-                    item.Name = chn.Value<string>("name");
-                    item.Description = chn.Value<string>("description");
+                    item.ID = jChannel.Value<int>("id");
+                    item.Name = jChannel.Value<string>("name");
+                    item.Description = jChannel.Value<string>("description");
                 }
             }
         }
 
-        public void GetChannelsStreams(JToken token)
+        public void UpdateChannelsStreams(JToken token)
         {
-            JToken chn = null;
-            if (IsPremium) chn = token["premium_high"];
-            else chn = token["public3"];
+            JToken jSelection = null;
 
-            if (chn != null)
+            if (IsPremium) jSelection = token["premium_high"];
+            else jSelection = token["public3"];
+
+            if (jSelection != null)
             {
-                var strms = chn["channels"];
+                var jChannels = jSelection["channels"];
 
                 foreach (var item in AllChannels)
                 {
-                    var urls = strms.FirstOrDefault((e) => e.Value<int>("id") == item.ID);
-
                     item.Streams.Clear();
-                    var li = urls["streams"];
 
-                    if (li == null) continue;
+                    var jChannel = jChannels.FirstOrDefault((e) => e.Value<int>("id") == item.ID);
+                    var jUrls = jChannel["streams"];
 
-                    foreach (var urll in li)
+                    foreach (var url in jUrls)
                     {
-                        if (IsPremium)
-                        {
-                            item.Streams.Add(urll.Value<string>("url") + "?" + ListenKey);
-                        }
-                        else
-                        {
-                            item.Streams.Add(urll.Value<string>("url"));
-                        }
+                        if (IsPremium) item.Streams.Add(url.Value<string>("url") + "?" + ListenKey);
+                        else item.Streams.Add(url.Value<string>("url"));
                     }
                 }
             }
         }
 
-
-        private void GetChannelsNowPlaying(JToken token)
+        private void UpdateChannelsTrack(JToken token)
         {
             foreach (var item in AllChannels)
             {
-                var chn = token.FirstOrDefault((e) =>
-                {
-                    var x = e.First.Value<int>("channel_id");
-                    return x == item.ID;
-                }).First;
+                var jChannel = token.FirstOrDefault((e) => e.First.Value<int>("channel_id") == item.ID).First;
 
-                if (chn != null)
+                if (jChannel != null)
                 {
-                    
                     item.NowPlaying = new TrackItem()
                     {
-                        Track = chn.Value<string>("track"),
-                        Started = chn.Value<int>("started"),
-                        Duration = chn.Value<int>("duration")
+                        Track = jChannel.Value<string>("track"),
+                        Started = jChannel.Value<int>("started"),
+                        Duration = jChannel.Value<int>("duration")
                     };
                 }
             }
         }
+
+        // END BATCH_UPDATE
+
+
 
         public async void GetChannelsStresms()
         {
@@ -611,7 +676,7 @@ namespace DI.FM.ViewModel
             return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
         }
 
-        
+
 
 
         public string ListenKey
@@ -630,7 +695,7 @@ namespace DI.FM.ViewModel
 
         private string[] streamUrls = new string[] { "http://prem2.di.fm:80/deeptech", "http://prem1.di.fm:80/deeptech", "http://prem4.di.fm:80/deeptech", "http://prem2.di.fm:80/darkdnb", "http://prem4.di.fm:80/darkdnb", "http://prem1.di.fm:80/darkdnb", "http://prem2.di.fm:80/liquiddubstep", "http://prem1.di.fm:80/liquiddubstep", "http://prem4.di.fm:80/liquiddubstep", "http://prem2.di.fm:80/glitchhop", "http://prem1.di.fm:80/glitchhop", "http://prem4.di.fm:80/glitchhop", "http://prem2.di.fm:80/trance", "http://prem1.di.fm:80/trance", "http://prem4.di.fm:80/trance", "http://prem2.di.fm:80/classiceurodisco", "http://prem1.di.fm:80/classiceurodisco", "http://prem4.di.fm:80/classiceurodisco", "http://prem2.di.fm:80/vocaltrance", "http://prem1.di.fm:80/vocaltrance", "http://prem4.di.fm:80/vocaltrance", "http://prem2.di.fm:80/chillout", "http://prem1.di.fm:80/chillout", "http://prem4.di.fm:80/chillout", "http://prem2.di.fm:80/progressive", "http://prem1.di.fm:80/progressive", "http://prem4.di.fm:80/progressive", "http://prem2.di.fm:80/lounge", "http://prem1.di.fm:80/lounge", "http://prem4.di.fm:80/lounge", "http://prem2.di.fm:80/house", "http://prem1.di.fm:80/house", "http://prem4.di.fm:80/house", "http://prem2.di.fm:80/vocalchillout", "http://prem1.di.fm:80/vocalchillout", "http://prem4.di.fm:80/vocalchillout", "http://prem2.di.fm:80/minimal", "http://prem1.di.fm:80/minimal", "http://prem4.di.fm:80/minimal", "http://prem2.di.fm:80/harddance", "http://prem1.di.fm:80/harddance", "http://prem4.di.fm:80/harddance", "http://prem2.di.fm:80/electrohouse", "http://prem1.di.fm:80/electrohouse", "http://prem4.di.fm:80/electrohouse", "http://prem2.di.fm:80/eurodance", "http://prem1.di.fm:80/eurodance", "http://prem4.di.fm:80/eurodance", "http://prem2.di.fm:80/techhouse", "http://prem1.di.fm:80/techhouse", "http://prem4.di.fm:80/techhouse", "http://prem2.di.fm:80/psychill", "http://prem1.di.fm:80/psychill", "http://prem4.di.fm:80/psychill", "http://prem2.di.fm:80/goapsy", "http://prem1.di.fm:80/goapsy", "http://prem4.di.fm:80/goapsy", "http://prem2.di.fm:80/progressivepsy", "http://prem4.di.fm:80/progressivepsy", "http://prem1.di.fm:80/progressivepsy", "http://prem2.di.fm:80/hardcore", "http://prem1.di.fm:80/hardcore", "http://prem4.di.fm:80/hardcore", "http://prem2.di.fm:80/djmixes", "http://prem1.di.fm:80/djmixes", "http://prem4.di.fm:80/djmixes", "http://prem2.di.fm:80/ambient", "http://prem1.di.fm:80/ambient", "http://prem4.di.fm:80/ambient", "http://prem2.di.fm:80/drumandbass", "http://prem1.di.fm:80/drumandbass", "http://prem4.di.fm:80/drumandbass", "http://prem2.di.fm:80/classicelectronica", "http://prem1.di.fm:80/classicelectronica", "http://prem4.di.fm:80/classicelectronica", "http://prem2.di.fm:80/epictrance", "http://prem4.di.fm:80/epictrance", "http://prem1.di.fm:80/epictrance", "http://prem2.di.fm:80/ukgarage", "http://prem4.di.fm:80/ukgarage", "http://prem1.di.fm:80/ukgarage", "http://prem2.di.fm:80/cosmicdowntempo", "http://prem1.di.fm:80/cosmicdowntempo", "http://prem4.di.fm:80/cosmicdowntempo", "http://prem2.di.fm:80/breaks", "http://prem1.di.fm:80/breaks", "http://prem4.di.fm:80/breaks", "http://prem2.di.fm:80/techno", "http://prem1.di.fm:80/techno", "http://prem4.di.fm:80/techno", "http://prem2.di.fm:80/soulfulhouse", "http://prem1.di.fm:80/soulfulhouse", "http://prem4.di.fm:80/soulfulhouse", "http://prem2.di.fm:80/deephouse", "http://prem4.di.fm:80/deephouse", "http://prem1.di.fm:80/deephouse", "http://prem2.di.fm:80/tribalhouse", "http://prem1.di.fm:80/tribalhouse", "http://prem4.di.fm:80/tribalhouse", "http://prem2.di.fm:80/funkyhouse", "http://prem1.di.fm:80/funkyhouse", "http://prem4.di.fm:80/funkyhouse", "http://prem2.di.fm:80/deepnudisco", "http://prem1.di.fm:80/deepnudisco", "http://prem4.di.fm:80/deepnudisco", "http://prem2.di.fm:80/spacemusic", "http://prem1.di.fm:80/spacemusic", "http://prem4.di.fm:80/spacemusic", "http://prem2.di.fm:80/hardstyle", "http://prem1.di.fm:80/hardstyle", "http://prem4.di.fm:80/hardstyle", "http://prem2.di.fm:80/chilloutdreams", "http://prem1.di.fm:80/chilloutdreams", "http://prem4.di.fm:80/chilloutdreams", "http://prem2.di.fm:80/liquiddnb", "http://prem1.di.fm:80/liquiddnb", "http://prem4.di.fm:80/liquiddnb", "http://prem2.di.fm:80/classiceurodance", "http://prem1.di.fm:80/classiceurodance", "http://prem4.di.fm:80/classiceurodance", "http://prem2.di.fm:80/handsup", "http://prem1.di.fm:80/handsup", "http://prem4.di.fm:80/handsup", "http://prem2.di.fm:80/club", "http://prem1.di.fm:80/club", "http://prem4.di.fm:80/club", "http://prem2.di.fm:80/classictrance", "http://prem1.di.fm:80/classictrance", "http://prem4.di.fm:80/classictrance", "http://prem2.di.fm:80/classicvocaltrance", "http://prem1.di.fm:80/classicvocaltrance", "http://prem4.di.fm:80/classicvocaltrance", "http://prem2.di.fm:80/dubstep", "http://prem1.di.fm:80/dubstep", "http://prem4.di.fm:80/dubstep", "http://prem2.di.fm:80/clubdubstep", "http://prem4.di.fm:80/clubdubstep", "http://prem1.di.fm:80/clubdubstep", "http://prem2.di.fm:80/discohouse", "http://prem1.di.fm:80/discohouse", "http://prem4.di.fm:80/discohouse", "http://prem2.di.fm:80/futuresynthpop", "http://prem1.di.fm:80/futuresynthpop", "http://prem4.di.fm:80/futuresynthpop", "http://prem2.di.fm:80/latinhouse", "http://prem1.di.fm:80/latinhouse", "http://prem4.di.fm:80/latinhouse", "http://prem2.di.fm:80/oldschoolacid", "http://prem1.di.fm:80/oldschoolacid", "http://prem4.di.fm:80/oldschoolacid", "http://prem2.di.fm:80/chiptunes", "http://prem1.di.fm:80/chiptunes", "http://prem4.di.fm:80/chiptunes" };
 
-        public async void GetIsPremium()
+        public async void CheckPremiumStatus()
         {
             var key = ListenKey;
             if (key == null)
@@ -645,8 +710,8 @@ namespace DI.FM.ViewModel
             int index = 0;
 
             var rand = new Random();
-            
-            while(index < maxR)
+
+            while (index < maxR)
             {
                 var url = streamUrls[rand.Next(0, streamUrls.Length - 1)] + "?" + key;
 
@@ -657,7 +722,7 @@ namespace DI.FM.ViewModel
                     IsPremium = true;
                     break;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     IsPremium = false;
                     index++;

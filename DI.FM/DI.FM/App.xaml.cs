@@ -164,64 +164,10 @@ namespace DI.FM
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            // Init the now playing item
-            //PlayingMedia = new NowPlayingItem();
-            // Init the windows 8 mini player
-            MediaControl.PlayPressed += MediaControl_PlayPressed;
-            MediaControl.PausePressed += MediaControl_PausePressed;
-            MediaControl.StopPressed += MediaControl_StopPressed;
-            MediaControl.PlayPauseTogglePressed += MediaControl_PlayPauseTogglePressed;
         }
 
         #endregion
 
-        #region MediaButtons
-
-        private async void MediaControl_PlayPauseTogglePressed(object sender, object e)
-        {
-            /*await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                if (PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
-                {
-                    MediaControl_PausePressed(sender, e);
-                    MediaControl.IsPlaying = false;
-                }
-                else
-                {
-                    MediaControl_PlayPressed(sender, e);
-                    MediaControl.IsPlaying = true;
-                }
-            });*/
-        }
-
-        private async void MediaControl_PlayPressed(object sender, object e)
-        {
-            /*await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                PlayingMedia.MediaPlayer.Source = new Uri(PlayingMedia.PlayingItem.Streams[0]);
-                MediaControl.IsPlaying = true;
-            });*/
-        }
-
-        private async void MediaControl_PausePressed(object sender, object e)
-        {
-            /*await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                PlayingMedia.MediaPlayer.Source = null;
-                MediaControl.IsPlaying = false;
-            });*/
-        }
-
-        private async void MediaControl_StopPressed(object sender, object e)
-        {
-            /*await PlayingMedia.MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                PlayingMedia.MediaPlayer.Source = null;
-                MediaControl.IsPlaying = false;
-            });*/
-        }
-
-        #endregion
 
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
@@ -231,7 +177,7 @@ namespace DI.FM
             var rootFrame = Window.Current.Content as Frame;
 
             var model = this.Resources["Locator"] as ViewModelLocator;
-            //await model.Main.UpdateChannels();
+            await model.Main.UpdateChannels();
 
             if (rootFrame == null)
             {
@@ -329,7 +275,7 @@ namespace DI.FM
                 case "ID_2":
                     var locator = this.Resources["Locator"] as ViewModelLocator;
                     locator.Main.ListenKey = null;
-                    locator.Main.GetIsPremium();
+                    locator.Main.CheckPremiumStatus();
                     locator.Main.GetChannelsStresms();
                     break;
                 case "ID_3":
