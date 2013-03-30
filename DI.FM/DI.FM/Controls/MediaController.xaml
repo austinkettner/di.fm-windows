@@ -12,6 +12,7 @@
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <common:PlayStopButtonConverter x:Key="PlayStopButtonConverter" />
+        <common:BooleanNegationConverter x:Key="BooleanNegationConverter" />
     </UserControl.Resources>
 
     <Grid Height="60" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
@@ -22,7 +23,7 @@
         </Grid.ColumnDefinitions>
         <Image Stretch="Uniform">
             <Image.Source>
-                <BitmapImage UriSource="{Binding Model.NowPlayingItem.Image}" DecodePixelHeight="60" />
+                <BitmapImage UriSource="{Binding NowPlayingItem.Image}" DecodePixelHeight="60" />
             </Image.Source>
         </Image>
         <StackPanel Grid.Column="1" Margin="15,0,35,0" VerticalAlignment="Center">
@@ -31,7 +32,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Border Margin="0,0,10,0" BorderThickness="1" BorderBrush="#0fa7ff" Visibility="{Binding Path=Model.IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border Margin="0,0,10,0" BorderThickness="1" BorderBrush="#0fa7ff" Visibility="{Binding Path=IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <TextBlock Margin="5,0" Text="PREMIUM" Foreground="#0fa7ff" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.RenderTransform>
                             <TranslateTransform Y="1" />
@@ -39,15 +40,16 @@
                     </TextBlock>
                 </Border>
                 <TextBlock Grid.Column="1" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold">
-                     NOW PLAYING: <Run Text="{Binding Model.NowPlayingItem.Name}" />
+                     NOW PLAYING: <Run Text="{Binding NowPlayingItem.Name}" />
                     <TextBlock.RenderTransform>
                         <TranslateTransform Y="2" />
                     </TextBlock.RenderTransform>
                 </TextBlock>
             </Grid>
-            <TextBlock Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21" FontWeight="Light" />
+            <TextBlock Text="{Binding NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21" FontWeight="Light" />
         </StackPanel>
-        <Button x:Name="ButtonPlayStop" Grid.Column="2" VerticalAlignment="Center" Style="{Binding Path=Model.IsPlaying, Converter={StaticResource PlayStopButtonConverter}}" />
+        <Button Grid.Column="2" VerticalAlignment="Center" Style="{Binding Path=IsPlaying, Converter={StaticResource PlayStopButtonConverter}}"
+                IsEnabled="{Binding Path=IsBuffering, Converter={StaticResource BooleanNegationConverter}}" Click="ButtonPlayStop_Click" />
     </Grid>
     
 </UserControl>

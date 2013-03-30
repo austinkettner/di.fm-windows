@@ -103,6 +103,7 @@ namespace DI.FM.ViewModel
 
                 CheckPremiumStatus();
                 CreateEmptyChannels();
+                LoadFavoriteChannels();
 
                 MediaControl.PlayPauseTogglePressed += MediaControl_PlayPauseTogglePressed;
                 MediaControl.PlayPressed += MediaControl_PlayPressed;
@@ -175,8 +176,7 @@ namespace DI.FM.ViewModel
 
         public async Task LoadAllChannels(bool forceDownload = false)
         {
-            CreateEmptyChannels();
-
+            
             /*AllChannels.Clear();
             FavoriteChannels.Clear();
 
@@ -301,7 +301,7 @@ namespace DI.FM.ViewModel
             }
         }
 
-        private async Task LoadFavoriteChannels()
+        private async void LoadFavoriteChannels()
         {
             StorageFile file = null;
 
@@ -313,13 +313,13 @@ namespace DI.FM.ViewModel
                 using (var reader = new StreamReader(await file.OpenStreamForReadAsync()))
                 {
                     var favorites = await reader.ReadToEndAsync();
-                    var array = favorites.Split(';');
+                    var channels = favorites.Split(';');
 
-                    foreach (var channel in AllChannels)
+                    foreach (var item in AllChannels)
                     {
-                        if (array.Contains(channel.Key))
+                        if (channels.Contains(item.Key))
                         {
-                            FavoriteChannels.Add(channel);
+                            FavoriteChannels.Add(item);
                         }
                     }
                 }
@@ -349,18 +349,23 @@ namespace DI.FM.ViewModel
         {
             foreach (var item in LiveUpdateList)
             {
-                if (item.NowPlaying == null || item.NowPlaying.Started == -1)
+                if (item.NowPlaying == null || item.TrackHistory == null || item.TrackHistory.Count == 0)
                 {
-                    // Reload one more time if last reload was not successful
+                    // Reload if no history is available
                     LoadTrackHistory(item);
                     continue;
                 }
 
+                // Data was loading so skip
+                if (item.NowPlaying.Started == -1) continue;
+
                 var currentPosition = item.NowPlaying.StartedTime;
                 if (currentPosition > item.NowPlaying.Duration)
                 {
+                    // -1 -> the channel was sent to get the ...
                     // Reload now playing if music ended and set position to maximum
                     item.NowPlaying.Position = item.NowPlaying.Duration;
+                    item.NowPlaying.Started = -1;
                     LoadTrackHistory(item);
                 }
                 else
@@ -386,30 +391,8 @@ namespace DI.FM.ViewModel
             }
         }
 
-        private async void MediaPlayer_MediaFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            if (NowPlayingItem != null)
-            {
-                StreamIndex++;
 
-                if (StreamIndex < NowPlayingItem.Streams.Count)
-                {
-                    MediaPlayer.Source = new Uri(NowPlayingItem.Streams[StreamIndex]);
-                }
-                else
-                {
-                    var msg = new MessageDialog("Could not connect on any of available streams!", "Cannot play channel");
-                    await msg.ShowAsync();
-                }
-            }
-        }
 
-        private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
-        {
-            IsPlaying = MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Playing;
-            IsBuffering = MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Buffering || MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Opening;
-
-        }
 
         private int _streamIndex;
         public int StreamIndex
@@ -449,6 +432,37 @@ namespace DI.FM.ViewModel
                 }
             }
         }
+
+
+
+
+
+        private async void MediaPlayer_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            if (NowPlayingItem != null)
+            {
+                StreamIndex++;
+
+                if (StreamIndex < NowPlayingItem.Streams.Count)
+                {
+                    MediaPlayer.Source = new Uri(NowPlayingItem.Streams[StreamIndex]);
+                }
+                else
+                {
+                    var msg = new MessageDialog("Could not connect on any of available streams!", "Cannot play channel");
+                    await msg.ShowAsync();
+                }
+            }
+        }
+
+        private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
+        {
+            IsPlaying = MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Playing;
+            IsBuffering = MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Buffering || MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Opening;
+
+        }
+
+       
 
         public void PlayChannel(ChannelItem channel)
         {

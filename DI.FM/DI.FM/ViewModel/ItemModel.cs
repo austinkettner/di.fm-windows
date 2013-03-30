@@ -53,6 +53,15 @@ namespace DI.FM.ViewModel
             {
                 _position = value;
                 RaisePropertyChanged("Position");
+                RaisePropertyChanged("Progress");
+            }
+        }
+
+        public double Progress
+        {
+            get
+            {
+                return 100 * Position / (double)Duration;
             }
         }
 

@@ -18,20 +18,14 @@ namespace DI.FM.View
             // Get the model
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
             // Bind the model
-            this.DefaultViewModel.Add("Favorites", Model.FavoriteChannels);
+            //this.DefaultViewModel.Add("Favorites", Model.FavoriteChannels);
             //this.DefaultViewModel.Add("NowPlaying", App.PlayingMedia);
-        }
 
-        private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
-        {
-            /*if (App.PlayingMedia.MediaPlayer.CurrentState == MediaElementState.Playing)
+            this.Loaded += (sender, e) =>
             {
-                ButtonPlayStop.Style = App.Current.Resources["StopIconButtonStyle"] as Style;
-            }
-            else
-            {
-                ButtonPlayStop.Style = App.Current.Resources["PlayIconButtonStyle"] as Style;
-            }*/
+                Model.LiveUpdateList.Clear();
+                foreach (var item in Model.FavoriteChannels) Model.LiveUpdateList.Add(item);
+            };
         }
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
@@ -42,11 +36,7 @@ namespace DI.FM.View
         private void GridViewFavorites_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as ChannelItem;
-            if (item != null)
-            {
-                Model.NowPlayingItem = item;
-                this.Frame.Navigate(typeof(ChannelPage));
-            }
+            if (item != null) this.Frame.Navigate(typeof(ChannelPage), item);
         }
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -72,7 +62,7 @@ namespace DI.FM.View
         private async void ButtonUnfavorite_Click(object sender, RoutedEventArgs e)
         {
             List<ChannelItem> items = new List<ChannelItem>();
-            
+
             if (ApplicationView.Value == ApplicationViewState.Snapped)
             {
                 foreach (ChannelItem item in GridViewFavorites1.SelectedItems) items.Add(item);

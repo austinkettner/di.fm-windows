@@ -1,6 +1,5 @@
 ﻿<common:LayoutAwarePage
     x:Class="DI.FM.View.MainPage"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:common="using:DI.FM.Common"
@@ -10,6 +9,10 @@
     xmlns:ui="using:Microsoft.Advertising.WinRT.UI"
     mc:Ignorable="d">
     
+    <Page.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="Main" />
+    </Page.DataContext>
+    
     <Page.BottomAppBar>
         <AppBar Background="#212121" BorderBrush="{x:Null}">
             <Grid>
@@ -18,8 +21,6 @@
                         <Button Style="{StaticResource SkipBackAppBarButtonStyle}" AutomationProperties.Name="Prev" Click="ButtonPrev_Click" />
                         <Button Style="{StaticResource SkipAheadAppBarButtonStyle}" AutomationProperties.Name="Next" Click="ButtonNext_Click" />
                         <ToggleButton x:Name="ToggleShuffle" Style="{StaticResource ShuffleAppBarButtonStyle}" Click="ToggleShuffle_Click" />
-                        <TextBlock Text="{Binding Model.IsPremium}" />
-                        <TextBlock Text="{Binding Model.IsPlaying}" />
                     </StackPanel>
                     <StackPanel x:Name="StackSelectedOptions" Orientation="Horizontal" Visibility="Collapsed">
                         <Rectangle x:Name="RectangleSeparator" Margin="20" Width="2" Fill="#64FFFFFF" />
@@ -139,7 +140,7 @@
                                     </Grid>
                                 </Grid>
                                 <!-- Now Playing -->
-                                <Grid Margin="0,0,70,0" Width="370" Visibility="{Binding Path=Model.NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                <Grid Margin="0,0,70,0" Width="370" Visibility="{Binding Path=NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -151,15 +152,15 @@
                                     </Button>
                                     <Grid Grid.Row="1" Background="#121212">
                                         <StackPanel>
-                                            <Image Source="{Binding Model.NowPlayingItem.Image}" />
-                                            <ProgressBar Height="5" Foreground="#0fa7ff" Value="{Binding Model.NowPlayingItem.NowPlaying.Position}" Maximum="{Binding NowPlaying.PlayingItem.NowPlaying.Duration}" />
+                                            <Image Source="{Binding NowPlayingItem.Image}" />
+                                            <ProgressBar Height="5" Foreground="#0fa7ff" Value="{Binding NowPlayingItem.NowPlaying.Progress}" Maximum="100" />
                                             <StackPanel>
                                                 <Grid Margin="10,5,10,12">
-                                                    <TextBlock Text="{Binding Path=Model.NowPlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
-                                                    <TextBlock Text="{Binding Path=Model.NowPlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
+                                                    <TextBlock Text="{Binding Path=NowPlayingItem.NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
+                                                    <TextBlock Text="{Binding Path=NowPlayingItem.NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
                                                 </Grid>
-                                                <TextBlock Margin="10,0,20,3" Text="{Binding Model.NowPlayingItem.Name}" Foreground="White" FontSize="18" FontWeight="Bold" />
-                                                <TextBlock Margin="10,0,20,16" Text="{Binding Model.NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                                <TextBlock Margin="10,0,20,3" Text="{Binding NowPlayingItem.Name}" Foreground="White" FontSize="18" FontWeight="Bold" />
+                                                <TextBlock Margin="10,0,20,16" Text="{Binding NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
                                             </StackPanel>
                                         </StackPanel>
                                     </Grid>
@@ -172,14 +173,14 @@
                                     </Grid.RowDefinitions>
                                     <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
                                     <Grid Grid.Row="1" Background="#212121" Height="{Binding ElementName=GridViewChannels, Path=ActualHeight}">
-                                        <TextBlock TextWrapping="Wrap" Margin="40" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Model.MainFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
+                                        <TextBlock TextWrapping="Wrap" Margin="40" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=MainFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
                                             <Span FontSize="18">Favorite any channel and it will appear here!</Span>
                                             <LineBreak /><LineBreak />
                                             1. Select any channel by right clicking.<LineBreak />
                                             2. Click "Favorite" on the app bar.<LineBreak />
                                             3. Finished! Quick access to your favorite channels.
                                         </TextBlock>
-                                        <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding Model.FavoriteChannels}" IsItemClickEnabled="True" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}"
+                                        <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" IsItemClickEnabled="True" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}"
                                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollMode="Disabled"
                                                   ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Enabled"
                                                   ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
@@ -225,7 +226,7 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <Button Content="All Radio Channels" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
-                                    <GridView x:Name="GridViewChannels" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
+                                    <GridView x:Name="GridViewChannels" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                             ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                         <GridView.ItemTemplate>
                                             <DataTemplate>
@@ -313,7 +314,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Image Margin="20,25,10,25" Source="../Assets/HeaderLogo.png" HorizontalAlignment="Left" />
-                    <Button x:Name="ButtonPlayStop1" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource PlayIconButtonStyle}" Click="ButtonPlayStop_Click" />
+                    <Button x:Name="ButtonPlayStop1" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource PlayIconButtonStyle}" />
                 </Grid>
             </Border>
             <!-- Content -->
@@ -327,7 +328,7 @@
                     </LinearGradientBrush>
                 </Grid.Background>
                 <!-- Content -->
-                <GridView x:Name="GridViewChannels1" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding Model.AllChannels}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}"
+                <GridView x:Name="GridViewChannels1" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding AllChannels}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}"
                           IsItemClickEnabled="True" ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollMode="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Enabled">

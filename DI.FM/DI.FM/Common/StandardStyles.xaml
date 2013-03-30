@@ -1838,10 +1838,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">
                     <Grid x:Name="RootGrid" Background="Transparent">
-                        <Grid Width="48" Height="48" HorizontalAlignment="Center">
+                        <Grid Width="46" Height="46">
                             <TextBlock x:Name="BackgroundGlyph" Text="&#xE0A8;" FontFamily="Segoe UI Symbol" FontSize="62" Margin="-5,-22,0,0" Foreground="{StaticResource AppBarItemBackgroundThemeBrush}"/>
                             <TextBlock x:Name="OutlineGlyph" Text="&#xE0A7;" FontFamily="Segoe UI Symbol" FontSize="62" Margin="-4,-22,0,0"/>
-                            <ContentPresenter x:Name="Content" HorizontalAlignment="Center" Margin="-3,-2,0,0" VerticalAlignment="Center"/>
+                            <ContentPresenter x:Name="Content" HorizontalAlignment="Center" Margin="-2,-2,0,0" VerticalAlignment="Center"/>
                         </Grid>
 
                         <VisualStateManager.VisualStateGroups>
