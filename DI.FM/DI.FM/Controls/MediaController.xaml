@@ -8,6 +8,12 @@
     mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="100"
     MaxWidth="800" HorizontalAlignment="Right">
     
+    <UserControl.Transitions>
+        <TransitionCollection>
+            <EntranceThemeTransition />
+        </TransitionCollection>
+    </UserControl.Transitions>
+    
     <UserControl.Resources>
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -26,7 +32,7 @@
                 <BitmapImage UriSource="{Binding NowPlayingItem.Image}" DecodePixelHeight="60" />
             </Image.Source>
         </Image>
-        <StackPanel Grid.Column="1" Margin="15,0,35,0" VerticalAlignment="Center">
+        <StackPanel Grid.Column="1" Margin="20,0,35,0" VerticalAlignment="Center">
             <Grid Margin="0,0,0,6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

@@ -23,17 +23,29 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <!-- Header -->
-            <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
-                <Grid Margin="0,0,56,0" Style="{StaticResource LayoutRootStyle}">
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Border Background="#212121">
+                <Grid Margin="0,0,56,0">
+                    <Grid HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
-                        <Grid Grid.Column="1" HorizontalAlignment="Left">
-                            <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
+                        <Grid Background="#121212">
+                            <Grid Margin="0,0,20,0" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
+                                <TextBlock Grid.Column="1" Text="Favorite Channels" Foreground="White" FontSize="42" FontWeight="SemiLight">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform Y="4" />
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </Grid>
                         </Grid>
+                        <Path Grid.Column="1" Fill="#121212" Data="M 0 0 L 50 0 L 0 50 Z" Stretch="Uniform" HorizontalAlignment="Right" />
+                        <Path Grid.Column="1" Fill="#0fa7ff" Data="M 47 0 L 50 0 L 3 50 L 0 50 Z" Stretch="Uniform" HorizontalAlignment="Right" />
                     </Grid>
                 </Grid>
             </Border>

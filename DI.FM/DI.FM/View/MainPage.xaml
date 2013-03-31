@@ -94,10 +94,18 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <!-- Header -->
-            <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
-                <Grid Margin="110,0,56,0" Style="{StaticResource LayoutRootStyle}">
+            <Border Background="#212121">
+                <Grid Margin="0,0,56,0">
                     <Grid HorizontalAlignment="Left">
-                        <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid Background="#121212">
+                            <Image Margin="110,0,20,0" Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
+                        </Grid>
+                        <Path Grid.Column="1" Fill="#121212" Data="M 0 0 L 50 0 L 0 50 Z" Stretch="Uniform" HorizontalAlignment="Right" />
+                        <Path Grid.Column="1" Fill="#0fa7ff" Data="M 47 0 L 50 0 L 3 50 L 0 50 Z" Stretch="Uniform" HorizontalAlignment="Right" />
                     </Grid>
                     <controls:MediaController />
                 </Grid>
