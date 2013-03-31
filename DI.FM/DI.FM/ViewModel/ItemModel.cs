@@ -132,10 +132,6 @@ namespace DI.FM.ViewModel
             }
         }
 
-        public void GetChannelInfo()
-        {
-        }
-
         // Channel theme
 
         private string _image;
@@ -197,10 +193,6 @@ namespace DI.FM.ViewModel
 
         public List<string> Streams;
 
-        public void GetStreams()
-        {
-        }
-
         // Track history
 
         private TrackItem _nowPlaying;
@@ -223,10 +215,6 @@ namespace DI.FM.ViewModel
                 _trackHistory = value;
                 RaisePropertyChanged("TrackHistory");
             }
-        }
-
-        public void GetTrackHistory()
-        {
         }
     }
 }

@@ -7,17 +7,13 @@ namespace DI.FM.ViewModel
 {
     public class ChannelsHelper
     {
+        public const string TRACK_HISTORY_URL = "http://api.v2.audioaddict.com/v1/di/track_history/channel/{0}.json";
 
         public const string BATCH_UPDATE_URL = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3,premium_high";
+
         public const string BATCH_USER = "ephemeron";
+
         public const string BATCH_PASS = "dayeiph0ne@pp";
-
-
-        public const string FREE_CHANNELS_URL = "http://listen.di.fm/public3"; // MP3 96kbps - FREE
-        public const string PREMIUM_CHANNELS_URL = "http://listen.di.fm/premium_high"; // MP3 256kbps - PREMIUM
-
-        public const string CHANNELS_URL = "http://listen.di.fm/public3";
-        public const string TRACK_URL = "http://api.v2.audioaddict.com/v1/di/track_history/channel/{0}.json";
 
         public static Dictionary<string, string[]> ChannelsAssets = new Dictionary<string, string[]>()
         {

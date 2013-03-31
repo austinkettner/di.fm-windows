@@ -4,7 +4,10 @@ using DI.FM.ViewModel;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Search;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Popups;
@@ -239,7 +242,7 @@ namespace DI.FM
                     var locator = this.Resources["Locator"] as ViewModelLocator;
                     locator.Main.ListenKey = null;
                     locator.Main.CheckPremiumStatus();
-                    locator.Main.GetChannelsStresms();
+                    locator.Main.UpdateChannelsStreams();
                     break;
                 case "ID_3":
                     await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));

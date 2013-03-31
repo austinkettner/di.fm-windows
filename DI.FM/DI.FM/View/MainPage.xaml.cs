@@ -247,7 +247,7 @@ namespace DI.FM.View
         private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
             this.BottomAppBar.IsOpen = false;
-            await Model.LoadAllChannels(true);
+            //await Model.LoadAllChannels(true);
         }
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
