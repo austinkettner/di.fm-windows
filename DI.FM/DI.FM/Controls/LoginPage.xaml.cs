@@ -5,8 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace DI.FM.Controls
 {
@@ -19,18 +22,31 @@ namespace DI.FM.Controls
             this.InitializeComponent();
             this.Loaded += (sender, e) =>
             {
+                AnimateInStory.Begin();
                 TextEmail.Focus(Windows.UI.Xaml.FocusState.Programmatic);
+            };
+
+            AnimateOutStory.Completed += async (sneder, e) =>
+            {
+                await Task.Delay(1000);
+                var parent = this.Parent as Grid;
+                if (parent != null)
+                {
+                    parent.Children.Remove(this);
+                }
             };
         }
 
         private async void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            this.IsEnabled = false;
+            Progress.IsActive = true;
+            GridForm.IsHitTestVisible = false;
             TextError.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
 
             var data = await LogIn(TextEmail.Text, TextPass.Password);
 
-            this.IsEnabled = true;
+            Progress.IsActive = false;
+            GridForm.IsHitTestVisible = true;
 
             if (data != null)
             {
@@ -42,7 +58,7 @@ namespace DI.FM.Controls
                 locator.Main.CheckPremiumStatus();
                 locator.Main.UpdateChannelsStreams();
 
-                RemoveWindow();
+                AnimateOutStory.Begin();
             }
             else
             {
@@ -52,7 +68,7 @@ namespace DI.FM.Controls
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
-            RemoveWindow();
+            AnimateOutStory.Begin();
         }
 
         private void RemoveWindow()
@@ -82,6 +98,19 @@ namespace DI.FM.Controls
             catch
             {
                 return null;
+            }
+        }
+
+        private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri("https://www.di.fm/join"));
+        }
+
+        private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter && !Progress.IsActive)
+            {
+                ButtonLogin_Click(null, null);
             }
         }
     }

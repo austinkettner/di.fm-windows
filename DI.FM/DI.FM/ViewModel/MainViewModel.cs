@@ -67,6 +67,14 @@ namespace DI.FM.ViewModel
             {
                 _favoriteChannels = value;
                 RaisePropertyChanged("FavoriteChannels");
+
+                if (_favoriteChannels != null)
+                {
+                    _favoriteChannels.CollectionChanged += (sender, e) =>
+                    {
+                        RaisePropertyChanged("FavoriteChannels");
+                    };
+                }
             }
         }
 
@@ -213,14 +221,28 @@ namespace DI.FM.ViewModel
             });
         }
 
-        private void MediaControl_NextTrackPressed(object sender, object e)
+        private async void MediaControl_NextTrackPressed(object sender, object e)
         {
-
+            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                if (NowPlayingItem != null && NowPlayingItem.Prev != null)
+                {
+                    PlayChannel(NowPlayingItem.Prev);
+                    MediaControl.IsPlaying = true;
+                }
+            });
         }
 
-        private void MediaControl_PreviousTrackPressed(object sender, object e)
+        private async void MediaControl_PreviousTrackPressed(object sender, object e)
         {
-
+            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                if (NowPlayingItem != null && NowPlayingItem.Next != null)
+                {
+                    PlayChannel(NowPlayingItem.Next);
+                    MediaControl.IsPlaying = true;
+                }
+            });
         }
 
         #endregion
@@ -609,6 +631,8 @@ namespace DI.FM.ViewModel
 
         #endregion
 
+        #region LiveTile
+
         public static void SetLiveTile(ChannelItem channel)
         {
             var update = TileUpdateManager.CreateTileUpdaterForApplication();
@@ -677,5 +701,7 @@ namespace DI.FM.ViewModel
             }
             catch { return null; }
         }
+
+        #endregion
     }
 }

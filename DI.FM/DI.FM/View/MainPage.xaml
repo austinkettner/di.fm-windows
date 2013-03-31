@@ -116,7 +116,7 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="1" Background="#0fa7ff">
-                                        <Grid Margin="40">
+                                        <Grid Margin="30">
                                             <StackPanel>
                                                 <TextBlock Margin="0,0,0,25" Text="Login to DI.FM" FontSize="32" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
                                                 <TextBlock Margin="0,0,0,15" Text="Login to your existing account or create a new one to get started." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
@@ -160,7 +160,7 @@
                                     </Grid.RowDefinitions>
                                     <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
                                     <Grid Grid.Row="1" Background="#212121" Height="{Binding ElementName=GridViewChannels, Path=ActualHeight}">
-                                        <TextBlock TextWrapping="Wrap" Margin="40" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=FavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
+                                        <TextBlock TextWrapping="Wrap" Margin="30" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=FavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
                                             <Span FontSize="18">Favorite any channel and it will appear here!</Span>
                                             <LineBreak /><LineBreak />
                                             1. Select any channel by right clicking.<LineBreak />

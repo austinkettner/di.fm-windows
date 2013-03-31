@@ -104,9 +104,19 @@ namespace DI.FM
                     ShowLoginWindow();
                     break;
                 case "ID_2":
-                    Model.ListenKey = null;
-                    Model.CheckPremiumStatus();
-                    Model.UpdateChannelsStreams();
+                    var dialog = new MessageDialog("If you log out from your premium account you will not have access anymore to premium streams", "Logout from your DI.FM account");
+                    dialog.Commands.Add(new UICommand("Logout") { Id = 1 });
+                    dialog.Commands.Add(new UICommand("Stay logged in") { Id = 2 });
+                    dialog.DefaultCommandIndex = 1;
+
+                    var result = await dialog.ShowAsync();
+
+                    if ((int)result.Id == 1)
+                    {
+                        Model.ListenKey = null;
+                        Model.CheckPremiumStatus();
+                        Model.UpdateChannelsStreams();
+                    }
                     break;
                 case "ID_3":
                     await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));

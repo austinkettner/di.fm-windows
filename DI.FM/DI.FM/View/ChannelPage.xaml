@@ -54,6 +54,11 @@
             </Grid.RowDefinitions>
             <!-- Header -->
             <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
+                <Border.ChildTransitions>
+                    <TransitionCollection>
+                        <EntranceThemeTransition />
+                    </TransitionCollection>
+                </Border.ChildTransitions>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -97,11 +102,11 @@
                             </Grid.Background>
                             <Border BorderThickness="1" BorderBrush="#16FFFFFF" />
                             <Grid Margin="15,10">
-                                <!--<Grid.ChildrenTransitions>
+                                <Grid.Transitions>
                                     <TransitionCollection>
-                                        <ContentThemeTransition/>
+                                        <EntranceThemeTransition />
                                     </TransitionCollection>
-                                </Grid.ChildrenTransitions>-->
+                                </Grid.Transitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="Auto" />
