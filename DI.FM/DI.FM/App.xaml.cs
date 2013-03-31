@@ -4,7 +4,9 @@ using DI.FM.ViewModel;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Search;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Popups;
@@ -71,6 +73,21 @@ namespace DI.FM
 
             // Intialize MarkedUp Analytics Client
             MarkedUp.AnalyticClient.Initialize("94e3584b-f3c5-4ef3-ac7b-383630ef6731");
+
+
+            DataTransferManager manager = DataTransferManager.GetForCurrentView();
+            manager.DataRequested += DataTransferManager_DataRequested;
+        }
+
+        private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            if (Model.NowPlayingItem != null)
+            {
+                var request = args.Request;
+                request.Data.Properties.Title = "I am now listening to " + Model.NowPlayingItem.Name;
+                request.Data.Properties.Description = Model.NowPlayingItem.Description;
+                request.Data.SetUri(new Uri("http://di.fm/" + Model.NowPlayingItem.Key));
+            }
         }
 
         private void SettingsPage_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
