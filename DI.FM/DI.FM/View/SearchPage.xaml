@@ -17,86 +17,88 @@
     </Page.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="110" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <!-- Header -->
-        <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
-            <Grid Margin="0,0,56,0" Style="{StaticResource LayoutRootStyle}">
-                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
-                    <Grid Grid.Column="1" HorizontalAlignment="Left">
-                        <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Border>
-        <!-- Content -->
-        <Grid Grid.Row="1">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
+                <RowDefinition Height="110" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid.Background>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStopCollection>
-                        <GradientStop Color="#444444" Offset="0" />
-                        <GradientStop Color="#303030" Offset="1" />
-                    </GradientStopCollection>
-                </LinearGradientBrush>
-            </Grid.Background>
-            <!-- Background -->
-            <Border Grid.RowSpan="2">
-                <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
+            <!-- Header -->
+            <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
+                <Grid Margin="0,0,56,0" Style="{StaticResource LayoutRootStyle}">
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
+                        <Grid Grid.Column="1" HorizontalAlignment="Left">
+                            <Image Source="../Assets/HeaderLogo.png" Stretch="None" VerticalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Border>
             <!-- Content -->
-            <TextBlock Margin="118,0,0,0" Foreground="#e0e0e0" FontSize="24" FontWeight="Light">
-                <TextBlock.RenderTransform>
-                    <TranslateTransform Y="30" />
-                </TextBlock.RenderTransform>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStopCollection>
+                            <GradientStop Color="#444444" Offset="0" />
+                            <GradientStop Color="#303030" Offset="1" />
+                        </GradientStopCollection>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <!-- Background -->
+                <Border Grid.RowSpan="2">
+                    <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
+                </Border>
+                <!-- Content -->
+                <TextBlock Margin="118,0,0,0" Foreground="#e0e0e0" FontSize="24" FontWeight="Light">
+                    <TextBlock.RenderTransform>
+                        <TranslateTransform Y="30" />
+                    </TextBlock.RenderTransform>
                 Results for ”<Run Text="{Binding QueryText}" />”
-            </TextBlock>
-            <GridView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding Results}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" ItemClick="GridViewResults_ItemClick">
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="400" Height="150">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid>
-                                <Image Stretch="Uniform">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="150" />
-                                    </Image.Source>
-                                </Image>
-                                <Border Padding="6,3" Background="#BF000000" VerticalAlignment="Bottom">
-                                    <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14.67" FontWeight="SemiLight" />
-                                </Border>
+                </TextBlock>
+                <GridView Grid.Row="1" SelectionMode="None" ItemsSource="{Binding Results}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" ItemClick="GridViewResults_ItemClick">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="400" Height="150">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Image Stretch="Uniform">
+                                        <Image.Source>
+                                            <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="150" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Border Padding="6,3" Background="#BF000000" VerticalAlignment="Bottom">
+                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14.67" FontWeight="SemiLight" />
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Column="1" Margin="10,25,10,10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="NOW PLAYING" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
+                                    <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                                </Grid>
                             </Grid>
-                            <Grid Grid.Column="1" Margin="10,25,10,10">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="NOW PLAYING" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
-                                <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
-                            </Grid>
-                        </Grid>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VariableSizedWrapGrid Margin="112,26,60,30" />
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-            </GridView>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VariableSizedWrapGrid Margin="112,26,60,30" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+            </Grid>
         </Grid>
     </Grid>
-    
+
 </common:LayoutAwarePage>

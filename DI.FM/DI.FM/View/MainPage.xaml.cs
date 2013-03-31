@@ -21,6 +21,7 @@ namespace DI.FM.View
         {
             this.InitializeComponent();
 
+            // Main model
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
 
             // Load saved settings
@@ -29,10 +30,7 @@ namespace DI.FM.View
             this.Loaded += (sender, e) =>
             {
                 var showLogin = ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] as bool?;
-                if (!showLogin.HasValue)
-                {
-                    LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                }
+                if (!showLogin.HasValue) LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Visible;
             };
         }
 
@@ -247,7 +245,7 @@ namespace DI.FM.View
         private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
             this.BottomAppBar.IsOpen = false;
-            //await Model.LoadAllChannels(true);
+            await Model.UpdateChannels();
         }
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
