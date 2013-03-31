@@ -15,7 +15,7 @@
         <common:BooleanNegationConverter x:Key="BooleanNegationConverter" />
     </UserControl.Resources>
 
-    <Grid Height="60" Visibility="{Binding Path=NowPlaying.PlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+    <Grid Height="60" Visibility="{Binding Path=NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" />
             <ColumnDefinition />

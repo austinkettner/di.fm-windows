@@ -79,6 +79,11 @@ namespace DI.FM.ViewModel
                 }
 
                 RaisePropertyChanged("NowPlayingItem");
+
+                if (_nowPlayingItem != null)
+                {
+                    ApplicationData.Current.LocalSettings.Values["LastPlayedChannel"] = _nowPlayingItem.Key;
+                }
             }
         }
 
@@ -352,6 +357,8 @@ namespace DI.FM.ViewModel
         {
             foreach (var item in LiveUpdateList)
             {
+                if (item == null) continue;
+
                 if (item.NowPlaying == null || item.TrackHistory == null || item.TrackHistory.Count == 0)
                 {
                     // Reload if no history is available
@@ -522,6 +529,21 @@ namespace DI.FM.ViewModel
 
                 AllChannels.Add(chn);
                 i++;
+            }
+
+
+            // Get load the last 
+            var channelKey = ApplicationData.Current.LocalSettings.Values["LastPlayedChannel"];
+            if (channelKey != null)
+            {
+                foreach (var channel in AllChannels)
+                {
+                    if (channel.Key.Equals(channelKey))
+                    {
+                        NowPlayingItem = channel;
+                        break;
+                    }
+                }
             }
         }
 

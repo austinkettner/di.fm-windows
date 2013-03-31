@@ -1,20 +1,12 @@
-﻿using Callisto.Controls;
-using DI.FM.Common;
-using DI.FM.Controls;
+﻿using DI.FM.Controls;
 using DI.FM.View;
 using DI.FM.ViewModel;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Search;
-using Windows.Data.Xml.Dom;
-using Windows.Media;
-using Windows.Storage;
 using Windows.System;
-using Windows.UI;
 using Windows.UI.ApplicationSettings;
-using Windows.UI.Core;
-using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -168,53 +160,25 @@ namespace DI.FM
 
         #endregion
 
-
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
+            // Show the loading screen
+            var extendedSplash = new ExtendedSplash(args.SplashScreen);
+            Window.Current.Content = extendedSplash;
+            Window.Current.Activate();
+
             // Intialize MarkedUp Analytics Client
             MarkedUp.AnalyticClient.Initialize("94e3584b-f3c5-4ef3-ac7b-383630ef6731");
 
-            var rootFrame = Window.Current.Content as Frame;
-
+            // Init and update the model
             var model = this.Resources["Locator"] as ViewModelLocator;
             await model.Main.UpdateChannels();
 
-            if (rootFrame == null)
-            {
-                // Load all channels when first started
+            // Get the root frame
+            var rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null) rootFrame = new Frame();
 
-                //await model.Main.LoadAllChannels();
-
-
-
-
-
-
-                // Load last played channel when first started
-                var channelKey = ApplicationData.Current.LocalSettings.Values["LastPlayedChannel"];
-                if (channelKey != null)
-                {
-                    foreach (var channel in model.Main.AllChannels)
-                    {
-                        if (channel.Key.Equals(channelKey))
-                        {
-                            // App.PlayingMedia.SetSilentNowPlayingItem(channel);
-                            model.Main.NowPlayingItem = channel;
-                            break;
-                        }
-                    }
-                }
-
-                rootFrame = new Frame();
-
-                if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
-
-                Window.Current.Content = rootFrame;
-            }
-
+            // Set the frame style
             rootFrame.Style = Resources["RootFrameStyle"] as Style;
 
             if (rootFrame.Content == null)
@@ -225,21 +189,20 @@ namespace DI.FM
                 }
             }
 
+            // Remove the loading screen and set the frame as content
+            Window.Current.Content = rootFrame;
             Window.Current.Activate();
 
+            // Init the charms options
+            SearchPane.GetForCurrentView().SearchHistoryEnabled = false;
+            SettingsPane.GetForCurrentView().CommandsRequested += App_CommandsRequested;
+
+            // When the frame is loaded set the model media player
             rootFrame.Loaded += (sender, e) =>
             {
-                // Media
                 var rootGrid = VisualTreeHelper.GetChild(Window.Current.Content, 0);
                 model.Main.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
             };
-
-
-
-            SearchPane.GetForCurrentView().SearchHistoryEnabled = false;
-
-            // Init the charms options
-            SettingsPane.GetForCurrentView().CommandsRequested += App_CommandsRequested;
         }
 
         private void App_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
@@ -310,48 +273,38 @@ namespace DI.FM
             deferral.Complete();
         }
 
-        /// <summary>
-        /// Invoked when the application is activated to display search results.
-        /// </summary>
-        /// <param name="args">Details about the activation request.</param>
-        protected async override void OnSearchActivated(Windows.ApplicationModel.Activation.SearchActivatedEventArgs args)
+        protected override async void OnSearchActivated(SearchActivatedEventArgs args)
         {
-            // TODO: Register the Windows.ApplicationModel.Search.SearchPane.GetForCurrentView().QuerySubmitted
-            // event in OnWindowCreated to speed up searches once the application is already running
+            var frame = Window.Current.Content as Frame;
 
-            // If the Window isn't already using Frame navigation, insert our own Frame
-            var previousContent = Window.Current.Content;
-            var frame = previousContent as Frame;
-
-            // If the app does not contain a top-level frame, it is possible that this 
-            // is the initial launch of the app. Typically this method and OnLaunched 
-            // in App.xaml.cs can call a common method.
             if (frame == null)
             {
-                // Create a Frame to act as the navigation context and associate it with
-                // a SuspensionManager key
-                frame = new Frame();
-                DI.FM.Common.SuspensionManager.RegisterFrame(frame, "AppFrame");
+                // Show the loading screen
+                var extendedSplash = new ExtendedSplash(args.SplashScreen);
+                Window.Current.Content = extendedSplash;
+                Window.Current.Activate();
 
-                if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                // Init and update the model
+                var model = this.Resources["Locator"] as ViewModelLocator;
+                await model.Main.UpdateChannels();
+
+                frame = new Frame();
+                frame.Style = Resources["RootFrameStyle"] as Style;
+
+                // When the frame is loaded set the model media player
+                frame.Loaded += (sender, e) =>
                 {
-                    // Restore the saved session state only when appropriate
-                    try
-                    {
-                        await DI.FM.Common.SuspensionManager.RestoreAsync();
-                    }
-                    catch (DI.FM.Common.SuspensionManagerException)
-                    {
-                        //Something went wrong restoring state.
-                        //Assume there is no state and continue
-                    }
-                }
+                    var rootGrid = VisualTreeHelper.GetChild(Window.Current.Content, 0);
+                    model.Main.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
+                };
             }
 
-            if (!(frame.Content is SearchPage)) frame.Navigate(typeof(SearchPage), args.QueryText);
-            Window.Current.Content = frame;
+            if (!(frame.Content is SearchPage))
+            {
+                frame.Navigate(typeof(SearchPage), args.QueryText);
+            }
 
-            // Ensure the current window is active
+            Window.Current.Content = frame;
             Window.Current.Activate();
         }
     }

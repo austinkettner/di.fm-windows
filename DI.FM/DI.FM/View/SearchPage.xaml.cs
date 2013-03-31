@@ -75,8 +75,7 @@ namespace DI.FM.View
             var item = e.ClickedItem as ChannelItem;
             if (item != null)
             {
-                Model.NowPlayingItem = item;
-                this.Frame.Navigate(typeof(ChannelPage));
+                this.Frame.Navigate(typeof(ChannelPage), item);
             }
         }
     }
