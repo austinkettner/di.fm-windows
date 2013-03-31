@@ -274,6 +274,7 @@ namespace DI.FM.ViewModel
             var data = await ChannelsHelper.DownloadJson(string.Format(ChannelsHelper.TRACK_URL, channel.ID));
             if (data == null) return;
 
+            TrackItem nowPl = null;
             var tempTracks = new List<TrackItem>();
 
             var index = 0;
@@ -283,28 +284,43 @@ namespace DI.FM.ViewModel
             {
                 if (track["type"].Value<string>() == "track")
                 {
-                    tempTracks.Add(new TrackItem()
+                    var item = new TrackItem()
                     {
                         Index = index + 1,
                         Track = track.Value<string>("track"),
                         Started = track.Value<long>("started"),
                         Duration = track.Value<int>("duration")
-                    });
+                    };
 
-                    if (index == 4) break;
+                    if (nowPl == null)
+                    {
+                        nowPl = item;
+                    }
+                    else
+                    {
+                        tempTracks.Add(item);
+                    }
+
+                    if (index == 5) break;
                     index++;
                 }
             }
 
-            if (channel.TrackHistory != null && channel.TrackHistory.Count > 0 && tempTracks.Count > 0 && channel.TrackHistory[0].Started == tempTracks[0].Started)
+            /*if (channel.TrackHistory != null && channel.TrackHistory.Count > 0 && tempTracks.Count > 0 && channel.TrackHistory[0].Started == tempTracks[0].Started)
             {
                 channel.TrackHistory[0].Started = -1;
                 return;
-            }
+            }*/
 
             if (tempTracks.Count > 0)
             {
-                channel.NowPlaying = tempTracks[0];
+                if (channel.NowPlaying != null && channel.NowPlaying.Started == tempTracks[0].Started)
+                {
+                    // Extend with 1 minute
+                    channel.NowPlaying.Duration += 60;
+                }
+
+                channel.NowPlaying = nowPl;
                 channel.TrackHistory = new ObservableCollection<TrackItem>(tempTracks);
             }
         }
@@ -366,7 +382,7 @@ namespace DI.FM.ViewModel
                     continue;
                 }
 
-                // Data was loading so skip
+                // Data is loading so skip
                 if (item.NowPlaying.Started == -1) continue;
 
                 var currentPosition = item.NowPlaying.StartedTime;
