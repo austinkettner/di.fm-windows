@@ -1975,11 +1975,6 @@
         <Setter Property="FontSize" Value="21" />
         <Setter Property="FontWeight" Value="SemiLight" />
         <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="RenderTransform">
-            <Setter.Value>
-                <TranslateTransform X="6" />
-            </Setter.Value>
-        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -2298,9 +2293,9 @@
                             </Border>
                             <Border x:Name="ContentContainer">
                                 <Grid x:Name="InnerDragContent">
-                                    <Rectangle x:Name="PointerOverBorder" IsHitTestVisible="False" Margin="0" Opacity="0" Fill="#59FFFFFF"/>
+                                    <Rectangle x:Name="PointerOverBorder" IsHitTestVisible="False" Margin="0" Opacity="0" Fill="#7F000000"/>
                                     <Rectangle x:Name="FocusVisual" IsHitTestVisible="False" Opacity="0" Stroke="{StaticResource ListViewItemFocusBorderThemeBrush}" StrokeThickness="2"/>
-                                    <Rectangle x:Name="SelectionBackground" Fill="#3896FA" Margin="4" Opacity="0"/>
+                                    <Rectangle x:Name="SelectionBackground" Fill="#3896FA" Margin="1" Opacity="0"/>
                                     <Border x:Name="ContentBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="4">
                                         <Grid>
                                             <ContentPresenter x:Name="contentPresenter" ContentTransitions="{TemplateBinding ContentTransitions}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
@@ -2309,7 +2304,7 @@
                                             <Rectangle x:Name="MultiArrangeOverlayBackground" Fill="{StaticResource ListViewItemDragBackgroundThemeBrush}" IsHitTestVisible="False" Opacity="0"/>
                                         </Grid>
                                     </Border>
-                                    <Rectangle x:Name="SelectedBorder" IsHitTestVisible="False" Margin="4" Opacity="0" Stroke="#3896FA" StrokeThickness="{StaticResource GridViewItemSelectedBorderThemeThickness}"/>
+                                    <Rectangle x:Name="SelectedBorder" IsHitTestVisible="False" Margin="2" Opacity="0" Stroke="#3896FA" StrokeThickness="{StaticResource GridViewItemSelectedBorderThemeThickness}"/>
                                     <Border x:Name="SelectedCheckMarkOuter" HorizontalAlignment="Right" IsHitTestVisible="False" Margin="4" VerticalAlignment="Top">
                                         <Grid x:Name="SelectedCheckMark" Height="40" Opacity="0" Width="40">
                                             <Path x:Name="SelectedEarmark" Data="M0,0 L40,0 L40,40 z" Fill="#3896FA" Stretch="Fill"/>
@@ -2325,5 +2320,26 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+
+    <Style x:Key="GroupGridView" TargetType="GridView">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource GridViewChannelItemStyle}" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <WrapGrid />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="GridView">
+                    <ItemsPresenter />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
 </ResourceDictionary>

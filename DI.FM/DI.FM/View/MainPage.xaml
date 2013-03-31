@@ -46,25 +46,6 @@
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <common:PlayStopButtonConverter x:Key="PlayStopButtonConverter" />
         <common:BooleanNegationConverter x:Key="BooleanNegationConverter" />
-        
-        <!-- Styles -->
-        <Style x:Key="GroupGridView" TargetType="GridView">
-            <Setter Property="ItemContainerStyle" Value="{StaticResource GridViewChannelItemStyle}" />
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <WrapGrid />
-                    </ItemsPanelTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="GridView">
-                        <ItemsPresenter />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Page.Resources>
 
     <Grid>
@@ -329,73 +310,77 @@
                         </Border>
                     </Grid>
                     <TextBlock Margin="0,50,0,8" Text="FAVORITES" FontSize="18.6" FontWeight="Bold" />
-                    <GridView x:Name="GridViewFavorites1" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
-                              ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Height="80">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="80" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <Image Stretch="Uniform">
-                                            <Image.Source>
-                                                <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="80" />
-                                            </Image.Source>
-                                        </Image>
+                    <Grid Background="#212121">
+                        <GridView x:Name="GridViewFavorites1" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
+                                  ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Height="80">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Image Stretch="Uniform">
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="80" />
+                                                </Image.Source>
+                                            </Image>
+                                        </Grid>
+                                        <Grid Grid.Column="1" Margin="10,5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold" />
+                                            <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                                        </Grid>
                                     </Grid>
-                                    <Grid Grid.Column="1" Margin="10,5">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold" />
-                                        <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
-                                    </Grid>
-                                </Grid>
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel />
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
-                    </GridView>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                        </GridView>
+                    </Grid>
                     <TextBlock Margin="0,50,0,8" Text="ALL CHANNELS" FontSize="18.6" FontWeight="Bold" />
-                    <GridView x:Name="GridViewChannels1" SelectionMode="Extended" ItemsSource="{Binding AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
-                              ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Height="80">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="80" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <Image Stretch="Uniform">
-                                            <Image.Source>
-                                                <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="80" />
-                                            </Image.Source>
-                                        </Image>
+                    <Grid Background="#212121">
+                        <GridView x:Name="GridViewChannels1" SelectionMode="Extended" ItemsSource="{Binding AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
+                                  ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Height="80">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Image Stretch="Uniform">
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="80" />
+                                                </Image.Source>
+                                            </Image>
+                                        </Grid>
+                                        <Grid Grid.Column="1" Margin="10,5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold" />
+                                            <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                                        </Grid>
                                     </Grid>
-                                    <Grid Grid.Column="1" Margin="10,5">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold" />
-                                        <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
-                                    </Grid>
-                                </Grid>
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel />
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
-                    </GridView>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                        </GridView>
+                    </Grid>
                 </StackPanel>
             </ScrollViewer>
             

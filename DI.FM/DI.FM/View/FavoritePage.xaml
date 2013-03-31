@@ -50,6 +50,18 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStopCollection>
+                    <GradientStop Color="#444444" Offset="0" />
+                    <GradientStop Color="#303030" Offset="1" />
+                </GradientStopCollection>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <!-- Background -->
+        <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
+
         <!-- Filled view -->
         <Grid x:Name="FilledGrid">
             <Grid.RowDefinitions>
@@ -76,18 +88,6 @@
             </Border>
             <!-- Content -->
             <Grid Grid.Row="1">
-                <Grid.Background>
-                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                        <GradientStopCollection>
-                            <GradientStop Color="#444444" Offset="0" />
-                            <GradientStop Color="#303030" Offset="1" />
-                        </GradientStopCollection>
-                    </LinearGradientBrush>
-                </Grid.Background>
-                <!-- Background -->
-                <Border>
-                    <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
-                </Border>
                 <!-- Content -->
                 <TextBlock Margin="118,65,0,0" Text="There are no favorites yet..." Foreground="White" FontSize="22" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=FavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}" />
                 <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" SelectionChanged="GridView_SelectionChanged" ItemClick="GridViewFavorites_ItemClick">
@@ -141,97 +141,49 @@
                 </GridView>
             </Grid>
         </Grid>
+        
         <!-- Snapped view -->
         <Grid x:Name="SnappedGrid" Visibility="Collapsed">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="90" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <!-- Header -->
-            <Border Background="#212121" BorderThickness="0,0,0,1" BorderBrush="Black">
-                <Grid Style="{StaticResource LayoutRootStyle}">
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Button Margin="20,0,15,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource SnappedBackButtonStyle}" Click="GoBack" />
-                        <TextBlock Grid.Column="1" Text="Favorite Channels" Foreground="White" FontSize="28" FontWeight="SemiLight">
-                            <TextBlock.RenderTransform>
-                                <TranslateTransform Y="4" />
-                            </TextBlock.RenderTransform>
-                        </TextBlock>
-                    </Grid>
-                </Grid>
-            </Border>
-            <!-- Content -->
-            <Grid Grid.Row="1">
-                <Grid.Background>
-                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                        <GradientStopCollection>
-                            <GradientStop Color="#444444" Offset="0" />
-                            <GradientStop Color="#303030" Offset="1" />
-                        </GradientStopCollection>
-                    </LinearGradientBrush>
-                </Grid.Background>
-                <!-- Content -->
-                <TextBlock Margin="20,35,0,0" Text="There are no favorites yet..." Foreground="White" FontSize="18" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=Favorites, Converter={StaticResource FavoritesHeaderVisibility}}" />
-                <GridView x:Name="GridViewFavorites1" SelectionMode="Extended" ItemsSource="{Binding Favorites}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}"
-                          IsItemClickEnabled="True" SelectionChanged="GridView_SelectionChanged" ItemClick="GridViewFavorites_ItemClick"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollMode="Disabled"
-                          ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Enabled">
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <!--<Grid Height="100">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid>
-                                    <Image Stretch="Uniform">
-                                        <Image.Source>
-                                            <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="100" />
-                                        </Image.Source>
-                                    </Image>
-                                    <Border Padding="6,3" VerticalAlignment="Bottom">
-                                        <Border.Background>
-                                            <SolidColorBrush Color="Black" Opacity="0.75" />
-                                        </Border.Background>
-                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14.67" FontWeight="SemiLight" />
-                                    </Border>
-                                </Grid>
-                                <Grid Grid.Column="1" Margin="10">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="NOW PLAYING" Foreground="White" FontSize="16" FontWeight="Bold" Opacity="0.75" />
-                                    <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
-                                </Grid>
-                            </Grid>-->
-                            <Grid Width="365" Background="#121212">
-                                <StackPanel>
-                                    <Image Source="{Binding Image}" />
-                                    <ProgressBar Height="5" Foreground="#0fa7ff" Value="{Binding NowPlaying.Progress}" Maximum="100" />
-                                    <StackPanel>
-                                        <Grid Margin="10,5,10,12">
-                                            <TextBlock Text="{Binding Path=NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
-                                            <TextBlock Text="{Binding Path=NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
+            <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="20,20,20,30">
+                    <TextBlock Margin="0,50,0,8" Text="FAVORITES" FontSize="18.6" FontWeight="Bold" />
+                    <Grid Background="#212121">
+                        <GridView x:Name="GridViewFavorites1" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
+                                  ItemClick="GridViewFavorites_ItemClick" SelectionChanged="GridView_SelectionChanged">
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Height="80">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Image Stretch="Uniform">
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="80" />
+                                                </Image.Source>
+                                            </Image>
                                         </Grid>
-                                        <TextBlock Margin="10,0,20,3" Text="{Binding Name}" Foreground="White" FontSize="18" FontWeight="Bold" />
-                                        <TextBlock Margin="10,0,20,16" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Margin="15" />
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-                </GridView>
-            </Grid>
+                                        <Grid Grid.Column="1" Margin="10,5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold" />
+                                            <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                        </GridView>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 
