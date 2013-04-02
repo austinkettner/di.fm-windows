@@ -149,7 +149,7 @@ namespace DI.FM.ViewModel
             set
             {
                 var update = _isPremium != value;
-                
+
                 _isPremium = value;
                 RaisePropertyChanged("IsPremium");
 
@@ -369,18 +369,10 @@ namespace DI.FM.ViewModel
                 var currentPosition = item.NowPlaying.StartedTime;
                 if (currentPosition > item.NowPlaying.Duration)
                 {
-                    if (currentPosition - item.NowPlaying.Duration > 1800)
-                    {
-                        // If progress - duration > 30 mins -> stop refresh
-                        // because the progress is way ahead
-                        item.IsRefreshing = true;
-                    }
-                    else
-                    {
-                        // The channel position > channel duration -> reload track history
-                        item.NowPlaying.Position = item.NowPlaying.Duration;
-                        LoadTrackHistory(item);
-                    }
+                    // The channel position > channel duration -> reload track history
+                    item.NowPlaying.Duration = currentPosition;
+                    item.NowPlaying.Position = currentPosition;
+                    LoadTrackHistory(item);
                 }
                 else
                 {

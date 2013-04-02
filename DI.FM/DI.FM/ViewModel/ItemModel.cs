@@ -45,8 +45,8 @@ namespace DI.FM.ViewModel
             get { return ConvertFromUnixTime(this.Started); }
         }
 
-        private int _position;
-        public int Position
+        private double _position;
+        public double Position
         {
             get { return _position; }
             set
@@ -65,8 +65,8 @@ namespace DI.FM.ViewModel
             }
         }
 
-        private int _duration;
-        public int Duration
+        private double _duration;
+        public double Duration
         {
             get { return _duration; }
             set
