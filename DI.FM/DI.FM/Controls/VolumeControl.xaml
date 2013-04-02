@@ -204,11 +204,12 @@
             </Setter>
         </Style>
         <Style x:Key="ButtonMuteStyle" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource ButtonBackgroundThemeBrush}"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Width" Value="48"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="Template">
@@ -221,8 +222,11 @@
                                     <VisualState x:Name="PointerOver">
                                         <Storyboard>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#FFD8D8D8"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3F000000"/>
                                             </ObjectAnimationUsingKeyFrames>
+                                            <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPointerOverForegroundThemeBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>-->
                                         </Storyboard>
                                     </VisualState>
                                     <VisualState x:Name="Pressed">
@@ -249,10 +253,26 @@
                                         </Storyboard>
                                     </VisualState>
                                 </VisualStateGroup>
+                                <!--<VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisualWhite"/>
+                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisualBlack"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unfocused"/>
+                                    <VisualState x:Name="PointerFocused"/>
+                                </VisualStateGroup>-->
                             </VisualStateManager.VisualStateGroups>
                             <Border x:Name="Border">
-                                <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <ContentPresenter.RenderTransform>
+                                        <TranslateTransform X="-2" />
+                                    </ContentPresenter.RenderTransform>
+                                </ContentPresenter>
                             </Border>
+                            <!--<Rectangle x:Name="FocusVisualWhite" IsHitTestVisible="False" Opacity="0" StrokeDashOffset="1.5" StrokeEndLineCap="Square" Stroke="{StaticResource FocusVisualWhiteStrokeThemeBrush}" StrokeDashArray="1,1"/>
+                            <Rectangle x:Name="FocusVisualBlack" IsHitTestVisible="False" Opacity="0" StrokeDashOffset="0.5" StrokeEndLineCap="Square" Stroke="{StaticResource FocusVisualBlackStrokeThemeBrush}" StrokeDashArray="1,1"/>-->
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -269,7 +289,7 @@
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
-            <RowDefinition Height="20" />
+            <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Button x:Name="ButtonMute" Style="{StaticResource ButtonUnMutedStyle}" Click="ButtonMute_Click" />
