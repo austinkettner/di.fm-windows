@@ -132,6 +132,7 @@
                                             </StackPanel>
                                             <Button Content="Login" Width="105" Height="42" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="ButtonLogin_Click" />
                                         </Grid>
+                                        <Button VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ButtonClosePopupStyle}" Click="ButtonHideLogin_Click" />
                                     </Grid>
                                 </Grid>
                                 <!-- Now Playing -->
@@ -163,10 +164,10 @@
                                 <!-- Favorite Channels -->
                                 <Grid Margin="0,0,70,0" Width="370" VerticalAlignment="Top">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="38" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
+                                    <Button Margin="5,0,0,0" Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
                                     <Grid Grid.Row="1">
                                         <TextBlock TextWrapping="Wrap" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=TopFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
                                             <Span FontSize="18">Favorite any channel and it will appear here!</Span>
@@ -217,10 +218,10 @@
                                 <!-- All Radio Channels -->
                                 <Grid Margin="0,0,70,0">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="38" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <Button Content="All Radio Channels" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
+                                    <Button Margin="5,0,0,0" Content="All Radio Channels" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
                                     <GridView x:Name="GridViewChannels" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                             ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                         <GridView.ItemTemplate>

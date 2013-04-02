@@ -259,5 +259,11 @@ namespace DI.FM.View
         {
             Model.TogglePlay();
         }
+
+        private void ButtonHideLogin_Click(object sender, RoutedEventArgs e)
+        {
+            ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] = false;
+            LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
     }
 }
