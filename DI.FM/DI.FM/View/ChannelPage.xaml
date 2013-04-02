@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:common="using:DI.FM.Common"
+    xmlns:controls="using:DI.FM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="PageRoot"
@@ -13,6 +14,7 @@
         <common:DurationConverter x:Key="DurationConverter" />
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
         <common:BooleanNegationConverter x:Key="BooleanNegationConverter" />
+        <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Page.Resources>
     
     <Page.BottomAppBar>
@@ -54,7 +56,7 @@
             </Grid.RowDefinitions>
             <!-- Header -->
             <Border Background="#212121">
-                <Grid>
+                <Grid Margin="0,0,56,0">
                     <Grid HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -77,6 +79,7 @@
                         <Path Grid.Column="1" Fill="#121212" Data="M 0 0 L 50 0 L 0 50 Z" Stretch="Uniform" HorizontalAlignment="Right" />
                         <Path Grid.Column="1" Fill="#0fa7ff" Data="M 47 0 L 50 0 L 3 50 L 0 50 Z" Stretch="Uniform" HorizontalAlignment="Right" />
                     </Grid>
+                    <controls:MediaController DataContext="{Binding Model}" />
                 </Grid>
             </Border>
             <!-- Content -->
@@ -159,6 +162,7 @@
                         </Grid>
                         <!-- Track History -->
                         <TextBlock Margin="0,30,0,8" Text="TRACK HISTORY" FontSize="18.6" FontWeight="Bold" />
+                        <ProgressBar IsIndeterminate="{Binding Channel.IsRefreshing}" Visibility="{Binding Path=Channel.IsRefreshing, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <ListView ItemsSource="{Binding Channel.TrackHistory}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">

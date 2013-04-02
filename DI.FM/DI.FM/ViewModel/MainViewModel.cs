@@ -72,10 +72,15 @@ namespace DI.FM.ViewModel
                 {
                     _favoriteChannels.CollectionChanged += (sender, e) =>
                     {
-                        RaisePropertyChanged("FavoriteChannels");
+                        RaisePropertyChanged("TopFavoriteChannels");
                     };
                 }
             }
+        }
+
+        public IEnumerable<ChannelItem> TopFavoriteChannels
+        {
+            get { return FavoriteChannels.Take(6).ToList(); }
         }
 
         private ChannelItem _nowPlayingItem;
@@ -118,6 +123,8 @@ namespace DI.FM.ViewModel
                 {
                     _isPlaying = value;
                     RaisePropertyChanged("IsPlaying");
+
+                    MediaControl.IsPlaying = _isPlaying;
                 }
             }
         }
@@ -131,6 +138,7 @@ namespace DI.FM.ViewModel
             set
             {
                 ApplicationData.Current.LocalSettings.Values["ListenKey"] = value;
+                CheckPremiumStatus();
             }
         }
 
@@ -140,8 +148,12 @@ namespace DI.FM.ViewModel
             get { return _isPremium; }
             set
             {
+                var update = _isPremium != value;
+                
                 _isPremium = value;
                 RaisePropertyChanged("IsPremium");
+
+                if (update) UpdateChannelsStreams();
             }
         }
 
@@ -184,12 +196,10 @@ namespace DI.FM.ViewModel
                 if (MediaPlayer.CurrentState == MediaElementState.Playing)
                 {
                     MediaControl_PausePressed(sender, e);
-                    MediaControl.IsPlaying = false;
                 }
                 else
                 {
                     MediaControl_PlayPressed(sender, e);
-                    MediaControl.IsPlaying = true;
                 }
             });
         }
@@ -199,7 +209,6 @@ namespace DI.FM.ViewModel
             await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 PlayChannel(NowPlayingItem);
-                MediaControl.IsPlaying = true;
             });
         }
 
@@ -208,7 +217,6 @@ namespace DI.FM.ViewModel
             await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 MediaPlayer.Source = null;
-                MediaControl.IsPlaying = false;
             });
         }
 
@@ -217,7 +225,6 @@ namespace DI.FM.ViewModel
             await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 MediaPlayer.Source = null;
-                MediaControl.IsPlaying = false;
             });
         }
 
@@ -228,7 +235,6 @@ namespace DI.FM.ViewModel
                 if (NowPlayingItem != null && NowPlayingItem.Prev != null)
                 {
                     PlayChannel(NowPlayingItem.Prev);
-                    MediaControl.IsPlaying = true;
                 }
             });
         }
@@ -240,7 +246,6 @@ namespace DI.FM.ViewModel
                 if (NowPlayingItem != null && NowPlayingItem.Next != null)
                 {
                     PlayChannel(NowPlayingItem.Next);
-                    MediaControl.IsPlaying = true;
                 }
             });
         }
@@ -251,8 +256,14 @@ namespace DI.FM.ViewModel
 
         private async void LoadTrackHistory(ChannelItem channel)
         {
+            channel.IsRefreshing = true;
+
             var data = await ChannelsHelper.DownloadJson(string.Format(ChannelsHelper.TRACK_HISTORY_URL, channel.ID));
-            if (data == null) return;
+            if (data == null)
+            {
+                channel.IsRefreshing = false;
+                return;
+            }
 
             TrackItem nowPl = null;
             var tempTracks = new List<TrackItem>();
@@ -266,43 +277,33 @@ namespace DI.FM.ViewModel
                 {
                     var item = new TrackItem()
                     {
-                        Index = index + 1,
+                        Index = index,
                         Track = track.Value<string>("track"),
                         Started = track.Value<long>("started"),
                         Duration = track.Value<int>("duration")
                     };
 
-                    if (nowPl == null)
-                    {
-                        nowPl = item;
-                    }
-                    else
-                    {
-                        tempTracks.Add(item);
-                    }
+                    if (nowPl == null) nowPl = item;
+                    else tempTracks.Add(item);
 
                     if (index == 5) break;
                     index++;
                 }
             }
 
-            /*if (channel.TrackHistory != null && channel.TrackHistory.Count > 0 && tempTracks.Count > 0 && channel.TrackHistory[0].Started == tempTracks[0].Started)
-            {
-                channel.TrackHistory[0].Started = -1;
-                return;
-            }*/
+            channel.TrackHistory = new ObservableCollection<TrackItem>(tempTracks);
 
-            if (tempTracks.Count > 0)
+            if (channel.NowPlaying != null && nowPl != null && channel.NowPlaying.Started == nowPl.Started)
             {
-                if (channel.NowPlaying != null && channel.NowPlaying.Started == tempTracks[0].Started)
-                {
-                    // Extend with 1 minute
-                    channel.NowPlaying.Duration += 60;
-                }
-
-                channel.NowPlaying = nowPl;
-                channel.TrackHistory = new ObservableCollection<TrackItem>(tempTracks);
+                // Extend with 1 minute if now playing is the same
+                channel.NowPlaying.Duration += 60;
             }
+            else
+            {
+                channel.NowPlaying = nowPl;
+            }
+
+            channel.IsRefreshing = false;
         }
 
         private async void LoadFavoriteChannels()
@@ -355,8 +356,8 @@ namespace DI.FM.ViewModel
         {
             foreach (var item in LiveUpdateList)
             {
-                // The item is null -> ignore
-                if (item == null) continue;
+                // The item is null or it's refreshing -> ignore
+                if (item == null || item.IsRefreshing) continue;
 
                 if (item.NowPlaying == null || item.TrackHistory == null || item.TrackHistory.Count == 0)
                 {
@@ -365,17 +366,21 @@ namespace DI.FM.ViewModel
                     continue;
                 }
 
-                // Data is downloading so skip
-                if (item.NowPlaying.Started == -1) continue;
-
                 var currentPosition = item.NowPlaying.StartedTime;
                 if (currentPosition > item.NowPlaying.Duration)
                 {
-                    // The channel position > channel duration
-                    // -1 -> the channel was sent to get the data
-                    item.NowPlaying.Position = item.NowPlaying.Duration;
-                    item.NowPlaying.Started = -1;
-                    LoadTrackHistory(item);
+                    if (currentPosition - item.NowPlaying.Duration > 1800)
+                    {
+                        // If progress - duration > 30 mins -> stop refresh
+                        // because the progress is way ahead
+                        item.IsRefreshing = true;
+                    }
+                    else
+                    {
+                        // The channel position > channel duration -> reload track history
+                        item.NowPlaying.Position = item.NowPlaying.Duration;
+                        LoadTrackHistory(item);
+                    }
                 }
                 else
                 {
@@ -424,7 +429,7 @@ namespace DI.FM.ViewModel
                 // Update the media controller information
                 MediaControl.AlbumArt = new Uri(channel.Image);
                 MediaControl.TrackName = channel.Name;
-                MediaControl.ArtistName = channel.NowPlaying.Track;
+                MediaControl.ArtistName = channel.Description;
                 MediaControl.IsPlaying = true;
 
                 // Update the live tile

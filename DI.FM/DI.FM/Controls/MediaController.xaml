@@ -35,22 +35,22 @@
         <StackPanel Grid.Column="1" Margin="20,0,35,0" VerticalAlignment="Center">
             <Grid Margin="0,0,0,6">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Border Margin="0,0,10,0" BorderThickness="1" BorderBrush="#0fa7ff" Visibility="{Binding Path=IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Foreground="#c3c3c3" FontSize="16" FontWeight="Bold">
+                     NOW PLAYING: <Run Text="{Binding NowPlayingItem.Name}" />
+                    <TextBlock.RenderTransform>
+                        <TranslateTransform Y="2" />
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <Border Grid.Column="1" Margin="10,0,0,0" BorderThickness="1" BorderBrush="#0fa7ff" Visibility="{Binding Path=IsPremium, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <TextBlock Margin="5,0" Text="PREMIUM" Foreground="#0fa7ff" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.RenderTransform>
                             <TranslateTransform Y="1" />
                         </TextBlock.RenderTransform>
                     </TextBlock>
                 </Border>
-                <TextBlock Grid.Column="1" Foreground="#c3c3c3" FontSize="16" FontWeight="Bold">
-                     NOW PLAYING: <Run Text="{Binding NowPlayingItem.Name}" />
-                    <TextBlock.RenderTransform>
-                        <TranslateTransform Y="2" />
-                    </TextBlock.RenderTransform>
-                </TextBlock>
             </Grid>
             <TextBlock Text="{Binding NowPlayingItem.NowPlaying.Track}" Foreground="White" FontSize="21" FontWeight="Light" />
         </StackPanel>

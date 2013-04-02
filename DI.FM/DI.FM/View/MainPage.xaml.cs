@@ -30,7 +30,7 @@ namespace DI.FM.View
             this.Loaded += (sender, e) =>
             {
                 var showLogin = ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] as bool?;
-                if (!showLogin.HasValue) LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                if (!showLogin.HasValue && Model.ListenKey == null) LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Visible;
             };
         }
 
@@ -66,17 +66,17 @@ namespace DI.FM.View
 
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
-             if (ToggleShuffle.IsChecked == true)
-             {
-                 ShuffleChannel();
-             }
-             else
-             {
-                 if (Model.NowPlayingItem != null && Model.NowPlayingItem.Next != null)
-                 {
-                     Model.PlayChannel(Model.NowPlayingItem.Next);
-                 }
-             }
+            if (ToggleShuffle.IsChecked == true)
+            {
+                ShuffleChannel();
+            }
+            else
+            {
+                if (Model.NowPlayingItem != null && Model.NowPlayingItem.Next != null)
+                {
+                    Model.PlayChannel(Model.NowPlayingItem.Next);
+                }
+            }
         }
 
         private void ShuffleChannel()

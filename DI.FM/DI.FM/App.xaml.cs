@@ -1,4 +1,5 @@
-﻿using DI.FM.Controls;
+﻿using Callisto.Controls;
+using DI.FM.Controls;
 using DI.FM.View;
 using DI.FM.ViewModel;
 using System;
@@ -8,6 +9,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Search;
 using Windows.Storage;
 using Windows.System;
+using Windows.UI;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -94,23 +96,14 @@ namespace DI.FM
         {
             UICommandInvokedHandler handler = new UICommandInvokedHandler(onSettingsCommand);
 
-            if (Model.ListenKey == null)
-            {
-                // No licence, not logged in (even if it's not premium)
-                SettingsCommand cmd1 = new SettingsCommand("ID_1", "Login", handler);
-                args.Request.ApplicationCommands.Add(cmd1);
-            }
-            else
-            {
-                SettingsCommand cmd2 = new SettingsCommand("ID_2", "Logout", handler);
-                args.Request.ApplicationCommands.Add(cmd2);
-            }
+            SettingsCommand cmd1 = new SettingsCommand("ID_1", "Account", handler);
+            args.Request.ApplicationCommands.Add(cmd1);
 
-            SettingsCommand cmd3 = new SettingsCommand("ID_3", "Privacy", handler);
+            SettingsCommand cmd2 = new SettingsCommand("ID_2", "Privacy", handler);
+            args.Request.ApplicationCommands.Add(cmd2);
+
+            SettingsCommand cmd3 = new SettingsCommand("ID_3", "Support", handler);
             args.Request.ApplicationCommands.Add(cmd3);
-
-            SettingsCommand cmd4 = new SettingsCommand("ID_4", "Support", handler);
-            args.Request.ApplicationCommands.Add(cmd4);
         }
 
         private async void onSettingsCommand(IUICommand command)
@@ -118,27 +111,17 @@ namespace DI.FM
             switch (command.Id.ToString())
             {
                 case "ID_1":
-                    ShowLoginWindow();
+                    var settings = new SettingsFlyout();
+                    settings.FlyoutWidth = SettingsFlyout.SettingsFlyoutWidth.Wide;
+                    settings.HeaderText = "Account settings";
+                    settings.HeaderBrush = new SolidColorBrush(Color.FromArgb(255, 18, 18, 18));
+                    settings.Content = new AccountPage();
+                    settings.IsOpen = true;
                     break;
                 case "ID_2":
-                    var dialog = new MessageDialog("If you log out from your premium account you will not have access anymore to premium streams", "Logout from your DI.FM account");
-                    dialog.Commands.Add(new UICommand("Logout") { Id = 1 });
-                    dialog.Commands.Add(new UICommand("Stay logged in") { Id = 2 });
-                    dialog.DefaultCommandIndex = 1;
-
-                    var result = await dialog.ShowAsync();
-
-                    if ((int)result.Id == 1)
-                    {
-                        Model.ListenKey = null;
-                        Model.CheckPremiumStatus();
-                        Model.UpdateChannelsStreams();
-                    }
-                    break;
-                case "ID_3":
                     await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));
                     break;
-                case "ID_4":
+                case "ID_3":
                     await Launcher.LaunchUriAsync(new Uri("mailto:support@quixby.com?subject=Feedback on DI.FM for Windows 8"));
                     break;
                 default:

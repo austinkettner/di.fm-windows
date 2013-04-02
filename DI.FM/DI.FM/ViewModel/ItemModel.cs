@@ -216,5 +216,16 @@ namespace DI.FM.ViewModel
                 RaisePropertyChanged("TrackHistory");
             }
         }
+
+        private bool _isRefreshing;
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                _isRefreshing = value;
+                RaisePropertyChanged("IsRefreshing");
+            }
+        }
     }
 }

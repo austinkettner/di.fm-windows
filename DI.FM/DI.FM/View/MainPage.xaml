@@ -118,7 +118,7 @@
                         <GridView>
                             <GridView.Items>
                                 <!-- Login -->
-                                <Grid x:Name="LoginFeature" Margin="0,0,70,0" Width="370" Visibility="Collapsed">
+                                <Grid x:Name="LoginFeature" Margin="0,0,70,0" Width="370" Height="550" Visibility="Collapsed" VerticalAlignment="Top">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -135,7 +135,7 @@
                                     </Grid>
                                 </Grid>
                                 <!-- Now Playing -->
-                                <Grid Margin="0,0,70,0" Width="370" Visibility="{Binding Path=NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                <Grid Margin="0,0,70,0" Width="400" Visibility="{Binding Path=NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}" VerticalAlignment="Top">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -161,27 +161,27 @@
                                     </Grid>
                                 </Grid>
                                 <!-- Favorite Channels -->
-                                <Grid Margin="0,0,70,0" Width="370">
+                                <Grid Margin="0,0,70,0" Width="370" VerticalAlignment="Top">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="40" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <Button Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
-                                    <Grid Grid.Row="1" Background="#212121" Height="{Binding ElementName=GridViewChannels, Path=ActualHeight}">
-                                        <TextBlock TextWrapping="Wrap" Margin="30" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=FavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
+                                    <Grid Grid.Row="1">
+                                        <TextBlock TextWrapping="Wrap" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=TopFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
                                             <Span FontSize="18">Favorite any channel and it will appear here!</Span>
                                             <LineBreak /><LineBreak />
                                             1. Select any channel by right clicking.<LineBreak />
                                             2. Click "Favorite" on the app bar.<LineBreak />
                                             3. Finished! Quick access to your favorite channels.
                                         </TextBlock>
-                                        <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" IsItemClickEnabled="True" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}"
+                                        <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding TopFavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollMode="Disabled"
                                                   ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Enabled"
                                                   ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                             <GridView.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Grid Height="80">
+                                                    <Grid Height="80" Background="#7F000000">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="80" />
                                                             <ColumnDefinition />

@@ -26,6 +26,8 @@
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
+    <x:String x:Key="ProgressBarIndeterminateForegroundThemeBrush">#FFFFFF</x:String>
+    
     <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
 
     <!-- RichTextBlock styles -->
@@ -2286,14 +2288,14 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Grid x:Name="ReorderHintContent" Background="Transparent">
+                        <Grid x:Name="ReorderHintContent" Background="Transparent" Margin="3">
                             <Path x:Name="SelectingGlyph" Data="F1 M133.1,17.9 L137.2,13.2 L144.6,19.6 L156.4,5.8 L161.2,9.9 L145.6,28.4 z" Fill="{StaticResource ListViewItemCheckSelectingThemeBrush}" FlowDirection="LeftToRight" HorizontalAlignment="Right" Height="13" Margin="0,9.5,9.5,0" Opacity="0" Stretch="Fill" VerticalAlignment="Top" Width="15"/>
                             <Border x:Name="HintGlyphBorder" HorizontalAlignment="Right" Height="40" Margin="4" Opacity="0" VerticalAlignment="Top" Width="40">
                                 <Path x:Name="HintGlyph" Data="F1 M133.1,17.9 L137.2,13.2 L144.6,19.6 L156.4,5.8 L161.2,9.9 L145.6,28.4 z" Fill="{StaticResource ListViewItemCheckHintThemeBrush}" FlowDirection="LeftToRight" HorizontalAlignment="Right" Height="13" Margin="0,5.5,5.5,0" Opacity="0" Stretch="Fill" VerticalAlignment="Top" Width="15"/>
                             </Border>
                             <Border x:Name="ContentContainer">
                                 <Grid x:Name="InnerDragContent">
-                                    <Rectangle x:Name="PointerOverBorder" IsHitTestVisible="False" Margin="0" Opacity="0" Fill="#7F000000"/>
+                                    <Rectangle x:Name="PointerOverBorder" IsHitTestVisible="False" Margin="1" Opacity="0" Fill="#66FFFFFF"/>
                                     <Rectangle x:Name="FocusVisual" IsHitTestVisible="False" Opacity="0" Stroke="{StaticResource ListViewItemFocusBorderThemeBrush}" StrokeThickness="2"/>
                                     <Rectangle x:Name="SelectionBackground" Fill="#3896FA" Margin="1" Opacity="0"/>
                                     <Border x:Name="ContentBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="4">
@@ -2304,7 +2306,7 @@
                                             <Rectangle x:Name="MultiArrangeOverlayBackground" Fill="{StaticResource ListViewItemDragBackgroundThemeBrush}" IsHitTestVisible="False" Opacity="0"/>
                                         </Grid>
                                     </Border>
-                                    <Rectangle x:Name="SelectedBorder" IsHitTestVisible="False" Margin="2" Opacity="0" Stroke="#3896FA" StrokeThickness="{StaticResource GridViewItemSelectedBorderThemeThickness}"/>
+                                    <Rectangle x:Name="SelectedBorder" IsHitTestVisible="False" Margin="2" Opacity="0" Stroke="#3896FA" StrokeThickness="2"/>
                                     <Border x:Name="SelectedCheckMarkOuter" HorizontalAlignment="Right" IsHitTestVisible="False" Margin="4" VerticalAlignment="Top">
                                         <Grid x:Name="SelectedCheckMark" Height="40" Opacity="0" Width="40">
                                             <Path x:Name="SelectedEarmark" Data="M0,0 L40,0 L40,40 z" Fill="#3896FA" Stretch="Fill"/>

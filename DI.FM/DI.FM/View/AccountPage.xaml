@@ -1,0 +1,27 @@
+﻿<Page
+    x:Class="DI.FM.View.AccountPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DI.FM.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <StackPanel x:Name="Stack1" Visibility="Collapsed">
+            <TextBlock Text="Account name" Foreground="#121212" FontSize="18" FontWeight="Light" />
+            <TextBlock x:Name="TextEmail" Foreground="#0fa7ff" FontSize="16" FontWeight="Light" />
+            <TextBlock Margin="0,20,0,0" Text="Full name" Foreground="#121212" FontSize="18" FontWeight="Light" />
+            <TextBlock x:Name="TextFullName" Foreground="#0fa7ff" FontSize="16" FontWeight="Light" />
+            <TextBlock Margin="0,20,0,0" Text="Premium account" Foreground="#121212" FontSize="18" FontWeight="Light" />
+            <TextBlock x:Name="TextIsPremium" Foreground="#0fa7ff" FontSize="16" FontWeight="Light" />
+            <TextBlock Margin="0,20,0,5" Text="If you log out from your premium account you will not have access anymore to premium streams" Foreground="#121212" FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
+            <Button Content="Logout" BorderBrush="#FF121212" Foreground="#FF121212" Click="ButtonLogout_Click" />
+        </StackPanel>
+        <StackPanel x:Name="Stack2" Visibility="Collapsed">
+            <TextBlock Margin="0,20,0,5" Text="Premium members have the flexibility to listen to crystal-clear audio using the most popular audio formats. No matter how you choose to connect to your favorite channels, higher quality audio streaming is just a click away." Foreground="#121212" FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
+            <Button Content="Login" BorderBrush="#FF121212" Foreground="#FF121212" Click="ButtonLogin_Click" />
+        </StackPanel>
+    </Grid>
+    
+</Page>

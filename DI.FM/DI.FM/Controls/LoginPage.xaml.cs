@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -51,13 +52,16 @@ namespace DI.FM.Controls
             if (data != null)
             {
                 var json = JsonConvert.DeserializeObject(data) as JContainer;
-                var key = json.Value<string>("listen_key");
 
+                // Set the listen key
                 var locator = App.Current.Resources["Locator"] as ViewModelLocator;
-                locator.Main.ListenKey = key;
-                locator.Main.CheckPremiumStatus();
-                locator.Main.UpdateChannelsStreams();
+                locator.Main.ListenKey = json.Value<string>("listen_key");
 
+                // Set account details
+                ApplicationData.Current.LocalSettings.Values["AccountEmail"] = json.Value<string>("email");
+                ApplicationData.Current.LocalSettings.Values["FullName"] = json.Value<string>("first_name") + " " + json.Value<string>("last_name");
+
+                // Close the login window
                 AnimateOutStory.Begin();
             }
             else
