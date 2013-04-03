@@ -24,6 +24,8 @@ namespace DI.FM.View
             // Main model
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
 
+            Model.PropertyChanged += Model_PropertyChanged;
+
             // Load saved settings
             ToggleShuffle.IsChecked = (bool?)ApplicationData.Current.RoamingSettings.Values["ShuffleChannels"];
 
@@ -32,6 +34,14 @@ namespace DI.FM.View
                 var showLogin = ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] as bool?;
                 if (!showLogin.HasValue && Model.ListenKey == null) LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Visible;
             };
+        }
+
+        void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ListenKey")
+            {
+                if (Model.ListenKey != null) LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
         }
 
         protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -250,8 +260,6 @@ namespace DI.FM.View
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] = false;
-            LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             App.ShowLoginWindow();
         }
 

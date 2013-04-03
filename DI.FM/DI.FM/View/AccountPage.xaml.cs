@@ -7,6 +7,7 @@ using System.Linq;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -63,17 +64,28 @@ namespace DI.FM.View
             App.ShowLoginWindow();
         }
 
-        private void ButtonLogout_Click(object sender, RoutedEventArgs e)
+        private async void ButtonLogout_Click(object sender, RoutedEventArgs e)
         {
             // Close the charm
             (this.Parent as SettingsFlyout).IsOpen = false;
 
-            // Clear the key
-            Model.ListenKey = null;
+            var dialog = new MessageDialog("If you log out from your premium account you will not have access anymore to premium streams.", "Logout from your account");
+            dialog.Commands.Add(new UICommand("Logout") { Id = "ID_1" });
+            dialog.Commands.Add(new UICommand("Stay logged in") { Id = "ID_2" });
+            dialog.CancelCommandIndex = 0;
+            dialog.DefaultCommandIndex = 1;
 
-            // Clear user info
-            ApplicationData.Current.LocalSettings.Values.Remove("AccountEmail");
-            ApplicationData.Current.LocalSettings.Values.Remove("FullName");
+            var result = await dialog.ShowAsync();
+
+            if ((string)result.Id == "ID_1")
+            {
+                // Clear the key
+                Model.ListenKey = null;
+
+                // Clear user info
+                ApplicationData.Current.LocalSettings.Values.Remove("AccountEmail");
+                ApplicationData.Current.LocalSettings.Values.Remove("FullName");
+            }
         }
     }
 }

@@ -169,7 +169,7 @@
                                     </Grid.RowDefinitions>
                                     <Button Margin="5,0,0,0" Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
                                     <Grid Grid.Row="1">
-                                        <TextBlock TextWrapping="Wrap" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=TopFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
+                                        <TextBlock Margin="5,10,0,0" TextWrapping="Wrap" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.75" Visibility="{Binding Path=TopFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
                                             <Span FontSize="18">Favorite any channel and it will appear here!</Span>
                                             <LineBreak /><LineBreak />
                                             1. Select any channel by right clicking.<LineBreak />

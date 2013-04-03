@@ -139,6 +139,7 @@ namespace DI.FM.ViewModel
             {
                 ApplicationData.Current.LocalSettings.Values["ListenKey"] = value;
                 CheckPremiumStatus();
+                RaisePropertyChanged("ListenKey");
             }
         }
 
@@ -497,24 +498,27 @@ namespace DI.FM.ViewModel
             if (data != null)
             {
                 var token = JsonConvert.DeserializeObject(data) as JContainer;
-                UpdateChannelsInfo(token["channel_filters"].First["channels"]);
+                await UpdateChannelsInfo(token["channel_filters"].First["channels"]);
                 UpdateChannelsStreams(token["streamlists"]);
                 UpdateChannelsTrack(token["track_history"]);
             }
         }
 
-        private void UpdateChannelsInfo(JToken token)
+        private Task UpdateChannelsInfo(JToken token)
         {
-            foreach (var item in AllChannels)
+            return Task.Factory.StartNew(() =>
             {
-                var jChannel = token.FirstOrDefault((e) => e.Value<string>("key") == item.Key);
-                if (jChannel != null)
+                foreach (var item in AllChannels)
                 {
-                    item.ID = jChannel.Value<int>("id");
-                    item.Name = jChannel.Value<string>("name");
-                    item.Description = jChannel.Value<string>("description");
+                    var jChannel = token.FirstOrDefault((e) => e.Value<string>("key") == item.Key);
+                    if (jChannel != null)
+                    {
+                        item.ID = jChannel.Value<int>("id");
+                        item.Name = jChannel.Value<string>("name");
+                        item.Description = jChannel.Value<string>("description");
+                    }
                 }
-            }
+            });
         }
 
         public void UpdateChannelsStreams(JToken token)
@@ -533,7 +537,10 @@ namespace DI.FM.ViewModel
                     item.Streams.Clear();
 
                     var jChannel = jChannels.FirstOrDefault((e) => e.Value<int>("id") == item.ID);
+                    if (jChannel == null) continue;
+
                     var jUrls = jChannel["streams"];
+                    if (jUrls == null) continue;
 
                     foreach (var url in jUrls)
                     {
