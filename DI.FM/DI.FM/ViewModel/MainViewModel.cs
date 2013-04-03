@@ -296,7 +296,7 @@ namespace DI.FM.ViewModel
             if (channel.NowPlaying != null && nowPl != null && channel.NowPlaying.Started == nowPl.Started)
             {
                 // Extend with 1 minute if now playing is the same
-                channel.NowPlaying.Duration += 60;
+                channel.NowPlaying.Duration += channel.NowPlaying.StartedTime + 10;
             }
             else
             {
@@ -370,8 +370,7 @@ namespace DI.FM.ViewModel
                 if (currentPosition > item.NowPlaying.Duration)
                 {
                     // The channel position > channel duration -> reload track history
-                    item.NowPlaying.Duration = currentPosition;
-                    item.NowPlaying.Position = currentPosition;
+                    item.NowPlaying.Position = item.NowPlaying.Duration;
                     LoadTrackHistory(item);
                 }
                 else
@@ -419,10 +418,9 @@ namespace DI.FM.ViewModel
                 MediaPlayer.Source = new Uri(channel.Streams[0]);
 
                 // Update the media controller information
-                MediaControl.AlbumArt = new Uri(channel.Image);
-                MediaControl.TrackName = channel.Name;
-                MediaControl.ArtistName = channel.Description;
-                MediaControl.IsPlaying = true;
+                if(channel.Image != null) MediaControl.AlbumArt = new Uri(channel.Image);
+                if(channel.Name != null) MediaControl.TrackName = channel.Name;
+                if(channel.NowPlaying != null) MediaControl.ArtistName = channel.NowPlaying.Track;
 
                 // Update the live tile
                 SetLiveTile(channel);

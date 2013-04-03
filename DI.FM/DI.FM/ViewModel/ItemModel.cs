@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Windows.Media;
 
 namespace DI.FM.ViewModel
 {
@@ -203,6 +204,8 @@ namespace DI.FM.ViewModel
             {
                 _nowPlaying = value;
                 RaisePropertyChanged("NowPlaying");
+
+                if (_nowPlaying != null) MediaControl.ArtistName = _nowPlaying.Track;
             }
         }
 

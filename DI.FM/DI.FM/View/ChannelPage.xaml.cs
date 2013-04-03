@@ -10,6 +10,7 @@ namespace DI.FM.View
 {
     public sealed partial class ChannelPage : LayoutAwarePage
     {
+        private bool Direction;
         private MainViewModel Model;
         private ChannelItem SelectedItem;
 
@@ -46,15 +47,40 @@ namespace DI.FM.View
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
         {
             SelectedItem = SelectedItem.Prev;
+
+            Direction = true;
+
+            FadeOutRightStory.Begin();
+            /*this.DefaultViewModel["Channel"] = SelectedItem;
+
+            UpdatePlayStatus();
+            UpdateFavoriteStatus();*/
+        }
+
+        private void ButtonNext_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedItem = SelectedItem.Next;
+
+            Direction = false;
+
+            FadeOutLeftStory.Begin();
+
+            /*this.DefaultViewModel["Channel"] = SelectedItem;
+
+            UpdatePlayStatus();
+            UpdateFavoriteStatus();*/
+        }
+
+        private void ButtonPrev1_Click(object sender, RoutedEventArgs e)
+        {
             this.DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
             UpdateFavoriteStatus();
         }
 
-        private void ButtonNext_Click(object sender, RoutedEventArgs e)
+        private void ButtonNext1_Click(object sender, RoutedEventArgs e)
         {
-            SelectedItem = SelectedItem.Next;
             this.DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
@@ -63,7 +89,7 @@ namespace DI.FM.View
 
         private void UpdateFavoriteStatus()
         {
-            if (Model.FavoriteChannels.Contains(Model.NowPlayingItem))
+            if (Model.FavoriteChannels.Contains(SelectedItem))
             {
                 ButtonFavorite.Style = App.Current.Resources["UnfavoriteAppBarButtonStyle"] as Style;
             }
@@ -115,5 +141,17 @@ namespace DI.FM.View
                 IsOpen = true
             };
         }
+
+        private void FadeOutStory_Completed(object sender, object e)
+        {
+            this.DefaultViewModel["Channel"] = SelectedItem;
+
+            UpdatePlayStatus();
+            UpdateFavoriteStatus();
+
+            if (Direction) FadeInRightStory.Begin();
+            else FadeInLeftStory.Begin();
+        }
     }
 }
+

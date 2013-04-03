@@ -15,6 +15,96 @@
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
         <common:BooleanNegationConverter x:Key="BooleanNegationConverter" />
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        
+        
+        <Storyboard x:Name="FadeOutLeftStory" Completed="FadeOutStory_Completed">
+            <DoubleAnimation From="1" To="0" BeginTime="0:0:0.300" Duration="0:0:0.800" Storyboard.TargetName="GridContent" Storyboard.TargetProperty="Opacity">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="0" To="-1000" BeginTime="0:0:0.300" Duration="0:0:0.800" Storyboard.TargetName="TranslateContent" Storyboard.TargetProperty="X">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="1" To="0.8" Duration="0:0:0.300" Storyboard.TargetName="ScaleContent" Storyboard.TargetProperty="ScaleX">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="1" To="0.8" Duration="0:0:0.300" Storyboard.TargetName="ScaleContent" Storyboard.TargetProperty="ScaleY">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="FadeInLeftStory">
+            <DoubleAnimation From="0" To="1" Duration="0:0:0.800" Storyboard.TargetName="GridContent" Storyboard.TargetProperty="Opacity">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="1000" To="0" Duration="0:0:0.800" Storyboard.TargetName="TranslateContent" Storyboard.TargetProperty="X">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="0.8" To="1" BeginTime="0:0:0.800" Duration="0:0:0.300" Storyboard.TargetName="ScaleContent" Storyboard.TargetProperty="ScaleX">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="0.8" To="1" BeginTime="0:0:0.800" Duration="0:0:0.300" Storyboard.TargetName="ScaleContent" Storyboard.TargetProperty="ScaleY">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="FadeOutRightStory" Completed="FadeOutStory_Completed">
+            <DoubleAnimation From="1" To="0" BeginTime="0:0:0.300" Duration="0:0:0.800" Storyboard.TargetName="GridContent" Storyboard.TargetProperty="Opacity">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="0" To="1000" BeginTime="0:0:0.300" Duration="0:0:0.800" Storyboard.TargetName="TranslateContent" Storyboard.TargetProperty="X">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="1" To="0.8" Duration="0:0:0.300" Storyboard.TargetName="ScaleContent" Storyboard.TargetProperty="ScaleX">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="1" To="0.8" Duration="0:0:0.300" Storyboard.TargetName="ScaleContent" Storyboard.TargetProperty="ScaleY">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="FadeInRightStory">
+            <DoubleAnimation From="0" To="1" Duration="0:0:0.800" Storyboard.TargetName="GridContent" Storyboard.TargetProperty="Opacity">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="-1000" To="0" Duration="0:0:0.800" Storyboard.TargetName="TranslateContent" Storyboard.TargetProperty="X">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="0.8" To="1" BeginTime="0:0:0.800" Duration="0:0:0.300" Storyboard.TargetName="ScaleContent" Storyboard.TargetProperty="ScaleX">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="0.8" To="1" BeginTime="0:0:0.800" Duration="0:0:0.300" Storyboard.TargetName="ScaleContent" Storyboard.TargetProperty="ScaleY">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </Page.Resources>
     
     <Page.BottomAppBar>
@@ -49,7 +139,7 @@
         </VisualStateManager.VisualStateGroups>
         
         <!-- Filled View -->
-        <Grid x:Name="FilledGrid" Background="{Binding Channel.Color1}">
+        <Grid x:Name="FilledGrid" Background="#212121">
             <Grid.RowDefinitions>
                 <RowDefinition Height="110" />
                 <RowDefinition />
@@ -83,7 +173,16 @@
                 </Grid>
             </Border>
             <!-- Content -->
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" x:Name="GridContent" Background="{Binding Channel.Color1}" RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform x:Name="TranslateContent" />
+                        <ScaleTransform x:Name="ScaleContent" />
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                
+                
+                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -112,11 +211,6 @@
                             </Grid.Background>
                             <Border BorderThickness="1" BorderBrush="#16FFFFFF" />
                             <Grid Margin="15,10">
-                                <Grid.Transitions>
-                                    <TransitionCollection>
-                                        <EntranceThemeTransition />
-                                    </TransitionCollection>
-                                </Grid.Transitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="Auto" />
@@ -216,11 +310,11 @@
                                 <ColumnDefinition Width="30" />
                             </Grid.ColumnDefinitions>
                             <!-- Current Channel Title + Arrows -->
-                            <Button VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=Channel.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev_Click">
+                            <Button VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=Channel.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev1_Click">
                                 <Path StrokeThickness="2" Stroke="White" Data="M 10 0 L 0 10 L 10 20" HorizontalAlignment="Left" />
                             </Button>
                             <TextBlock Grid.Column="1" Text="{Binding Channel.Name}" FontSize="32" FontWeight="SemiLight" TextTrimming="WordEllipsis" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                            <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=Channel.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext_Click">
+                            <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=Channel.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext1_Click">
                                 <Path StrokeThickness="2" Stroke="White" Data="M 0 0 L 10 10 L 0 20" HorizontalAlignment="Right" />
                             </Button>
                         </Grid>
