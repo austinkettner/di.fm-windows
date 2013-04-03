@@ -10,7 +10,7 @@ namespace DI.FM.View
 {
     public sealed partial class ChannelPage : LayoutAwarePage
     {
-        private bool Direction;
+        private bool IsRightDirection;
         private MainViewModel Model;
         private ChannelItem SelectedItem;
 
@@ -47,32 +47,20 @@ namespace DI.FM.View
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
         {
             SelectedItem = SelectedItem.Prev;
-
-            Direction = true;
-
+            IsRightDirection = false;
             FadeOutRightStory.Begin();
-            /*this.DefaultViewModel["Channel"] = SelectedItem;
-
-            UpdatePlayStatus();
-            UpdateFavoriteStatus();*/
         }
 
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
             SelectedItem = SelectedItem.Next;
-
-            Direction = false;
-
+            IsRightDirection = true;
             FadeOutLeftStory.Begin();
-
-            /*this.DefaultViewModel["Channel"] = SelectedItem;
-
-            UpdatePlayStatus();
-            UpdateFavoriteStatus();*/
         }
 
         private void ButtonPrev1_Click(object sender, RoutedEventArgs e)
         {
+            SelectedItem = SelectedItem.Next;
             this.DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
@@ -81,6 +69,7 @@ namespace DI.FM.View
 
         private void ButtonNext1_Click(object sender, RoutedEventArgs e)
         {
+            SelectedItem = SelectedItem.Next;
             this.DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
@@ -149,8 +138,8 @@ namespace DI.FM.View
             UpdatePlayStatus();
             UpdateFavoriteStatus();
 
-            if (Direction) FadeInRightStory.Begin();
-            else FadeInLeftStory.Begin();
+            if (IsRightDirection) FadeInLeftStory.Begin();
+            else FadeInRightStory.Begin();
         }
     }
 }

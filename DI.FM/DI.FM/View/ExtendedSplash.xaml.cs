@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+﻿using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 namespace DI.FM.View
 {
@@ -20,18 +8,25 @@ namespace DI.FM.View
         public ExtendedSplash(SplashScreen splash)
         {
             this.InitializeComponent();
-            PositionImage(splash);
+
+            // Resize logo on size changed
+            this.SizeChanged += (sender, e) => { PositionElements(splash); };
+
+            // Init the position
+            PositionElements(splash);
         }
 
-        private void PositionImage(SplashScreen splash)
+        private void PositionElements(SplashScreen splash)
         {
+            // Logo
             extendedSplashImage.SetValue(Canvas.LeftProperty, splash.ImageLocation.X);
             extendedSplashImage.SetValue(Canvas.TopProperty, splash.ImageLocation.Y);
             extendedSplashImage.Height = splash.ImageLocation.Height;
             extendedSplashImage.Width = splash.ImageLocation.Width;
 
-            Progress.SetValue(Canvas.LeftProperty, splash.ImageLocation.X + splash.ImageLocation.Width / 2 - Progress.Width / 2);
-            Progress.SetValue(Canvas.TopProperty, splash.ImageLocation.Y + splash.ImageLocation.Height + 50);
+            // Progress ring
+            extendedProgress.SetValue(Canvas.LeftProperty, splash.ImageLocation.X + splash.ImageLocation.Width / 2 - extendedProgress.Width / 2);
+            extendedProgress.SetValue(Canvas.TopProperty, splash.ImageLocation.Y + splash.ImageLocation.Height + 50);
         }
     }
 }

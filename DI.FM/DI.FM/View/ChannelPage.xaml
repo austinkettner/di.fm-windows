@@ -313,7 +313,7 @@
                             <Button VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=Channel.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev1_Click">
                                 <Path StrokeThickness="2" Stroke="White" Data="M 10 0 L 0 10 L 10 20" HorizontalAlignment="Left" />
                             </Button>
-                            <TextBlock Grid.Column="1" Text="{Binding Channel.Name}" FontSize="32" FontWeight="SemiLight" TextTrimming="WordEllipsis" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <TextBlock Grid.Column="1" Text="{Binding Channel.Name}" FontSize="30" FontWeight="SemiLight" TextWrapping="Wrap" TextAlignment="Center" />
                             <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=Channel.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext1_Click">
                                 <Path StrokeThickness="2" Stroke="White" Data="M 0 0 L 10 10 L 0 20" HorizontalAlignment="Right" />
                             </Button>
