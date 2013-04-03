@@ -21,7 +21,7 @@
       </VisualElements>
       <Extensions>
         <Extension Category="windows.search" />
-        <Extension Category="windows.backgroundTasks" EntryPoint="App.xaml">
+        <Extension Category="windows.backgroundTasks" StartPage="View/MainPage.xaml">
           <BackgroundTasks>
             <Task Type="audio" />
           </BackgroundTasks>

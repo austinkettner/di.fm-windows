@@ -419,9 +419,9 @@ namespace DI.FM.ViewModel
                 MediaPlayer.Source = new Uri(channel.Streams[0]);
 
                 // Update the media controller information
-                if(channel.Image != null) MediaControl.AlbumArt = new Uri(channel.Image);
-                if(channel.Name != null) MediaControl.TrackName = channel.Name;
-                if(channel.NowPlaying != null) MediaControl.ArtistName = channel.NowPlaying.Track;
+                if (channel.Image != null) MediaControl.AlbumArt = new Uri(channel.Image);
+                if (channel.Name != null) MediaControl.TrackName = channel.Name;
+                if (channel.NowPlaying != null) MediaControl.ArtistName = channel.NowPlaying.Track;
 
                 // Update the live tile
                 SetLiveTile(channel);
@@ -436,6 +436,7 @@ namespace DI.FM.ViewModel
             }
             else
             {
+
                 PlayChannel(NowPlayingItem);
             }
         }
