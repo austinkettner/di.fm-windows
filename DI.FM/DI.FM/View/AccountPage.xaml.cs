@@ -72,7 +72,6 @@ namespace DI.FM.View
             var dialog = new MessageDialog("If you log out from your premium account you will not have access anymore to premium streams.", "Logout from your account");
             dialog.Commands.Add(new UICommand("Logout") { Id = "ID_1" });
             dialog.Commands.Add(new UICommand("Stay logged in") { Id = "ID_2" });
-            dialog.CancelCommandIndex = 0;
             dialog.DefaultCommandIndex = 1;
 
             var result = await dialog.ShowAsync();

@@ -60,7 +60,7 @@ namespace DI.FM.View
 
         private void ButtonPrev1_Click(object sender, RoutedEventArgs e)
         {
-            SelectedItem = SelectedItem.Next;
+            SelectedItem = SelectedItem.Prev;
             this.DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
@@ -143,4 +143,3 @@ namespace DI.FM.View
         }
     }
 }
-

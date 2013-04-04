@@ -41,13 +41,22 @@ namespace DI.FM.Controls
         private async void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
             Progress.IsActive = true;
-            GridForm.IsHitTestVisible = false;
+
+            TextEmail.IsEnabled = false;
+            TextPass.IsEnabled = false;
+            ButtonCancel.IsEnabled = false;
+            ButtonLogin.IsEnabled = false;
+
             TextError.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
 
             var data = await LogIn(TextEmail.Text, TextPass.Password);
 
             Progress.IsActive = false;
-            GridForm.IsHitTestVisible = true;
+
+            TextEmail.IsEnabled = true;
+            TextPass.IsEnabled = true;
+            ButtonCancel.IsEnabled = true;
+            ButtonLogin.IsEnabled = true;
 
             if (data != null)
             {
@@ -108,14 +117,6 @@ namespace DI.FM.Controls
         private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
         {
             await Launcher.LaunchUriAsync(new Uri("https://www.di.fm/join"));
-        }
-
-        private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == VirtualKey.Enter && !Progress.IsActive)
-            {
-                ButtonLogin_Click(null, null);
-            }
         }
     }
 }

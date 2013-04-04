@@ -131,9 +131,9 @@
                     <TextBlock Margin="0,0,0,50" Text="Login to your existing account or create a new one to get started." FontSize="16" Foreground="White" FontWeight="SemiLight" />
                     <StackPanel Width="300">
                         <TextBlock Text="Username" FontSize="16" Foreground="White" FontWeight="SemiLight" />
-                        <TextBox x:Name="TextEmail" Margin="0,0,0,5" KeyDown="TextBox_KeyDown" />
+                        <TextBox x:Name="TextEmail" Margin="0,0,0,5" />
                         <TextBlock Text="Password" FontSize="16" Foreground="White" FontWeight="SemiLight" />
-                        <PasswordBox x:Name="TextPass" KeyDown="TextBox_KeyDown" />
+                        <PasswordBox x:Name="TextPass" />
                         <TextBlock x:Name="TextError" Margin="0,10,0,0" Text="Could not log in!" FontSize="16" Foreground="White" FontWeight="SemiBold" Visibility="Collapsed" />
                     </StackPanel>
                 </StackPanel>
@@ -141,7 +141,7 @@
                     <HyperlinkButton Content="Create a new account" Foreground="White" Click="HyperlinkButton_Click" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <ProgressRing x:Name="Progress" Margin="0,0,10,0" Width="24" Height="24" Foreground="White" IsActive="False" />
-                        <Button Margin="0,0,10,0" Width="100" Content="Cancel" Click="ButtonCancel_Click" />
+                        <Button x:Name="ButtonCancel" Margin="0,0,10,0" Width="100" Content="Cancel" Click="ButtonCancel_Click" />
                         <Button x:Name="ButtonLogin" Width="100" Content="Login" Click="ButtonLogin_Click" />
                     </StackPanel>
                 </Grid>

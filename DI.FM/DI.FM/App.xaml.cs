@@ -43,6 +43,7 @@ namespace DI.FM
 
             // Init and update the model
             Model = (this.Resources["Locator"] as ViewModelLocator).Main;
+            await Model.CheckPremiumStatus();
             await Model.UpdateChannels();
 
             // Init the root frame
@@ -158,6 +159,7 @@ namespace DI.FM
 
                 // Init and update the model
                 Model = (this.Resources["Locator"] as ViewModelLocator).Main;
+                await Model.CheckPremiumStatus();
                 await Model.UpdateChannels();
 
                 frame = new Frame();
