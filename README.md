@@ -1,15 +1,16 @@
-# DI.FM
-### A Digital Imported Radio App for Windows 8
+# DI.FM App
+### For Windows 8.
+A Digitally Imported Radio app for all versions of Windows 8. 
 
 ##Features
----
 - Stream any Digitally Imported Radio channel
 - Ability to favorite any channel
 - Roaming profile support, so cloud-synced settings.
 - Semantic Zoom Support
+- DI.FM User Authentication
+- Premium Stream Support
  
 ##Application Layout & Pages
----
 
 ###Main View
 Users start in DI.FM on the Main View. This view is distributed into a few sections 'Now Playing', 'Favorite Channels', and 'All Radio Channels'.

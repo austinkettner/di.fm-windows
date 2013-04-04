@@ -128,7 +128,8 @@
                                             <StackPanel>
                                                 <TextBlock Margin="0,0,0,25" Text="Login to DI.FM" FontSize="32" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
                                                 <TextBlock Margin="0,0,0,15" Text="Login to your existing account or create a new one to get started." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
-                                                <TextBlock Text="Premium members have the flexibility to listen to crystal-clear audio using the most popular audio formats. No matter how you choose to connect to your favorite channels, higher quality audio streaming is just a click away." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                                <TextBlock Margin="0,0,0,15" Text="Premium members have the flexibility to listen to crystal-clear audio using the most popular audio formats. No matter how you choose to connect to your favorite channels, higher quality audio streaming is just a click away." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                                <TextBlock Text="You can access account information anytime via the Charms Bar" FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
                                             </StackPanel>
                                             <Button Content="Login" Width="105" Height="42" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="ButtonLogin_Click" />
                                         </Grid>
