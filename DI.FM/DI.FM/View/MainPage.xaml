@@ -183,7 +183,7 @@
                                                   ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                             <GridView.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Grid Height="80" Background="#7F000000">
+                                                    <Grid Height="80" Background="#121212">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="80" />
                                                             <ColumnDefinition />
@@ -201,7 +201,7 @@
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
                                                             <TextBlock Foreground="White" FontSize="16" FontWeight="Bold">
-                                                                <Run Text="{Binding Name}" /> - <Run Text="Curently Playing" FontSize="13.5" Foreground="#10a1f6" FontWeight="Normal" />
+                                                                <Run Text="{Binding Name}" />
                                                             </TextBlock>
                                                             <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
                                                         </Grid>
