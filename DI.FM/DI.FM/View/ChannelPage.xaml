@@ -302,21 +302,23 @@
         <Grid x:Name="SnappedGrid" Background="{Binding Channel.Color1}" Visibility="Collapsed">
             <Grid>
                 <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="30,20">
-                        <Grid Margin="0,20,0,50">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30" />
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="30" />
-                            </Grid.ColumnDefinitions>
-                            <!-- Current Channel Title + Arrows -->
-                            <Button VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=Channel.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev1_Click">
-                                <Path StrokeThickness="2" Stroke="White" Data="M 10 0 L 0 10 L 10 20" HorizontalAlignment="Left" />
-                            </Button>
-                            <TextBlock Grid.Column="1" Text="{Binding Channel.Name}" FontSize="30" FontWeight="SemiLight" TextWrapping="Wrap" TextAlignment="Center" />
-                            <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=Channel.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext1_Click">
-                                <Path StrokeThickness="2" Stroke="White" Data="M 0 0 L 10 10 L 0 20" HorizontalAlignment="Right" />
-                            </Button>
+                    <StackPanel Margin="30,0,30,20">
+                        <Grid Height="130">
+                            <Grid VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="30" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Current Channel Title + Arrows -->
+                                <Button VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=Channel.Prev, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonPrev1_Click">
+                                    <Path StrokeThickness="2" Stroke="White" Data="M 10 0 L 0 10 L 10 20" HorizontalAlignment="Left" />
+                                </Button>
+                                <TextBlock Grid.Column="1" Text="{Binding Channel.Name}" FontSize="30" FontWeight="SemiLight" TextWrapping="Wrap" TextAlignment="Center" />
+                                <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding Path=Channel.Next, Converter={StaticResource ObjectToVisibilityConverter}}" Style="{StaticResource SimpleButtonStyle}" Click="ButtonNext1_Click">
+                                    <Path StrokeThickness="2" Stroke="White" Data="M 0 0 L 10 10 L 0 20" HorizontalAlignment="Right" />
+                                </Button>
+                            </Grid>
                         </Grid>
                         <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold" />
                         <!-- Now Playing Info and Album Art -->
@@ -367,4 +369,5 @@
             </Grid>
         </Grid>
     </Grid>
+    
 </common:LayoutAwarePage>

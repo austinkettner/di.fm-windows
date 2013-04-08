@@ -13,7 +13,6 @@
 
     <Page.Resources>
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
-        <common:FavoritesHeaderVisibility x:Key="FavoritesHeaderVisibility" />
     </Page.Resources>
 
     <Grid>

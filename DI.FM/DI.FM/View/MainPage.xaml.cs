@@ -33,6 +33,7 @@ namespace DI.FM.View
             {
                 var showLogin = ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] as bool?;
                 if (!showLogin.HasValue && Model.ListenKey == null) LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                ButtonLogin.Visibility = Model.ListenKey == null ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
             };
         }
 
@@ -41,6 +42,7 @@ namespace DI.FM.View
             if (e.PropertyName == "ListenKey")
             {
                 if (Model.ListenKey != null) LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                ButtonLogin.Visibility = Model.ListenKey == null ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
             }
         }
 
@@ -270,6 +272,8 @@ namespace DI.FM.View
 
         private void ButtonHideLogin_Click(object sender, RoutedEventArgs e)
         {
+            this.BottomAppBar.IsOpen = false;
+
             ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] = false;
             LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }

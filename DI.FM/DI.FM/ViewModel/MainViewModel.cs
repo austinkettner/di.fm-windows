@@ -72,9 +72,21 @@ namespace DI.FM.ViewModel
                 {
                     _favoriteChannels.CollectionChanged += (sender, e) =>
                     {
+                        HasFavorites = FavoriteChannels.Count > 0;
                         RaisePropertyChanged("TopFavoriteChannels");
                     };
                 }
+            }
+        }
+
+        private bool _hasFavorites;
+        public bool HasFavorites
+        {
+            get { return _hasFavorites; }
+            set
+            {
+                _hasFavorites = value;
+                RaisePropertyChanged("HasFavorites");
             }
         }
 

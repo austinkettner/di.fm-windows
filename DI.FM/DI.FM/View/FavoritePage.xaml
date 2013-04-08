@@ -16,7 +16,7 @@
 
     <Page.Resources>
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
-        <common:FavoritesHeaderVisibility x:Key="FavoritesHeaderVisibility" />
+        <common:BooleanNegationToVisibilityConverter x:Key="BooleanNegationToVisibilityConverter" />
         <common:DurationConverter x:Key="DurationConverter" />
     </Page.Resources>
     
@@ -99,7 +99,7 @@
             <!-- Content -->
             <Grid Grid.Row="1">
                 <!-- Content -->
-                <TextBlock Margin="118,65,0,0" Text="There are no favorites yet..." Foreground="White" FontSize="22" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=FavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}" />
+                <TextBlock Margin="118,65,0,0" Text="There are no favorites yet..." Foreground="White" FontSize="22" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=HasFavorites, Converter={StaticResource BooleanNegationToVisibilityConverter}}" />
                 <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" SelectionChanged="GridView_SelectionChanged" ItemClick="GridViewFavorites_ItemClick">
                     <GridView.ItemTemplate>
                         <DataTemplate>

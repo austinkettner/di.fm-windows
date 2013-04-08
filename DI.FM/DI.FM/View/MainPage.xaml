@@ -29,6 +29,7 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel x:Name="StackRefresh" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="ButtonLogin" Style="{StaticResource HomeAppBarButtonStyle}" Click="ButtonLogin_Click" Visibility="Collapsed" AutomationProperties.Name="Login" />
                     <Button Style="{StaticResource VolumeAppBarButtonStyle}" Click="ButtonVolume_Click" />
                     <Rectangle Margin="20" Width="2" Fill="#64FFFFFF" />
                     <Button Style="{StaticResource RefreshAppBarButtonStyle}" Click="ButtonRefresh_Click" />
@@ -41,9 +42,8 @@
         <!-- Converters -->
         <common:DurationConverter x:Key="DurationConverter" />
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
-        <common:FavoritesHeaderVisibility x:Key="FavoritesHeaderVisibility" />
-
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <common:BooleanNegationToVisibilityConverter x:Key="BooleanNegationToVisibilityConverter" />
         <common:PlayStopButtonConverter x:Key="PlayStopButtonConverter" />
         <common:BooleanNegationConverter x:Key="BooleanNegationConverter" />
     </Page.Resources>
@@ -170,7 +170,7 @@
                                     </Grid.RowDefinitions>
                                     <Button Margin="5,0,0,0" Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
                                     <Grid Grid.Row="1">
-                                        <TextBlock Margin="5,10,0,0" TextWrapping="Wrap" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.75" Visibility="{Binding Path=TopFavoriteChannels, Converter={StaticResource FavoritesHeaderVisibility}}">
+                                        <TextBlock Margin="5,10,0,0" TextWrapping="Wrap" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.75" Visibility="{Binding Path=HasFavorites, Converter={StaticResource BooleanNegationToVisibilityConverter}}">
                                             <Span FontSize="18">Favorite any channel and it will appear here!</Span>
                                             <LineBreak /><LineBreak />
                                             1. Select any channel by right clicking.<LineBreak />
@@ -302,59 +302,63 @@
         <Grid x:Name="SnappedGrid" Visibility="Collapsed">
             <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="20,50,20,30">
-                    <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold" />
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Image Source="{Binding NowPlayingItem.Image}" />
-                        <Button Margin="0,0,20,20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{Binding Path=IsPlaying, Converter={StaticResource PlayStopButtonConverter}}"
+                    <StackPanel Visibility="{Binding Path=NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                        <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Image Source="{Binding NowPlayingItem.Image}" />
+                            <Button Margin="0,0,20,20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{Binding Path=IsPlaying, Converter={StaticResource PlayStopButtonConverter}}"
                                 IsEnabled="{Binding Path=IsBuffering, Converter={StaticResource BooleanNegationConverter}}" Click="ButtonPlayStop_Click" />
-                        <Border Grid.Row="1" Background="#121212">
-                            <TextBlock Margin="10,8" Text="{Binding NowPlayingItem.NowPlaying.Track}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap">
-                                <TextBlock.RenderTransform>
-                                    <TranslateTransform Y="1" />
-                                </TextBlock.RenderTransform>
-                            </TextBlock>
-                        </Border>
-                    </Grid>
-                    <TextBlock Margin="0,50,0,8" Text="FAVORITES" FontSize="18.6" FontWeight="Bold" />
-                    <Grid Background="#212121">
-                        <GridView x:Name="GridViewFavorites1" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
+                            <Border Grid.Row="1" Background="#121212">
+                                <TextBlock Margin="10,8" Text="{Binding NowPlayingItem.NowPlaying.Track}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform Y="1" />
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding Path=HasFavorites, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Margin="0,50,0,8" Text="FAVORITES" FontSize="18.6" FontWeight="Bold" />
+                        <Grid Background="#212121">
+                            <GridView x:Name="GridViewFavorites1" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                   ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
-                            <GridView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Height="80">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid>
-                                            <Image Stretch="Uniform">
-                                                <Image.Source>
-                                                    <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="80" />
-                                                </Image.Source>
-                                            </Image>
+                                <GridView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Height="80">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid>
+                                                <Image Stretch="Uniform">
+                                                    <Image.Source>
+                                                        <BitmapImage UriSource="{Binding Image}" DecodePixelHeight="80" />
+                                                    </Image.Source>
+                                                </Image>
+                                            </Grid>
+                                            <Grid Grid.Column="1" Margin="10,5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold" />
+                                                <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                                            </Grid>
                                         </Grid>
-                                        <Grid Grid.Column="1" Margin="10,5">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="16" FontWeight="Bold" />
-                                            <TextBlock Grid.Row="1" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="15" FontWeight="Normal" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
-                                        </Grid>
-                                    </Grid>
-                                </DataTemplate>
-                            </GridView.ItemTemplate>
-                            <GridView.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel />
-                                </ItemsPanelTemplate>
-                            </GridView.ItemsPanel>
-                        </GridView>
-                    </Grid>
+                                    </DataTemplate>
+                                </GridView.ItemTemplate>
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                            </GridView>
+                        </Grid>
+                    </StackPanel>
                     <TextBlock Margin="0,50,0,8" Text="ALL CHANNELS" FontSize="18.6" FontWeight="Bold" />
                     <Grid Background="#212121">
                         <GridView x:Name="GridViewChannels1" SelectionMode="Extended" ItemsSource="{Binding AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
