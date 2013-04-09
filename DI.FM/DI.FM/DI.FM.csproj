@@ -15,7 +15,7 @@
     <PackageCertificateKeyFile>DI.FM_StoreKey.pfx</PackageCertificateKeyFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <PackageCertificateThumbprint>E0EF2CA54123370CBE08493A9C5507A73449F118</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -160,6 +160,7 @@
     <Content Include="Assets\Background.png" />
     <Content Include="Assets\Channels\bigroomhouse.png" />
     <Content Include="Assets\Channels\deeptech.png" />
+    <Content Include="Assets\Channels\umfradio.png" />
     <Content Include="Assets\Channels\vocalchillout.png" />
     <Content Include="Assets\Channels\house.png" />
     <Content Include="Assets\Channels\progressive.png" />

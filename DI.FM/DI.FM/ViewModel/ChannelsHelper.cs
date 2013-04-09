@@ -17,10 +17,11 @@ namespace DI.FM.ViewModel
 
         public static Dictionary<string, string[]> ChannelsAssets = new Dictionary<string, string[]>()
         {
+            {"umfradio", new string[]{"ms-appx:///Assets/Channels/umfradio.png", "#120f22", "#4f3f88"}},
             {"mainstage", new string[]{"ms-appx:///Assets/Channels/mainstage.png", "#336d84", "#d00001"}},
             {"bigroomhouse", new string[]{"ms-appx:///Assets/Channels/bigroomhouse.png", "#837873", "#ff5a1b"}},
-            {"eclectronica", new string[]{"ms-appx:///Assets/Channels/eclectronica.png", "#a67900", "#27711a"}},
-            {"russianclubhits", new string[]{"ms-appx:///Assets/Channels/russianclubhits.png", "#700046", "#6634ab"}},
+            {"eclectronica", new string[]{"ms-appx:///Assets/Channels/eclectronica.png", "#e3ba00", "#557000"}},
+            {"russianclubhits", new string[]{"ms-appx:///Assets/Channels/russianclubhits.png", "#f43937", "#b41f73"}},
             {"deeptech", new string[]{"ms-appx:///Assets/Channels/deeptech.png", "#3a3a3a", "#c66a33"}},
             {"liquiddubstep", new string[]{"ms-appx:///Assets/Channels/liquiddubstep.png", "#2f203a", "#3874ab"}},
             {"glitchhop", new string[]{"ms-appx:///Assets/Channels/glitchhop.png", "#4ea1a1", "#00191a"}},
