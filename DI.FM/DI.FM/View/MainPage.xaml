@@ -118,7 +118,7 @@
                         <GridView>
                             <GridView.Items>
                                 <!-- Login -->
-                                <Grid x:Name="LoginFeature" Margin="0,0,70,0" Width="370" Height="550" Visibility="Collapsed" VerticalAlignment="Top">
+                                <Grid x:Name="LoginFeature" Margin="0,0,70,0" Width="370" Height="570" Visibility="Collapsed" VerticalAlignment="Top">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
@@ -149,7 +149,7 @@
                                     </Button>
                                     <Grid Grid.Row="1" Background="#121212">
                                         <StackPanel>
-                                            <Image Source="{Binding NowPlayingItem.Image}" />
+                                            <Image Source="{Binding NowPlayingItem.Image}" Tapped="ImageNowPlaying_Tapped" />
                                             <ProgressBar Height="5" Foreground="#0fa7ff" Value="{Binding NowPlayingItem.NowPlaying.Progress}" Maximum="100" />
                                             <StackPanel>
                                                 <Grid Margin="10,5,10,12">
@@ -163,7 +163,7 @@
                                     </Grid>
                                 </Grid>
                                 <!-- Favorite Channels -->
-                                <Grid Margin="0,0,70,0" Width="370" VerticalAlignment="Top">
+                                <Grid Margin="0,0,70,0" Width="390" VerticalAlignment="Top">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="38" />
                                         <RowDefinition />

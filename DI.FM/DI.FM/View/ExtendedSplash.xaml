@@ -10,7 +10,7 @@
     <Grid Background="#121212">
         <Canvas>
             <Image x:Name="extendedSplashImage" Source="../Assets/SplashScreen.png" />
-            <ProgressRing x:Name="extendedProgress" Width="64" Height="64" IsActive="True" Foreground="#0f9def" />
+            <ProgressRing x:Name="extendedProgress" Width="36" Height="36" IsActive="True" Foreground="#0f9def" />
         </Canvas>
     </Grid>
 </Page>

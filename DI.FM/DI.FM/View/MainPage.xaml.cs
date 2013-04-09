@@ -277,5 +277,10 @@ namespace DI.FM.View
             ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] = false;
             LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
+
+        private void ImageNowPlaying_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            ButtonNowPlaying_Click(null, null);
+        }
     }
 }
