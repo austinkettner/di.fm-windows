@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="DI.FM.App">
-      <VisualElements DisplayName="DI.FM" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="DI.FM" ForegroundText="light" BackgroundColor="#333333">
+      <VisualElements DisplayName="DI.FM" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="DI.FM" ForegroundText="light" BackgroundColor="#121212">
         <DefaultTile ShowName="noLogos" WideLogo="Assets\WideLogo.png" />
         <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#121212" />
       </VisualElements>
