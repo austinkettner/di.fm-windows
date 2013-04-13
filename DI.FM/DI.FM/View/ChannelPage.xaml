@@ -323,23 +323,28 @@
                         <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold" />
                         <!-- Now Playing Info and Album Art -->
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
                             <Image Source="{Binding Channel.Image}" />
-                            <Button x:Name="ButtonPlayStop1" Margin="0,0,20,20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource PlayIconButtonStyle}"
-                                    IsEnabled="{Binding Path=Model.IsBuffering, Converter={StaticResource BooleanNegationConverter}}" Click="ButtonPlayStop_Click" />
-                            <Border Grid.Row="1" Background="{Binding Channel.Color2}">
-                                <TextBlock Margin="10,8" Text="{Binding Channel.NowPlaying.Track}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap">
-                                    <TextBlock.RenderTransform>
-                                        <TranslateTransform Y="1" />
-                                    </TextBlock.RenderTransform>
-                                </TextBlock>
-                            </Border>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Button x:Name="ButtonPlayStop1" Margin="0,0,20,20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource PlayIconButtonStyle}"
+                                        IsEnabled="{Binding Path=Model.IsBuffering, Converter={StaticResource BooleanNegationConverter}}" Click="ButtonPlayStop_Click" />
+                                <Border Grid.Row="1">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="{Binding Channel.Color2}" Opacity="0.8" />
+                                    </Border.Background>
+                                    <TextBlock Margin="10,8" Text="{Binding Channel.NowPlaying.Track}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap">
+                                        <TextBlock.RenderTransform>
+                                            <TranslateTransform Y="1" />
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
+                                </Border>
+                            </Grid>
                         </Grid>
                         <!-- Track History -->
-                        <TextBlock Margin="0,50,0,8" Text="TRACK HISTORY" FontSize="18.6" FontWeight="Bold" />
+                        <TextBlock Margin="0,40,0,8" Text="TRACK HISTORY" FontSize="18.6" FontWeight="Bold" />
                         <ListView ItemsSource="{Binding Channel.TrackHistory}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
