@@ -142,14 +142,14 @@
                                         <RowDefinition Height="46" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <Button Content="Now Playing" Style="{StaticResource GroupButtonStyle}" Click="ButtonNowPlaying_Click">
+                                    <Button Content="Now Playing" Style="{StaticResource GroupButtonStyle}" Tapped="ButtonNowPlaying_Tapped">
                                         <Button.RenderTransform>
                                             <TranslateTransform X="-2" />
                                         </Button.RenderTransform>
                                     </Button>
                                     <Grid Grid.Row="1" Background="#121212">
                                         <StackPanel>
-                                            <Image Source="{Binding NowPlayingItem.Image}" Tapped="ImageNowPlaying_Tapped" />
+                                            <Image Source="{Binding NowPlayingItem.Image}" Tapped="ButtonNowPlaying_Tapped" />
                                             <ProgressBar Height="5" Foreground="#0fa7ff" Value="{Binding NowPlayingItem.NowPlaying.Progress}" Maximum="100" />
                                             <StackPanel>
                                                 <Grid Margin="10,5,10,12">
@@ -168,7 +168,7 @@
                                         <RowDefinition Height="38" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <Button Margin="5,0,0,0" Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Click="ButtonFavorites_Click" />
+                                    <Button Margin="5,0,0,0" Content="Favorite Channels" Style="{StaticResource GroupButtonStyle}" Tapped="ButtonFavorites_Tapped" />
                                     <Grid Grid.Row="1">
                                         <TextBlock Margin="5,10,0,0" TextWrapping="Wrap" Foreground="White" FontSize="16" FontWeight="Light" Opacity="0.75" Visibility="{Binding Path=HasFavorites, Converter={StaticResource BooleanNegationToVisibilityConverter}}">
                                             <Span FontSize="18">Favorite any channel and it will appear here!</Span>
@@ -222,7 +222,7 @@
                                         <RowDefinition Height="38" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <Button Margin="5,0,0,0" Content="All Radio Channels" IsEnabled="False" Style="{StaticResource GroupButtonStyle}" />
+                                    <TextBlock Margin="5,0,0,0" Text="All Radio Channels" Foreground="White" FontSize="21" FontWeight="SemiLight" />
                                     <GridView x:Name="GridViewChannels" Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding AllChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                             ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">
                                         <GridView.ItemTemplate>
@@ -303,7 +303,7 @@
             <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="20,50,20,30">
                     <StackPanel Visibility="{Binding Path=NowPlayingItem, Converter={StaticResource ObjectToVisibilityConverter}}">
-                        <TextBlock Margin="0,0,0,8" Text="NOW PLAYING" FontSize="18.6" FontWeight="Bold" />
+                        <Button Margin="0,0,0,8" Content="NOW PLAYING" FontSize="18.6" FontWeight="Bold" Style="{StaticResource GroupButtonStyle}" Tapped="ButtonNowPlaying_Tapped" />
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -322,7 +322,7 @@
                         </Grid>
                     </StackPanel>
                     <StackPanel Visibility="{Binding Path=HasFavorites, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <TextBlock Margin="0,50,0,8" Text="FAVORITES" FontSize="18.6" FontWeight="Bold" />
+                        <Button Margin="0,50,0,8" Content="FAVORITES" FontSize="18.6" FontWeight="Bold" Style="{StaticResource GroupButtonStyle}" Tapped="ButtonFavorites_Tapped" />
                         <Grid Background="#212121">
                             <GridView x:Name="GridViewFavorites1" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
                                   ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">

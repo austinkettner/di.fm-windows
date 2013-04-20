@@ -9,6 +9,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
 namespace DI.FM.View
@@ -192,12 +193,12 @@ namespace DI.FM.View
 
         #endregion
 
-        private void ButtonNowPlaying_Click(object sender, RoutedEventArgs e)
+        private void ButtonNowPlaying_Tapped(object sender, TappedRoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(ChannelPage), Model.NowPlayingItem);
         }
 
-        private void ButtonFavorites_Click(object sender, RoutedEventArgs e)
+        private void ButtonFavorites_Tapped(object sender, TappedRoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(FavoritePage));
         }
@@ -276,11 +277,6 @@ namespace DI.FM.View
 
             ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] = false;
             LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-        }
-
-        private void ImageNowPlaying_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            ButtonNowPlaying_Click(null, null);
         }
     }
 }
