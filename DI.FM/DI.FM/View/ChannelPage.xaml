@@ -140,6 +140,11 @@
         
         <!-- Filled View -->
         <Grid x:Name="FilledGrid" Background="#212121">
+            <Grid.ChildrenTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition />
+                </TransitionCollection>
+            </Grid.ChildrenTransitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="110" />
                 <RowDefinition />
