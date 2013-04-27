@@ -2,9 +2,12 @@
 using DI.FM.Common;
 using DI.FM.Controls;
 using DI.FM.ViewModel;
+using System;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using System.Linq;
 
 namespace DI.FM.View
 {
@@ -28,7 +31,7 @@ namespace DI.FM.View
             this.DefaultViewModel.Add("Channel", SelectedItem);
 
             UpdatePlayStatus();
-            UpdateFavoriteStatus();
+            UpdateChannelStatus();
         }
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
@@ -64,7 +67,7 @@ namespace DI.FM.View
             this.DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
-            UpdateFavoriteStatus();
+            UpdateChannelStatus();
         }
 
         private void ButtonNext1_Click(object sender, RoutedEventArgs e)
@@ -73,7 +76,17 @@ namespace DI.FM.View
             this.DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
+            UpdateChannelStatus();
+        }
+
+        private void UpdateChannelStatus()
+        {
             UpdateFavoriteStatus();
+            UpdatePinnedStatus();
+
+            // Add to the live update list
+            Model.LiveUpdateList.Clear();
+            Model.LiveUpdateList.Add(SelectedItem);
         }
 
         private void UpdateFavoriteStatus()
@@ -86,10 +99,18 @@ namespace DI.FM.View
             {
                 ButtonFavorite.Style = App.Current.Resources["FavoriteAppBarButtonStyle"] as Style;
             }
+        }
 
-            // Add to the live update list
-            Model.LiveUpdateList.Clear();
-            Model.LiveUpdateList.Add(SelectedItem);
+        private void UpdatePinnedStatus()
+        {
+            if (SecondaryTile.Exists(SelectedItem.Key))
+            {
+                ButtonPin.Style = App.Current.Resources["UnPinAppBarButtonStyle"] as Style;
+            }
+            else
+            {
+                ButtonPin.Style = App.Current.Resources["PinAppBarButtonStyle"] as Style;
+            }
         }
 
         private void UpdatePlayStatus()
@@ -113,11 +134,33 @@ namespace DI.FM.View
         {
             this.BottomAppBar.IsOpen = false;
 
-            if (Model.FavoriteChannels.Contains(Model.NowPlayingItem)) Model.FavoriteChannels.Remove(Model.NowPlayingItem);
-            else Model.FavoriteChannels.Insert(0, Model.NowPlayingItem);
-            UpdateFavoriteStatus();
+            if (Model.FavoriteChannels.Contains(SelectedItem)) Model.FavoriteChannels.Remove(SelectedItem);
+            else Model.FavoriteChannels.Insert(0, SelectedItem);
+            UpdateChannelStatus();
 
             await Model.SaveFavoriteChannels();
+        }
+
+        private async void ButtonPin_Click(object sender, RoutedEventArgs e)
+        {
+            this.BottomAppBar.IsSticky = true;
+
+            if (SecondaryTile.Exists(SelectedItem.Key))
+            {
+                var tiles = await SecondaryTile.FindAllAsync();
+                var secondaryTile = tiles.FirstOrDefault(tile => tile.TileId == SelectedItem.Key);
+                if (secondaryTile != null) await secondaryTile.RequestDeleteAsync();
+            }
+            else
+            {
+                var logo = new Uri(SelectedItem.Image);
+                var tileActivationArguments = SelectedItem.Key + " was pinned at " + DateTime.Now.ToLocalTime().ToString();
+                var secondaryTile = new SecondaryTile(SelectedItem.Key, SelectedItem.Name, SelectedItem.Name, tileActivationArguments, TileOptions.None, logo);
+                await secondaryTile.RequestCreateAsync();
+            }
+
+            UpdatePinnedStatus();
+            this.BottomAppBar.IsSticky = false;
         }
 
         private void ButtonVolume_Click(object sender, RoutedEventArgs e)
@@ -136,7 +179,7 @@ namespace DI.FM.View
             this.DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
-            UpdateFavoriteStatus();
+            UpdateChannelStatus();
 
             if (IsRightDirection) FadeInLeftStory.Begin();
             else FadeInRightStory.Begin();

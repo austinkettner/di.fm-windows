@@ -15,6 +15,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using System.Linq;
 
 namespace DI.FM
 {
@@ -63,6 +64,12 @@ namespace DI.FM
                 if (!rootFrame.Navigate(typeof(MainPage), args.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
+                }
+
+                if (!args.TileId.Equals("App"))
+                {
+                    var channel = Model.AllChannels.FirstOrDefault(item => item.Key == args.TileId);
+                    if (channel != null) rootFrame.Navigate(typeof(ChannelPage), channel);
                 }
             }
 

@@ -112,7 +112,10 @@
                 <SolidColorBrush Color="{Binding Channel.Color2}" Opacity="0.9" />
             </AppBar.Background>
             <Grid>
-                <Button x:Name="ButtonFavorite" Style="{StaticResource FavoriteAppBarButtonStyle}" Click="ButtonFavorite_Click" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button x:Name="ButtonFavorite" Style="{StaticResource FavoriteAppBarButtonStyle}" Click="ButtonFavorite_Click" />
+                    <Button x:Name="ButtonPin" Style="{StaticResource PinAppBarButtonStyle}" Click="ButtonPin_Click" />
+                </StackPanel>
                 <Button HorizontalAlignment="Right" Style="{StaticResource VolumeAppBarButtonStyle}" Click="ButtonVolume_Click" />
             </Grid>
         </AppBar>
