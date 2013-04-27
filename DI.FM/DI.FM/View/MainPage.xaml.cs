@@ -113,7 +113,7 @@ namespace DI.FM.View
         {
             foreach (ChannelItem item in e.AddedItems)
             {
-                if (this.Model.FavoriteChannels.Contains(item))
+                if (Model.FavoriteChannels.Contains(item))
                 {
                     TempUnFavorite.Add(item);
                 }
