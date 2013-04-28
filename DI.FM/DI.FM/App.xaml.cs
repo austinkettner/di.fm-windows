@@ -3,11 +3,11 @@ using DI.FM.Controls;
 using DI.FM.View;
 using DI.FM.ViewModel;
 using System;
+using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Search;
-using Windows.Storage;
 using Windows.System;
 using Windows.UI;
 using Windows.UI.ApplicationSettings;
@@ -15,7 +15,6 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using System.Linq;
 
 namespace DI.FM
 {
@@ -110,11 +109,14 @@ namespace DI.FM
             SettingsCommand cmd1 = new SettingsCommand("ID_1", "Account", handler);
             args.Request.ApplicationCommands.Add(cmd1);
 
-            SettingsCommand cmd2 = new SettingsCommand("ID_2", "Privacy", handler);
+            SettingsCommand cmd2 = new SettingsCommand("ID_2", "Stream", handler);
             args.Request.ApplicationCommands.Add(cmd2);
 
-            SettingsCommand cmd3 = new SettingsCommand("ID_3", "Support", handler);
+            SettingsCommand cmd3 = new SettingsCommand("ID_3", "Privacy", handler);
             args.Request.ApplicationCommands.Add(cmd3);
+
+            SettingsCommand cmd4 = new SettingsCommand("ID_4", "Support", handler);
+            args.Request.ApplicationCommands.Add(cmd4);
         }
 
         private async void onSettingsCommand(IUICommand command)
@@ -130,9 +132,17 @@ namespace DI.FM
                     settings.IsOpen = true;
                     break;
                 case "ID_2":
-                    await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));
+                    var settings1 = new SettingsFlyout();
+                    settings1.FlyoutWidth = SettingsFlyout.SettingsFlyoutWidth.Narrow;
+                    settings1.HeaderText = "Stream format";
+                    settings1.HeaderBrush = new SolidColorBrush(Color.FromArgb(255, 18, 18, 18));
+                    settings1.Content = new StreamPage();
+                    settings1.IsOpen = true;
                     break;
                 case "ID_3":
+                    await Launcher.LaunchUriAsync(new Uri("http://www.quixby.com/privacy"));
+                    break;
+                case "ID_4":
                     await Launcher.LaunchUriAsync(new Uri("mailto:support@quixby.com?subject=Feedback on DI.FM for Windows 8"));
                     break;
                 default:

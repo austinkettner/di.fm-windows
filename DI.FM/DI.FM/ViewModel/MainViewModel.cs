@@ -170,6 +170,17 @@ namespace DI.FM.ViewModel
             }
         }
 
+        private string _status = "Initial state";
+        public string Status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                RaisePropertyChanged("Status");
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -448,7 +459,6 @@ namespace DI.FM.ViewModel
             }
             else
             {
-
                 PlayChannel(NowPlayingItem);
             }
         }
@@ -504,16 +514,58 @@ namespace DI.FM.ViewModel
             var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
             client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
 
+            var format = GetStreamFormat();
+            var url = string.Format(ChannelsHelper.BATCH_UPDATE_URL, format);
+
             string data = null;
-            try { data = await client.GetStringAsync(ChannelsHelper.BATCH_UPDATE_URL); }
+            try { data = await client.GetStringAsync(url); }
             catch { }
 
             if (data != null)
             {
                 var token = JsonConvert.DeserializeObject(data) as JContainer;
                 await UpdateChannelsInfo(token["channel_filters"].First["channels"]);
-                UpdateChannelsStreams(token["streamlists"]);
+                UpdateChannelsStreams(token["streamlists"], format);
                 UpdateChannelsTrack(token["track_history"]);
+            }
+        }
+
+        private string GetStreamFormat()
+        {
+            bool found = false;
+            var format = ApplicationData.Current.LocalSettings.Values["StreamFormat"];
+
+            if (IsPremium)
+            {
+                if (format == null) return ChannelsHelper.PremiumStreamFormats[0][1];
+
+                foreach (var i in ChannelsHelper.PremiumStreamFormats)
+                {
+                    if (i[1] == format.ToString())
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found) return format.ToString();
+                return ChannelsHelper.PremiumStreamFormats[0][1];
+            }
+            else
+            {
+                if (format == null) return ChannelsHelper.FreeStreamFormats[0][1];
+
+                foreach (var i in ChannelsHelper.FreeStreamFormats)
+                {
+                    if (i[1] == format.ToString())
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found) return format.ToString();
+                return ChannelsHelper.FreeStreamFormats[0][1];
             }
         }
 
@@ -534,12 +586,9 @@ namespace DI.FM.ViewModel
             });
         }
 
-        public void UpdateChannelsStreams(JToken token)
+        public void UpdateChannelsStreams(JToken token, string key)
         {
-            JToken jSelection = null;
-
-            if (IsPremium) jSelection = token["premium_high"];
-            else jSelection = token["public3"];
+            var jSelection = token[key];
 
             if (jSelection != null)
             {
@@ -584,18 +633,25 @@ namespace DI.FM.ViewModel
 
         public async void UpdateChannelsStreams()
         {
+            Status = "Updating channel streams...";
+
             var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
             client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
 
+            var format = GetStreamFormat();
+            var url = string.Format(ChannelsHelper.BATCH_UPDATE_URL, format);
+
             string data = null;
-            try { data = await client.GetStringAsync(ChannelsHelper.BATCH_UPDATE_URL); }
+            try { data = await client.GetStringAsync(url); }
             catch { }
 
             if (data != null)
             {
                 var token = JsonConvert.DeserializeObject(data) as JContainer;
-                UpdateChannelsStreams(token["streamlists"]);
+                UpdateChannelsStreams(token["streamlists"], format);
             }
+
+            Status = string.Empty;
         }
 
         public AuthenticationHeaderValue CreateBasicHeader(string username, string password)

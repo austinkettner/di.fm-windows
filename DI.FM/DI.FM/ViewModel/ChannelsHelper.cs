@@ -8,11 +8,8 @@ namespace DI.FM.ViewModel
     public class ChannelsHelper
     {
         public const string TRACK_HISTORY_URL = "http://api.v2.audioaddict.com/v1/di/track_history/channel/{0}.json";
-
-        public const string BATCH_UPDATE_URL = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key=public3,premium_high";
-
+        public const string BATCH_UPDATE_URL = "http://api.audioaddict.com/v1/di/mobile/batch_update?stream_set_key={0}";
         public const string BATCH_USER = "ephemeron";
-
         public const string BATCH_PASS = "dayeiph0ne@pp";
 
         public static Dictionary<string, string[]> ChannelsAssets = new Dictionary<string, string[]>()
@@ -73,6 +70,23 @@ namespace DI.FM.ViewModel
             {"umfradio", new string[]{"ms-appx:///Assets/Channels/umfradio.png", "#120f22", "#4f3f88"}},
             {"vocalchillout", new string[]{"ms-appx:///Assets/Channels/vocalchillout.png", "#d06a00", "#24797e"}},
             {"vocaltrance", new string[]{"ms-appx:///Assets/Channels/vocaltrance.png", "#94ac2e", "#e03176"}},
+        };
+
+        public static string[][] FreeStreamFormats = new string[][]
+        {
+            new string[] {"MP3 96kbps", "public3"},
+            new string[] {"WMA 40kbps", "public5"},
+            new string[] {"AAC 40kbps", "public2"},
+        };
+
+        public static string[][] PremiumStreamFormats = new string[][]
+        {
+            new string[] {"MP3 256kbps", "premium_high"},
+            new string[] {"AAC 128kbps", "premium"},
+            new string[] {"AAC 64kbps", "premium_medium"},
+            new string[] {"AAC 40kbps", "premium_low"},
+            //new string[] {"WMA 128kbps", "premium_wma"}, - Not working mms:// protocol
+            //new string[] {"WMA 64kbps", "premium_wma_low"}, - Not working mms:// protocol
         };
 
         public static async Task<string> DownloadJson(string url)
