@@ -37,27 +37,30 @@ namespace DI.FM
 
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
-            // Show the loading screen
-            var extendedSplash = new ExtendedSplash(args.SplashScreen);
-            Window.Current.Content = extendedSplash;
-            Window.Current.Activate();
-
-            // Init and update the model
-            Model = (this.Resources["Locator"] as ViewModelLocator).Main;
-            await Model.CheckPremiumStatus();
-            await Model.UpdateChannels();
-
             // Init the root frame
             var rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null) rootFrame = new Frame();
-            rootFrame.Style = Resources["RootFrameStyle"] as Style;
-
-            // When the frame is loaded set the model media player
-            rootFrame.Loaded += (sender, e) =>
+            if (rootFrame == null)
             {
-                var rootGrid = VisualTreeHelper.GetChild(Window.Current.Content, 0);
-                Model.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
-            };
+                rootFrame = new Frame();
+                rootFrame.Style = Resources["RootFrameStyle"] as Style;
+
+                // Show the loading screen
+                var extendedSplash = new ExtendedSplash(args.SplashScreen);
+                Window.Current.Content = extendedSplash;
+                Window.Current.Activate();
+
+                // Init and update the model
+                Model = (this.Resources["Locator"] as ViewModelLocator).Main;
+                await Model.CheckPremiumStatus();
+                await Model.UpdateChannels();
+
+                // When the frame is loaded set the model media player
+                rootFrame.Loaded += (sender, e) =>
+                {
+                    var rootGrid = VisualTreeHelper.GetChild(Window.Current.Content, 0);
+                    Model.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
+                };
+            }
 
             if (rootFrame.Content == null)
             {
@@ -66,27 +69,27 @@ namespace DI.FM
                     throw new Exception("Failed to create initial page");
                 }
 
-                if (!args.TileId.Equals("App"))
-                {
-                    var channel = Model.AllChannels.FirstOrDefault(item => item.Key == args.TileId);
-                    if (channel != null) rootFrame.Navigate(typeof(ChannelPage), channel);
-                }
+                // Remove the loading screen and set the frame as content
+                Window.Current.Content = rootFrame;
+                Window.Current.Activate();
+
+                // Init the charms options
+                SearchPane.GetForCurrentView().SearchHistoryEnabled = false;
+                SettingsPane.GetForCurrentView().CommandsRequested += SettingsPage_CommandsRequested;
+
+                // Init the share charm
+                DataTransferManager manager = DataTransferManager.GetForCurrentView();
+                manager.DataRequested += DataTransferManager_DataRequested;
+
+                // Intialize MarkedUp Analytics Client
+                MarkedUp.AnalyticClient.Initialize("94e3584b-f3c5-4ef3-ac7b-383630ef6731");
             }
 
-            // Remove the loading screen and set the frame as content
-            Window.Current.Content = rootFrame;
-            Window.Current.Activate();
-
-            // Init the charms options
-            SearchPane.GetForCurrentView().SearchHistoryEnabled = false;
-            SettingsPane.GetForCurrentView().CommandsRequested += SettingsPage_CommandsRequested;
-
-            // Intialize MarkedUp Analytics Client
-            MarkedUp.AnalyticClient.Initialize("94e3584b-f3c5-4ef3-ac7b-383630ef6731");
-
-
-            DataTransferManager manager = DataTransferManager.GetForCurrentView();
-            manager.DataRequested += DataTransferManager_DataRequested;
+            if (!args.TileId.Equals("App"))
+            {
+                var channel = Model.AllChannels.FirstOrDefault(item => item.Key == args.TileId);
+                if (channel != null) rootFrame.Navigate(typeof(ChannelPage), channel);
+            }
         }
 
         private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)

@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using System.Linq;
+using Windows.Foundation;
 
 namespace DI.FM.View
 {
@@ -136,7 +137,7 @@ namespace DI.FM.View
 
             if (Model.FavoriteChannels.Contains(SelectedItem)) Model.FavoriteChannels.Remove(SelectedItem);
             else Model.FavoriteChannels.Insert(0, SelectedItem);
-            UpdateChannelStatus();
+            UpdateFavoriteStatus();
 
             await Model.SaveFavoriteChannels();
         }
@@ -145,18 +146,23 @@ namespace DI.FM.View
         {
             this.BottomAppBar.IsSticky = true;
 
+            var button = (FrameworkElement)sender;
+            var buttonTransform = button.TransformToVisual(null);
+            var point = buttonTransform.TransformPoint(new Point(0, -20));
+            var rect = new Rect(point, new Size(button.ActualWidth, button.ActualHeight));
+
             if (SecondaryTile.Exists(SelectedItem.Key))
             {
                 var tiles = await SecondaryTile.FindAllAsync();
                 var secondaryTile = tiles.FirstOrDefault(tile => tile.TileId == SelectedItem.Key);
-                if (secondaryTile != null) await secondaryTile.RequestDeleteAsync();
+                if (secondaryTile != null) await secondaryTile.RequestDeleteForSelectionAsync(rect, Windows.UI.Popups.Placement.Above);
             }
             else
             {
                 var logo = new Uri(SelectedItem.Image);
                 var tileActivationArguments = SelectedItem.Key + " was pinned at " + DateTime.Now.ToLocalTime().ToString();
                 var secondaryTile = new SecondaryTile(SelectedItem.Key, SelectedItem.Name, SelectedItem.Name, tileActivationArguments, TileOptions.None, logo);
-                await secondaryTile.RequestCreateAsync();
+                await secondaryTile.RequestCreateForSelectionAsync(rect, Windows.UI.Popups.Placement.Above);
             }
 
             UpdatePinnedStatus();
