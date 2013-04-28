@@ -84,19 +84,31 @@
     </Page.Resources>
 
     <Grid>
-        <StackPanel x:Name="Stack1" Visibility="Collapsed">
-            <TextBlock Text="Account name" Foreground="#121212" FontSize="18" FontWeight="Light" />
-            <TextBlock x:Name="TextEmail" Foreground="#0fa7ff" FontSize="16" FontWeight="Light" />
-            <TextBlock Margin="0,20,0,0" Text="Full name" Foreground="#121212" FontSize="18" FontWeight="Light" />
-            <TextBlock x:Name="TextFullName" Foreground="#0fa7ff" FontSize="16" FontWeight="Light" />
-            <TextBlock Margin="0,20,0,0" Text="Premium account" Foreground="#121212" FontSize="18" FontWeight="Light" />
-            <TextBlock x:Name="TextIsPremium" Foreground="#0fa7ff" FontSize="16" FontWeight="Light" />
-            <TextBlock Margin="0,20,0,10" Text="If you log out from your premium account you will not have access anymore to premium streams" Foreground="#121212" FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
-            <Button Content="Logout" Click="ButtonLogout_Click" />
-        </StackPanel>
-        <StackPanel x:Name="Stack2" Visibility="Collapsed">
-            <TextBlock Margin="0,20,0,10" Text="Premium members have the flexibility to listen to crystal-clear audio using the most popular audio formats. No matter how you choose to connect to your favorite channels, higher quality audio streaming is just a click away." Foreground="#121212" FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
-            <Button Content="Login" Click="ButtonLogin_Click" />
+        <StackPanel>
+            <StackPanel x:Name="Stack1" Visibility="Collapsed">
+                <TextBlock Text="Account name" Foreground="#121212" FontSize="18" FontWeight="Light" />
+                <TextBlock x:Name="TextEmail" Foreground="#0fa7ff" FontSize="16" FontWeight="Light" />
+                <TextBlock Margin="0,20,0,0" Text="Full name" Foreground="#121212" FontSize="18" FontWeight="Light" />
+                <TextBlock x:Name="TextFullName" Foreground="#0fa7ff" FontSize="16" FontWeight="Light" />
+                <TextBlock Margin="0,20,0,0" Text="Premium account" Foreground="#121212" FontSize="18" FontWeight="Light" />
+                <TextBlock x:Name="TextIsPremium" Foreground="#0fa7ff" FontSize="16" FontWeight="Light" />
+                <TextBlock Margin="0,20,0,10" Text="If you log out from your premium account you will not have access anymore to premium streams" Foreground="#121212" FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
+                <Button Content="Logout" Click="ButtonLogout_Click" />
+            </StackPanel>
+            <StackPanel x:Name="Stack2" Visibility="Collapsed">
+                <TextBlock Margin="0,20,0,10" Text="Premium members have the flexibility to listen to crystal-clear audio using the most popular audio formats. No matter how you choose to connect to your favorite channels, higher quality audio streaming is just a click away." Foreground="#121212" FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
+                <Button Content="Login" Click="ButtonLogin_Click" />
+            </StackPanel>
+            <Rectangle Margin="0,40" Height="1" Fill="#121212" />
+            <TextBlock Margin="0,0,0,5" Text="Select stream format" Foreground="#121212" FontSize="16" FontWeight="Light" />
+            <ComboBox x:Name="ComboFormats" Margin="0,0,0,10" SelectionChanged="ComboFormats_SelectionChanged" Foreground="#121212" BorderBrush="#FF6C6C6C">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding [0]}" Foreground="Black" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Content="Apply" Click="ButtonApply_Click" />
         </StackPanel>
     </Grid>
     

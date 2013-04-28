@@ -52,6 +52,17 @@ namespace DI.FM.View
                 {
                     Stack2.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 }
+
+                var list = Model.IsPremium ? ChannelsHelper.PremiumStreamFormats : ChannelsHelper.FreeStreamFormats;
+                ComboFormats.ItemsSource = list;
+
+                if (ApplicationData.Current.LocalSettings.Values["StreamFormat"] != null)
+                {
+                    var item = list.FirstOrDefault(i => i[1] == ApplicationData.Current.LocalSettings.Values["StreamFormat"].ToString());
+                    if (item != null) ComboFormats.SelectedItem = item;
+                    else ComboFormats.SelectedIndex = 0;
+                }
+                else ComboFormats.SelectedIndex = 0;
             };
         }
 
@@ -85,6 +96,20 @@ namespace DI.FM.View
                 ApplicationData.Current.LocalSettings.Values.Remove("AccountEmail");
                 ApplicationData.Current.LocalSettings.Values.Remove("FullName");
             }
+        }
+
+        private void ComboFormats_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                ApplicationData.Current.LocalSettings.Values["StreamFormat"] = (e.AddedItems[0] as string[])[1];
+            }
+        }
+
+        private void ButtonApply_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            Model.UpdateChannelsStreams();
+            (this.Parent as SettingsFlyout).IsOpen = false;
         }
     }
 }

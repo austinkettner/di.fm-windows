@@ -108,11 +108,7 @@
                         <Path Grid.Column="1" Fill="#0fa7ff" Data="M 47 0 L 50 0 L 3 50 L 0 50 Z" Stretch="Uniform" HorizontalAlignment="Right" />
                     </Grid>
                     <controls:MediaController />
-
-
-
-                    <TextBlock Text="{Binding Status}" Foreground="Red" FontSize="32" />
-
+                    <ProgressBar IsIndeterminate="{Binding IsUpdating}" Visibility="{Binding Path=IsUpdating, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top" />
                 </Grid>
             </Border>
             <!-- Content -->

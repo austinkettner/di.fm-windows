@@ -170,14 +170,14 @@ namespace DI.FM.ViewModel
             }
         }
 
-        private string _status = "Initial state";
-        public string Status
+        private bool _isUpdating;
+        public bool IsUpdating
         {
-            get { return _status; }
+            get { return _isUpdating; }
             set
             {
-                _status = value;
-                RaisePropertyChanged("Status");
+                _isUpdating = value;
+                RaisePropertyChanged("IsUpdating");
             }
         }
 
@@ -633,7 +633,7 @@ namespace DI.FM.ViewModel
 
         public async void UpdateChannelsStreams()
         {
-            Status = "Updating channel streams...";
+            IsUpdating = true;
 
             var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
             client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
@@ -651,7 +651,7 @@ namespace DI.FM.ViewModel
                 UpdateChannelsStreams(token["streamlists"], format);
             }
 
-            Status = string.Empty;
+            IsUpdating = false;
         }
 
         public AuthenticationHeaderValue CreateBasicHeader(string username, string password)

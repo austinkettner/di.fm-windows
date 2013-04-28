@@ -27,7 +27,10 @@
     </ResourceDictionary.ThemeDictionaries>
 
     <x:String x:Key="ProgressBarIndeterminateForegroundThemeBrush">#FFFFFF</x:String>
-    
+    <x:String x:Key="ComboBoxItemSelectedBackgroundThemeBrush">#aaaaaa</x:String>
+    <x:String x:Key="ComboBoxItemSelectedPointerOverBackgroundThemeBrush">#aaaaaa</x:String>
+    <x:String x:Key="ComboBoxPointerOverBorderThemeBrush">#212121</x:String>
+
     <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
 
     <!-- RichTextBlock styles -->
