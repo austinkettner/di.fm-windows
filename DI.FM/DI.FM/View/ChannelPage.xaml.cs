@@ -9,6 +9,8 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using System.Linq;
 using Windows.Foundation;
+using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
 
 namespace DI.FM.View
 {
@@ -161,8 +163,32 @@ namespace DI.FM.View
             {
                 var logo = new Uri(SelectedItem.Image);
                 var tileActivationArguments = SelectedItem.Key + " was pinned at " + DateTime.Now.ToLocalTime().ToString();
-                var secondaryTile = new SecondaryTile(SelectedItem.Key, SelectedItem.Name, SelectedItem.Name, tileActivationArguments, TileOptions.None, logo);
-                await secondaryTile.RequestCreateForSelectionAsync(rect, Windows.UI.Popups.Placement.Above);
+                var secondaryTile = new SecondaryTile(SelectedItem.Key, SelectedItem.Name, SelectedItem.Name, tileActivationArguments, TileOptions.ShowNameOnLogo, logo);
+                var result = await secondaryTile.RequestCreateForSelectionAsync(rect, Windows.UI.Popups.Placement.Above);
+
+                if (result)
+                {
+                    try
+                    {
+                        // Template
+                        var tileTemplate = TileTemplateType.TileSquarePeekImageAndText04;
+                        var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
+
+                        // Create notification.
+                        var notification = new TileNotification(tileXml);
+
+                        // Set notification text.
+                        XmlNodeList nodes = tileXml.GetElementsByTagName("image");
+                        nodes[0].Attributes[1].NodeValue = SelectedItem.Image;
+                        nodes = tileXml.GetElementsByTagName("text");
+                        nodes[0].InnerText = SelectedItem.Name;
+
+                        // Update Live Tile.
+                        var upd = TileUpdateManager.CreateTileUpdaterForSecondaryTile(SelectedItem.Key);
+                        upd.Update(notification);
+                    }
+                    catch { }
+                }
             }
 
             UpdatePinnedStatus();
