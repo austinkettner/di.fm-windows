@@ -75,7 +75,7 @@ namespace DI.FM.ViewModel
         public static string[][] FreeStreamFormats = new string[][]
         {
             new string[] {"MP3 96kbps", "public3"},
-            new string[] {"WMA 40kbps", "public5"},
+            //new string[] {"WMA 40kbps", "public5"}, - Not working mms:// protocol
             new string[] {"AAC 40kbps", "public2"},
         };
 
