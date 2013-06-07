@@ -346,8 +346,6 @@
     <MainPackageIdentityName>Quixby.Aural</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.BitBucket</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.Blizzard</MainPackageIdentityName>
-    <MainPackageIdentityName>Quixby.Borderlands2</MainPackageIdentityName>
-    <MainPackageIdentityName>Quixby.Borderlands3</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.DealFlux</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.Diablo3</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.DiabloIII</MainPackageIdentityName>
@@ -355,7 +353,6 @@
     <MainPackageIdentityName>Quixby.DigitallyImportedRadio</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.ESPNNews</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.Etsy</MainPackageIdentityName>
-    <MainPackageIdentityName>Quixby.Gumshoe</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.HackerNewsReader</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.HackerNews</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.214462C0BE2DC</MainPackageIdentityName>
@@ -363,7 +360,6 @@
     <MainPackageIdentityName>Quixby.Joystiq</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.Kotaku</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.MistsofPandaria</MainPackageIdentityName>
-    <MainPackageIdentityName>Quixby.official.fm</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.Pandoria</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.PCGamer</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.PCPartPicker</MainPackageIdentityName>
@@ -373,15 +369,12 @@
     <MainPackageIdentityName>Quixby.Sparq</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.TheVerge</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.tumbled</MainPackageIdentityName>
-    <MainPackageIdentityName>Quixby.22162543BD7D2</MainPackageIdentityName>
-    <MainPackageIdentityName>Quixby.Warcraft4</MainPackageIdentityName>
     <MainPackageIdentityName>Quixby.WarcraftCompanion</MainPackageIdentityName>
-    <MainPackageIdentityName>Quixby.Windows9Preview</MainPackageIdentityName>
   </AccountPackageIdentityNames>
   <PackageInfoList LandingUrl="https://appdev.microsoft.com:443/StorePortals/Developer/Catalog/ReleaseAnchor/bd637ea1-e7ac-4004-8f54-d2caeef79664">
     <PackageInfo>
       <PackageArchitecture>neutral</PackageArchitecture>
-      <PackageMaxArchitectureVersion>1.2.1.6</PackageMaxArchitectureVersion>
+      <PackageMaxArchitectureVersion>2.0.0.1</PackageMaxArchitectureVersion>
     </PackageInfo>
   </PackageInfoList>
 </StoreAssociation>
