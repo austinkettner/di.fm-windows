@@ -159,7 +159,11 @@
   <ItemGroup>
     <Content Include="Assets\Background.png" />
     <Content Include="Assets\Channels\bigroomhouse.png" />
+    <Content Include="Assets\Channels\chillhop.png" />
     <Content Include="Assets\Channels\deeptech.png" />
+    <Content Include="Assets\Channels\downtempolounge.png" />
+    <Content Include="Assets\Channels\sankeysradio.png" />
+    <Content Include="Assets\Channels\trap.png" />
     <Content Include="Assets\Channels\umfradio.png" />
     <Content Include="Assets\Channels\vocalchillout.png" />
     <Content Include="Assets\Channels\house.png" />
