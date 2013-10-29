@@ -304,7 +304,7 @@ namespace DI.FM.ViewModel
                         Index = index,
                         Track = track.Value<string>("track"),
                         Started = track.Value<long>("started"),
-                        Duration = track.Value<int>("duration")
+                        Duration = track.Value<int>("length")
                     };
 
                     if (nowPl == null) nowPl = item;
@@ -625,7 +625,7 @@ namespace DI.FM.ViewModel
                     {
                         Track = jChannel.Value<string>("track"),
                         Started = jChannel.Value<int>("started"),
-                        Duration = jChannel.Value<int>("duration")
+                        Duration = jChannel.Value<int>("length")
                     };
                 }
             }
