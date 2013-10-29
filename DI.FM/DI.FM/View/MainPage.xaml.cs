@@ -221,12 +221,6 @@ namespace DI.FM.View
                 var view2 = semantic.ZoomedOutView as GridView;
                 var index = view2.Items.IndexOf(e.SourceItem.Item);
                 e.DestinationItem.Item = view1.Items[index];
-
-                Ad.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                Ad.Visibility = Visibility.Collapsed;
             }
         }
 

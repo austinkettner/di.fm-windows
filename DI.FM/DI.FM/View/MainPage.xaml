@@ -6,7 +6,6 @@
     xmlns:controls="using:DI.FM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:Microsoft.Advertising.WinRT.UI"
     mc:Ignorable="d">
     
     <Page.DataContext>
@@ -241,19 +240,6 @@
                                             </DataTemplate>
                                         </GridView.ItemTemplate>
                                     </GridView>
-                                </Grid>
-                                <!-- Advertisment -->
-                                <Grid VerticalAlignment="Top">
-                                    <ui:AdControl 
-                                        x:Name="Ad"
-                                        UseStaticAnchor="True"
-                                        ApplicationId="eea17224-b959-406c-94d1-dc8f76a5b727" 
-                                        AdUnitId="133343" 
-                                        HorizontalAlignment="Left" 
-                                        Height="600" 
-                                        Margin="6,45,0,0" 
-                                        VerticalAlignment="Top" 
-                                        Width="300" />
                                 </Grid>
                             </GridView.Items>
                             <GridView.ItemContainerStyle>
