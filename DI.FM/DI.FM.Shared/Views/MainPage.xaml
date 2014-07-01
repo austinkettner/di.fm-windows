@@ -6,11 +6,8 @@
     xmlns:controls="using:DI.FM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-    
-    <Page.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="Main" />
-    </Page.DataContext>
+    mc:Ignorable="d"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
     
     <Page.BottomAppBar>
         <AppBar Background="#161616" BorderBrush="{x:Null}">

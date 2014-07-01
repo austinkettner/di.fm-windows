@@ -76,14 +76,14 @@ namespace DI.FM.ViewModel
             {"vocaltrance", new string[]{"ms-appx:///Assets/Channels/vocaltrance.png", "#94ac2e", "#e03176"}},
         };
 
-        public static string[][] FreeStreamFormats = new string[][]
+        public static string[][] FreeStreamFormats =
         {
             new string[] {"MP3 96kbps", "public3"},
             //new string[] {"WMA 40kbps", "public5"}, - Not working mms:// protocol
             new string[] {"AAC 40kbps", "public2"},
         };
 
-        public static string[][] PremiumStreamFormats = new string[][]
+        public static string[][] PremiumStreamFormats =
         {
             new string[] {"MP3 256kbps", "premium_high"},
             new string[] {"AAC 128kbps", "premium"},
