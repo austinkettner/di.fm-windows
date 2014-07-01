@@ -106,11 +106,6 @@ namespace DI.FM
 
             if (frame == null)
             {
-                // Show the loading screen
-                var extendedSplash = new ExtendedSplash(args.SplashScreen);
-                Window.Current.Content = extendedSplash;
-                Window.Current.Activate();
-
                 // Init and update the model
                 Model = (Resources["Locator"] as ViewModelLocator).Main;
                 await Model.CheckPremiumStatus();

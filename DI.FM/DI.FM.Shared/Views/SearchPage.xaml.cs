@@ -1,4 +1,5 @@
-﻿using DI.FM.Common;
+﻿using Windows.UI.Xaml;
+using DI.FM.Common;
 using DI.FM.ViewModel;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
@@ -84,6 +85,11 @@ namespace DI.FM.View
             {
                 Frame.Navigate(typeof(ChannelPage), item);
             }
+        }
+
+        private void GoBack(object sender, RoutedEventArgs e)
+        {
+            Frame.GoBack();
         }
     }
 }

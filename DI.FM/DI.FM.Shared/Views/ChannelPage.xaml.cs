@@ -227,5 +227,10 @@ namespace DI.FM.View
             if (IsRightDirection) FadeInLeftStory.Begin();
             else FadeInRightStory.Begin();
         }
+
+        private void GoBack(object sender, RoutedEventArgs e)
+        {
+            Frame.GoBack();
+        }
     }
 }

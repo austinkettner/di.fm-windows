@@ -80,5 +80,10 @@ namespace DI.FM.View
            GridViewFavorites1.SelectedItems.Clear();
             GridViewFavorites.SelectedItems.Clear();
         }
+
+        private void GoBack(object sender, RoutedEventArgs e)
+        {
+            Frame.GoBack();
+        }
     }
 }

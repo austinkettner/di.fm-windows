@@ -165,7 +165,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <!--<Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" VerticalAlignment="Center" Style="{StaticResource BackButtonStyle}" Click="GoBack" />-->
+                                <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" VerticalAlignment="Center" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
                                 <TextBlock Grid.Column="1" VerticalAlignment="Center">
                                     <Run Text="{Binding Channel.Name}" Foreground="White" FontSize="40.2" FontWeight="SemiLight" />
                                     <LineBreak />

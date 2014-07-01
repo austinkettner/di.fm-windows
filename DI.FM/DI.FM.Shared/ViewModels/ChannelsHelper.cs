@@ -12,7 +12,7 @@ namespace DI.FM.ViewModel
         public const string BATCH_USER = "ephemeron";
         public const string BATCH_PASS = "dayeiph0ne@pp";
 
-        public static Dictionary<string, string[]> ChannelsAssets = new Dictionary<string, string[]>()
+        public static Dictionary<string, string[]> ChannelsAssets = new Dictionary<string, string[]>
         {
             {"ambient", new string[]{"ms-appx:///Assets/Channels/channel23.png", "#0f3645", "#3da5cc"}},
             {"bigroomhouse", new string[]{"ms-appx:///Assets/Channels/bigroomhouse.png", "#837873", "#ff5a1b"}},
@@ -95,7 +95,7 @@ namespace DI.FM.ViewModel
 
         public static async Task<string> DownloadJson(string url)
         {
-            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
+            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
             try { return await client.GetStringAsync(url); }
             catch { return null; }
         }

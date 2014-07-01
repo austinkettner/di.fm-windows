@@ -35,7 +35,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <!--<Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />-->
+                                <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
                                 <TextBlock Grid.Column="1" Text="Search Results" Foreground="White" FontSize="42" FontWeight="SemiLight">
                                     <TextBlock.RenderTransform>
                                         <TranslateTransform Y="4" />

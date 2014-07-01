@@ -14,8 +14,6 @@ namespace DI.FM.Controls
 {
     public sealed partial class LoginPage : UserControl
     {
-        private const string AUTH_URL = "https://api.audioaddict.com/v1/di/members/authenticate";
-
         public LoginPage()
         {
             InitializeComponent();
@@ -94,7 +92,7 @@ namespace DI.FM.Controls
 
             try
             {
-                var result = await client.PostAsync(AUTH_URL, content);
+                var result = await client.PostAsync("https://api.audioaddict.com/v1/di/members/authenticate", content);
                 result.EnsureSuccessStatusCode();
                 return await result.Content.ReadAsStringAsync();
             }

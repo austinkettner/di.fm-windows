@@ -58,10 +58,10 @@ namespace DI.FM.Controls
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            // Show the login window
             App.ShowLoginWindow();
             RemoveWindow();
         }
+
         private void RemoveWindow()
         {
             var parent = Parent as Grid;
