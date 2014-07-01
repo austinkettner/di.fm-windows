@@ -11,7 +11,7 @@ namespace DI.FM.Controls
 
         public VolumeControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             var model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
             MediaPlayer = model.MediaPlayer;
@@ -30,11 +30,11 @@ namespace DI.FM.Controls
         {
             if (MediaPlayer.IsMuted)
             {
-                ButtonMute.Style = this.Resources["ButtonMutedStyle"] as Style;
+                ButtonMute.Style = Resources["ButtonMutedStyle"] as Style;
             }
             else
             {
-                ButtonMute.Style = this.Resources["ButtonUnMutedStyle"] as Style;
+                ButtonMute.Style = Resources["ButtonUnMutedStyle"] as Style;
             }
         }
 

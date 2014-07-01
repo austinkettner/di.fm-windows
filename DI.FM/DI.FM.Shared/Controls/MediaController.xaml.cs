@@ -1,4 +1,5 @@
-﻿using DI.FM.View;
+﻿using Windows.UI.Xaml.Input;
+using DI.FM.View;
 using DI.FM.ViewModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -9,22 +10,22 @@ namespace DI.FM.Controls
     {
         public MediaController()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        private void ButtonPlayStop_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
         {
-            var model = this.DataContext as MainViewModel;
+            var model = DataContext as MainViewModel;
             if (model != null)
             {
                 model.TogglePlay();
             }
         }
 
-        private void StackPanel_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var frame = Window.Current.Content as Frame;
-            var model = this.DataContext as MainViewModel;
+            var model = DataContext as MainViewModel;
 
             if (frame != null && model != null)
             {

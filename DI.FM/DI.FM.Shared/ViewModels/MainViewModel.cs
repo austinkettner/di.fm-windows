@@ -1,3 +1,4 @@
+using System.Text;
 using Windows.ApplicationModel;
 using Windows.Media;
 using Windows.Storage.Streams;
@@ -259,7 +260,7 @@ namespace DI.FM.ViewModel
             {
                 if (track["type"].Value<string>() == "track")
                 {
-                    var item = new TrackItem()
+                    var item = new TrackItem
                     {
                         Index = index,
                         Track = track.Value<string>("track"),
@@ -385,8 +386,8 @@ namespace DI.FM.ViewModel
 
         private void MediaPlayer_CurrentStateChanged(object sender, RoutedEventArgs e)
         {
-            IsPlaying = MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Playing;
-            IsBuffering = MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Buffering || MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Opening;
+            IsPlaying = MediaPlayer.CurrentState == MediaElementState.Playing;
+            IsBuffering = MediaPlayer.CurrentState == MediaElementState.Buffering || MediaPlayer.CurrentState == MediaElementState.Opening;
 
             switch (MediaPlayer.CurrentState)
             {
@@ -447,7 +448,7 @@ namespace DI.FM.ViewModel
 
         public void TogglePlay()
         {
-            if (MediaPlayer.CurrentState == Windows.UI.Xaml.Media.MediaElementState.Playing)
+            if (MediaPlayer.CurrentState == MediaElementState.Playing)
             {
                 MediaPlayer.Source = null;
             }
@@ -469,7 +470,7 @@ namespace DI.FM.ViewModel
 
             foreach (var item in ChannelsHelper.ChannelsAssets)
             {
-                var chn = new ChannelItem()
+                var chn = new ChannelItem
                 {
                     Key = item.Key,
                     Image = item.Value[0],
@@ -505,7 +506,7 @@ namespace DI.FM.ViewModel
 
         public async Task UpdateChannels()
         {
-            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
+            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
             client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
 
             var format = GetStreamFormat();
@@ -615,7 +616,7 @@ namespace DI.FM.ViewModel
 
                 if (jChannel != null)
                 {
-                    item.NowPlaying = new TrackItem()
+                    item.NowPlaying = new TrackItem
                     {
                         Track = jChannel.Value<string>("track"),
                         Started = jChannel.Value<int>("started"),
@@ -629,7 +630,7 @@ namespace DI.FM.ViewModel
         {
             IsUpdating = true;
 
-            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
+            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
             client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
 
             var format = GetStreamFormat();
@@ -650,7 +651,7 @@ namespace DI.FM.ViewModel
 
         public AuthenticationHeaderValue CreateBasicHeader(string username, string password)
         {
-            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(username + ":" + password);
+            byte[] byteArray = Encoding.UTF8.GetBytes(username + ":" + password);
             return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
         }
 
@@ -675,7 +676,7 @@ namespace DI.FM.ViewModel
                 return;
             }
 
-            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
+            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
 
             int i = 0, maxRetry = 3;
             var rand = new Random();

@@ -1,4 +1,6 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using DI.FM.Common;
 using DI.FM.Controls;
 using DI.FM.ViewModel;
@@ -26,21 +28,21 @@ namespace DI.FM.View
         /// </summary>
         public ObservableDictionary DefaultViewModel
         {
-            get { return this.defaultViewModel; }
+            get { return defaultViewModel; }
         }
 
         public ChannelPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
             SelectedItem = e.Parameter as ChannelItem;
 
-            this.DefaultViewModel.Add("Model", Model);
-            this.DefaultViewModel.Add("Channel", SelectedItem);
+            DefaultViewModel.Add("Model", Model);
+            DefaultViewModel.Add("Channel", SelectedItem);
 
             UpdatePlayStatus();
             UpdateChannelStatus();
@@ -76,7 +78,7 @@ namespace DI.FM.View
         private void ButtonPrev1_Click(object sender, RoutedEventArgs e)
         {
             SelectedItem = SelectedItem.Prev;
-            this.DefaultViewModel["Channel"] = SelectedItem;
+            DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
             UpdateChannelStatus();
@@ -85,7 +87,7 @@ namespace DI.FM.View
         private void ButtonNext1_Click(object sender, RoutedEventArgs e)
         {
             SelectedItem = SelectedItem.Next;
-            this.DefaultViewModel["Channel"] = SelectedItem;
+            DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
             UpdateChannelStatus();
@@ -132,8 +134,8 @@ namespace DI.FM.View
                 var binding = new Binding();
                 binding.Path = new PropertyPath("Model.IsPlaying");
                 binding.Converter = new PlayStopButtonConverter();
-                ButtonPlayStop.SetBinding(FrameworkElement.StyleProperty, binding);
-                ButtonPlayStop1.SetBinding(FrameworkElement.StyleProperty, binding);
+                ButtonPlayStop.SetBinding(StyleProperty, binding);
+                ButtonPlayStop1.SetBinding(StyleProperty, binding);
             }
             else
             {
@@ -144,7 +146,7 @@ namespace DI.FM.View
 
         private async void ButtonFavorite_Click(object sender, RoutedEventArgs e)
         {
-            this.BottomAppBar.IsOpen = false;
+            BottomAppBar.IsOpen = false;
 
             if (Model.FavoriteChannels.Contains(SelectedItem)) Model.FavoriteChannels.Remove(SelectedItem);
             else Model.FavoriteChannels.Insert(0, SelectedItem);
@@ -155,7 +157,7 @@ namespace DI.FM.View
 
         private async void ButtonPin_Click(object sender, RoutedEventArgs e)
         {
-            this.BottomAppBar.IsSticky = true;
+            BottomAppBar.IsSticky = true;
 
             var button = (FrameworkElement)sender;
             var buttonTransform = button.TransformToVisual(null);
@@ -166,14 +168,14 @@ namespace DI.FM.View
             {
                 var tiles = await SecondaryTile.FindAllAsync();
                 var secondaryTile = tiles.FirstOrDefault(tile => tile.TileId == SelectedItem.Key);
-                if (secondaryTile != null) await secondaryTile.RequestDeleteForSelectionAsync(rect, Windows.UI.Popups.Placement.Above);
+                if (secondaryTile != null) await secondaryTile.RequestDeleteForSelectionAsync(rect, Placement.Above);
             }
             else
             {
                 var logo = new Uri(SelectedItem.Image);
                 var tileActivationArguments = SelectedItem.Key + " was pinned at " + DateTime.Now.ToLocalTime().ToString();
                 var secondaryTile = new SecondaryTile(SelectedItem.Key, SelectedItem.Name, SelectedItem.Name, tileActivationArguments, TileOptions.ShowNameOnLogo, logo);
-                var result = await secondaryTile.RequestCreateForSelectionAsync(rect, Windows.UI.Popups.Placement.Above);
+                var result = await secondaryTile.RequestCreateForSelectionAsync(rect, Placement.Above);
 
                 if (result)
                 {
@@ -201,12 +203,12 @@ namespace DI.FM.View
             }
 
             UpdatePinnedStatus();
-            this.BottomAppBar.IsSticky = false;
+            BottomAppBar.IsSticky = false;
         }
 
         private void ButtonVolume_Click(object sender, RoutedEventArgs e)
         {
-            var flyout = new Flyout()
+            var flyout = new Flyout
             {
                 Content = new VolumeControl(),
                 Placement = FlyoutPlacementMode.Top,
@@ -217,7 +219,7 @@ namespace DI.FM.View
 
         private void FadeOutStory_Completed(object sender, object e)
         {
-            this.DefaultViewModel["Channel"] = SelectedItem;
+            DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
             UpdateChannelStatus();

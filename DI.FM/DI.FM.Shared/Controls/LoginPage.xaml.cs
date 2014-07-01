@@ -18,22 +18,14 @@ namespace DI.FM.Controls
 
         public LoginPage()
         {
-            this.InitializeComponent();
-            this.Loaded += (sender, e) =>
+            InitializeComponent();
+            Loaded += (sender, e) =>
             {
                 AnimateInStory.Begin();
-                TextEmail.Focus(Windows.UI.Xaml.FocusState.Programmatic);
+                TextEmail.Focus(FocusState.Programmatic);
             };
 
-            AnimateOutStory.Completed += async (sneder, e) =>
-            {
-                await Task.Delay(1000);
-                var parent = this.Parent as Grid;
-                if (parent != null)
-                {
-                    parent.Children.Remove(this);
-                }
-            };
+            AnimateOutStory.Completed += (sneder, e) => RemoveWindow();
         }
 
         private async void ButtonLogin_Click(object sender, RoutedEventArgs e)
@@ -45,7 +37,7 @@ namespace DI.FM.Controls
             ButtonCancel.IsEnabled = false;
             ButtonLogin.IsEnabled = false;
 
-            TextError.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            TextError.Visibility = Visibility.Collapsed;
 
             var data = await LogIn(TextEmail.Text, TextPass.Password);
 
@@ -73,7 +65,7 @@ namespace DI.FM.Controls
             }
             else
             {
-                TextError.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                TextError.Visibility = Visibility.Visible;
             }
         }
 
@@ -84,7 +76,7 @@ namespace DI.FM.Controls
 
         private void RemoveWindow()
         {
-            var parent = this.Parent as Grid;
+            var parent = Parent as Grid;
             if (parent != null)
             {
                 parent.Children.Remove(this);
@@ -93,8 +85,8 @@ namespace DI.FM.Controls
 
         private async Task<string> LogIn(string user, string pass)
         {
-            var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(10) };
-            var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+            var content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 {"username", user},
                 {"password", pass}

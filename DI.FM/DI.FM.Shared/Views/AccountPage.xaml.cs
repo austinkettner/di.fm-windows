@@ -6,19 +6,19 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace DI.FM.View
+namespace DI.FM.Controls
 {
-    public sealed partial class AccountPage : Page
+    public sealed partial class AccountPage : UserControl
     {
         MainViewModel Model;
 
         public AccountPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
 
-            this.Loaded += (sender, e) =>
+            Loaded += (sender, e) =>
             {
                 bool isSignedIn = Model.ListenKey != null;
 
@@ -36,11 +36,11 @@ namespace DI.FM.View
 
                     TextIsPremium.Text = Model.IsPremium ? "Yes, premium experience" : "No, free experience";
 
-                    Stack1.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                    Stack1.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    Stack2.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                    Stack2.Visibility = Visibility.Visible;
                 }
 
                 var list = Model.IsPremium ? ChannelsHelper.PremiumStreamFormats : ChannelsHelper.FreeStreamFormats;
@@ -58,26 +58,31 @@ namespace DI.FM.View
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            // Close the charm
-            (this.Parent as SettingsFlyout).Hide();;
-
             // Show the login window
             App.ShowLoginWindow();
+            RemoveWindow();
+        }
+        private void RemoveWindow()
+        {
+            var parent = Parent as Grid;
+            if (parent != null)
+            {
+                parent.Children.Remove(this);
+            }
         }
 
         private async void ButtonLogout_Click(object sender, RoutedEventArgs e)
         {
-            // Close the charm
-            (this.Parent as SettingsFlyout).Hide();
+            RemoveWindow();
 
             var dialog = new MessageDialog("If you log out from your premium account you will not have access anymore to premium streams.", "Logout from your account");
-            dialog.Commands.Add(new UICommand("Logout") { Id = "ID_1" });
-            dialog.Commands.Add(new UICommand("Stay logged in") { Id = "ID_2" });
+            dialog.Commands.Add(new UICommand("Logout") { Id = 1 });
+            dialog.Commands.Add(new UICommand("Stay logged in") { Id = 2 });
             dialog.DefaultCommandIndex = 1;
 
             var result = await dialog.ShowAsync();
 
-            if ((string)result.Id == "ID_1")
+            if ((int)result.Id == 1)
             {
                 // Clear the key
                 Model.ListenKey = null;
@@ -96,10 +101,10 @@ namespace DI.FM.View
             }
         }
 
-        private void ButtonApply_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
             Model.UpdateChannelsStreams();
-            (this.Parent as SettingsFlyout).Hide();
+            RemoveWindow();
         }
     }
 }

@@ -11,14 +11,14 @@ namespace DI.FM.View
 
         public FavoritePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             // Get the model
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
             // Bind the model
             //this.DefaultViewModel.Add("Favorites", Model.FavoriteChannels);
             //this.DefaultViewModel.Add("NowPlaying", App.PlayingMedia);
 
-            this.Loaded += (sender, e) =>
+            Loaded += (sender, e) =>
             {
                 Model.LiveUpdateList.Clear();
                 foreach (var item in Model.FavoriteChannels) Model.LiveUpdateList.Add(item);
@@ -33,7 +33,7 @@ namespace DI.FM.View
         private void GridViewFavorites_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as ChannelItem;
-            if (item != null) this.Frame.Navigate(typeof(ChannelPage), item);
+            if (item != null) Frame.Navigate(typeof(ChannelPage), item);
         }
 
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -44,15 +44,15 @@ namespace DI.FM.View
             {
                 ButtonUnfavorite.Visibility = Visibility.Visible;
                 ButtonSelectNone.Visibility = Visibility.Visible;
-                this.BottomAppBar.IsSticky = true;
-                this.BottomAppBar.IsOpen = true;
+                BottomAppBar.IsSticky = true;
+                BottomAppBar.IsOpen = true;
             }
             else
             {
                 ButtonUnfavorite.Visibility = Visibility.Collapsed;
                 ButtonSelectNone.Visibility = Visibility.Collapsed;
-                this.BottomAppBar.IsSticky = false;
-                this.BottomAppBar.IsOpen = false;
+                BottomAppBar.IsSticky = false;
+                BottomAppBar.IsOpen = false;
             }
         }
 

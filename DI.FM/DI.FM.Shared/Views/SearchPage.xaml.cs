@@ -17,17 +17,17 @@ namespace DI.FM.View
         /// </summary>
         public ObservableDictionary DefaultViewModel
         {
-            get { return this.defaultViewModel; }
+            get { return defaultViewModel; }
         }
         public SearchPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             // Get model
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
             // Init the initial result list
             Results = new ObservableCollection<ChannelItem>(Model.AllChannels);
             // Bind the model
-            this.DefaultViewModel.Add("Results", Results);
+            DefaultViewModel.Add("Results", Results);
             // Hook up events
           //  SearchPane.GetForCurrentView().QueryChanged += SearchPage_QueryChanged;
         }
@@ -82,7 +82,7 @@ namespace DI.FM.View
             var item = e.ClickedItem as ChannelItem;
             if (item != null)
             {
-                this.Frame.Navigate(typeof(ChannelPage), item);
+                Frame.Navigate(typeof(ChannelPage), item);
             }
         }
     }

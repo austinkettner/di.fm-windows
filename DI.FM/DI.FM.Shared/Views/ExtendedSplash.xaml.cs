@@ -7,10 +7,10 @@ namespace DI.FM.View
     {
         public ExtendedSplash(SplashScreen splash)
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             // Resize logo on size changed
-            this.SizeChanged += (sender, e) => { PositionElements(splash); };
+            SizeChanged += (sender, e) => { PositionElements(splash); };
 
             // Init the position
             PositionElements(splash);

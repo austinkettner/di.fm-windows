@@ -40,7 +40,7 @@ namespace DI.FM.ViewModel
 
         public double StartedTime
         {
-            get { return ConvertFromUnixTime(this.Started); }
+            get { return ConvertFromUnixTime(Started); }
         }
 
         private double _position;

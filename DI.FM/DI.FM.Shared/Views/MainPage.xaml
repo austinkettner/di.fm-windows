@@ -32,7 +32,7 @@
                     <Button Style="{StaticResource VolumeAppBarButtonStyle}" Click="ButtonVolume_Click" />
                     <Rectangle Margin="20" Width="2" Fill="#64FFFFFF" />
                     <Button Style="{StaticResource RefreshAppBarButtonStyle}" Click="ButtonRefresh_Click" />
-                    <Button x:Name="ButtonAccount" Style="{StaticResource LeaveChatAppBarButtonStyle}" Click="ButtonAccount_Click" />
+                    <Button Style="{StaticResource PeopleAppBarButtonStyle}" Click="ButtonAccount_Click" />
                 </StackPanel>
             </Grid>
         </AppBar>

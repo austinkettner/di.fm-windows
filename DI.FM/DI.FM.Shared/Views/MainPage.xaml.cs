@@ -1,4 +1,6 @@
-﻿using DI.FM.Controls;
+﻿using System.ComponentModel;
+using Windows.UI.Xaml.Navigation;
+using DI.FM.Controls;
 using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -16,7 +18,7 @@ namespace DI.FM.View
 
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             // Main model
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
@@ -26,24 +28,24 @@ namespace DI.FM.View
             // Load saved settings
             ToggleShuffle.IsChecked = (bool?)ApplicationData.Current.RoamingSettings.Values["ShuffleChannels"];
 
-            this.Loaded += (sender, e) =>
+            Loaded += (sender, e) =>
             {
                 var showLogin = ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] as bool?;
-                if (!showLogin.HasValue && Model.ListenKey == null) LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                ButtonLogin.Visibility = Model.ListenKey == null ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+                if (!showLogin.HasValue && Model.ListenKey == null) LoginFeature.Visibility = Visibility.Visible;
+                ButtonLogin.Visibility = Model.ListenKey == null ? Visibility.Visible : Visibility.Collapsed;
             };
         }
 
-        void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "ListenKey")
             {
-                if (Model.ListenKey != null) LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                ButtonLogin.Visibility = Model.ListenKey == null ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+                if (Model.ListenKey != null) LoginFeature.Visibility = Visibility.Collapsed;
+                ButtonLogin.Visibility = Model.ListenKey == null ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
-        protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Model.LiveUpdateList.Clear();
             Model.LiveUpdateList.Add(Model.NowPlayingItem);
@@ -139,14 +141,14 @@ namespace DI.FM.View
             if (TempFavorite.Count + TempUnFavorite.Count > 0)
             {
                 StackSelectedOptions.Visibility = Visibility.Visible;
-                this.BottomAppBar.IsSticky = true;
-                this.BottomAppBar.IsOpen = true;
+                BottomAppBar.IsSticky = true;
+                BottomAppBar.IsOpen = true;
             }
             else
             {
                 StackSelectedOptions.Visibility = Visibility.Collapsed;
-                this.BottomAppBar.IsSticky = false;
-                this.BottomAppBar.IsOpen = false;
+                BottomAppBar.IsSticky = false;
+                BottomAppBar.IsOpen = false;
             }
         }
 
@@ -191,12 +193,12 @@ namespace DI.FM.View
 
         private void ButtonNowPlaying_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ChannelPage), Model.NowPlayingItem);
+            Frame.Navigate(typeof(ChannelPage), Model.NowPlayingItem);
         }
 
         private void ButtonFavorites_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(FavoritePage));
+            Frame.Navigate(typeof(FavoritePage));
         }
 
         private void GridViewChannels_ItemClick(object sender, ItemClickEventArgs e)
@@ -204,7 +206,7 @@ namespace DI.FM.View
             var item = e.ClickedItem as ChannelItem;
             if (item != null)
             {
-                this.Frame.Navigate(typeof(ChannelPage), item);
+                Frame.Navigate(typeof(ChannelPage), item);
             }
         }
 
@@ -233,7 +235,7 @@ namespace DI.FM.View
 
         private void ButtonVolume_Click(object sender, RoutedEventArgs e)
         {
-            var flyout = new Flyout()
+            var flyout = new Flyout
             {
                 Content = new VolumeControl(),
                 Placement = FlyoutPlacementMode.Top,
@@ -244,7 +246,7 @@ namespace DI.FM.View
 
         private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
-            this.BottomAppBar.IsOpen = false;
+            BottomAppBar.IsOpen = false;
             await Model.UpdateChannels();
         }
 
@@ -260,15 +262,14 @@ namespace DI.FM.View
 
         private void ButtonHideLogin_Click(object sender, RoutedEventArgs e)
         {
-            this.BottomAppBar.IsOpen = false;
-
+            BottomAppBar.IsOpen = false;
             ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] = false;
-            LoginFeature.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            LoginFeature.Visibility = Visibility.Collapsed;
         }
 
         private void ButtonAccount_Click(object sender, RoutedEventArgs e)
         {
-            App.ShowLoginWindow();
+            App.ShowAccountWindow();
         }
     }
 }

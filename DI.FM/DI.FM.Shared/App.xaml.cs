@@ -68,12 +68,20 @@ namespace DI.FM
             }
         }
 
-        private static void ShowAccountWindow()
+        public static void ShowAccountWindow()
         {
-
             var frame = Window.Current.Content as Frame;
 
-            frame.Navigate(typeof(AccountPage));
+            if (frame != null)
+            {
+                var page = frame.Content as Page;
+
+                if (page != null)
+                {
+                    var grid = page.Content as Grid;
+                    grid.Children.Add(new AccountPage());
+                }
+            }
         }
 
         public static void ShowLoginWindow()
