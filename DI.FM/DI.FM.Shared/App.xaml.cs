@@ -68,38 +68,6 @@ namespace DI.FM
             }
         }
 
-        public static void ShowAccountWindow()
-        {
-            var frame = Window.Current.Content as Frame;
-
-            if (frame != null)
-            {
-                var page = frame.Content as Page;
-
-                if (page != null)
-                {
-                    var grid = page.Content as Grid;
-                    grid.Children.Add(new AccountPage());
-                }
-            }
-        }
-
-        public static void ShowLoginWindow()
-        {
-            var frame = Window.Current.Content as Frame;
-
-            if (frame != null)
-            {
-                var page = frame.Content as Page;
-
-                if (page != null)
-                {
-                    var grid = page.Content as Grid;
-                    grid.Children.Add(new LoginPage());
-                }
-            }
-        }
-
         protected override async void OnSearchActivated(SearchActivatedEventArgs args)
         {
             var frame = Window.Current.Content as Frame;

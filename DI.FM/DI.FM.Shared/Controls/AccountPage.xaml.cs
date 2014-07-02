@@ -1,4 +1,5 @@
-﻿using DI.FM.ViewModel;
+﻿using Windows.UI.Xaml.Controls.Primitives;
+using DI.FM.ViewModel;
 using System;
 using System.Linq;
 using Windows.Storage;
@@ -15,6 +16,7 @@ namespace DI.FM.Controls
         public AccountPage()
         {
             InitializeComponent();
+            AnimateInStory.Begin();
 
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
 
@@ -58,26 +60,28 @@ namespace DI.FM.Controls
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            App.ShowLoginWindow();
-            RemoveWindow();
-        }
+            var parent = Parent as Popup;
+            parent.IsOpen = false;
 
-        private void RemoveWindow()
-        {
-            var parent = Parent as Grid;
-            if (parent != null)
+            var frame = Window.Current.Content as Frame;
+
+            if (frame != null)
             {
-                parent.Children.Remove(this);
+                var page = frame.Content as Page;
+
+                if (page != null)
+                {
+                    var grid = page.Content as Grid;
+                    grid.Children.Add(new LoginPage());
+                }
             }
         }
 
         private async void ButtonLogout_Click(object sender, RoutedEventArgs e)
         {
-            RemoveWindow();
-
-            var dialog = new MessageDialog("If you log out from your premium account you will not have access anymore to premium streams.", "Logout from your account");
-            dialog.Commands.Add(new UICommand("Logout") { Id = 1 });
-            dialog.Commands.Add(new UICommand("Stay logged in") { Id = 2 });
+            var dialog = new MessageDialog("If you sign out from your premium account you will not have access anymore to premium streams.", "Sign Out");
+            dialog.Commands.Add(new UICommand("Sign out") { Id = 1 });
+            dialog.Commands.Add(new UICommand("Stay") { Id = 2 });
             dialog.DefaultCommandIndex = 1;
 
             var result = await dialog.ShowAsync();
@@ -104,7 +108,6 @@ namespace DI.FM.Controls
         private void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
             Model.UpdateChannelsStreams();
-            RemoveWindow();
         }
     }
 }

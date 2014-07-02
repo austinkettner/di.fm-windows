@@ -17,30 +17,21 @@ namespace DI.FM.Controls
         public LoginPage()
         {
             InitializeComponent();
-            Loaded += (sender, e) =>
-            {
-                AnimateInStory.Begin();
-                TextEmail.Focus(FocusState.Programmatic);
-            };
-
-            AnimateOutStory.Completed += (sneder, e) => RemoveWindow();
+            AnimateInStory.Begin();
         }
 
         private async void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
             Progress.IsActive = true;
-
             TextEmail.IsEnabled = false;
             TextPass.IsEnabled = false;
             ButtonCancel.IsEnabled = false;
             ButtonLogin.IsEnabled = false;
-
             TextError.Visibility = Visibility.Collapsed;
 
             var data = await LogIn(TextEmail.Text, TextPass.Password);
 
             Progress.IsActive = false;
-
             TextEmail.IsEnabled = true;
             TextPass.IsEnabled = true;
             ButtonCancel.IsEnabled = true;
@@ -51,8 +42,8 @@ namespace DI.FM.Controls
                 var json = JsonConvert.DeserializeObject(data) as JContainer;
 
                 // Set the listen key
-                var locator = App.Current.Resources["Locator"] as ViewModelLocator;
-                locator.Main.ListenKey = json.Value<string>("listen_key");
+                var model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+                model.ListenKey = json.Value<string>("listen_key");
 
                 // Set account details
                 ApplicationData.Current.LocalSettings.Values["AccountEmail"] = json.Value<string>("email");
@@ -72,18 +63,9 @@ namespace DI.FM.Controls
             AnimateOutStory.Begin();
         }
 
-        private void RemoveWindow()
-        {
-            var parent = Parent as Grid;
-            if (parent != null)
-            {
-                parent.Children.Remove(this);
-            }
-        }
-
         private async Task<string> LogIn(string user, string pass)
         {
-            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+            var client = new HttpClient();
             var content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 {"username", user},
@@ -104,7 +86,7 @@ namespace DI.FM.Controls
 
         private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
         {
-            await Launcher.LaunchUriAsync(new Uri("https://www.di.fm/join"));
+            await Launcher.LaunchUriAsync(new Uri("http://di.fm/join"));
         }
     }
 }

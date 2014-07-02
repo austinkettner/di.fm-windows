@@ -1,8 +1,9 @@
-﻿using DI.FM.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using DI.FM.Common;
+using DI.FM.ViewModel;
 
-namespace DI.FM.ViewModel
+namespace DI.FM.FM.Models
 {
     public class ChannelItem : BindableBase
     {

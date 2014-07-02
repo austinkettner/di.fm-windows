@@ -1,7 +1,7 @@
 ﻿using System;
 using DI.FM.Common;
 
-namespace DI.FM.ViewModel
+namespace DI.FM.FM.Models
 {
     public class TrackItem : BindableBase
     {

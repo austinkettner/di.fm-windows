@@ -3,6 +3,7 @@ using Windows.ApplicationModel;
 using Windows.Media;
 using Windows.Storage.Streams;
 using DI.FM.Common;
+using DI.FM.FM.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -10,7 +11,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -29,7 +29,6 @@ namespace DI.FM.ViewModel
     {
 
         public List<ChannelItem> LiveUpdateList = new List<ChannelItem>();
-        private DispatcherTimer LiveUpdateTimer;
         private SystemMediaTransportControls systemMediaControls = SystemMediaTransportControls.GetForCurrentView();
         private int StreamIndex;
 
@@ -64,14 +63,7 @@ namespace DI.FM.ViewModel
             {
                 _favoriteChannels = value;
                 OnPropertyChanged();
-                if (_favoriteChannels != null)
-                {
-                    _favoriteChannels.CollectionChanged += (sender, e) =>
-                    {
-                        HasFavorites = FavoriteChannels.Count > 0;
-                        OnPropertyChanged();
-                    };
-                }
+                HasFavorites = FavoriteChannels.Count > 0;
             }
         }
 
@@ -144,7 +136,7 @@ namespace DI.FM.ViewModel
             set
             {
                 ApplicationData.Current.LocalSettings.Values["ListenKey"] = value;
-                OnPropertyChanged(); 
+                OnPropertyChanged();
                 CheckPremiumStatusSync();
             }
         }
@@ -179,10 +171,10 @@ namespace DI.FM.ViewModel
                 CreateEmptyChannels();
                 LoadFavoriteChannels();
 
-                LiveUpdateTimer = new DispatcherTimer();
-                LiveUpdateTimer.Interval = TimeSpan.FromSeconds(1);
-                LiveUpdateTimer.Tick += NowPlayingRefresh_Tick;
-                LiveUpdateTimer.Start();
+                DispatcherTimer liveUpdateTimer = new DispatcherTimer();
+                liveUpdateTimer.Interval = TimeSpan.FromSeconds(1);
+                liveUpdateTimer.Tick += NowPlayingRefresh_Tick;
+                liveUpdateTimer.Start();
 
                 systemMediaControls.ButtonPressed += ButtonPressed;
                 systemMediaControls.IsPlayEnabled = true;
@@ -196,7 +188,7 @@ namespace DI.FM.ViewModel
 
         private async void ButtonPressed(SystemMediaTransportControls sender, SystemMediaTransportControlsButtonPressedEventArgs args)
         {
-            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            await MediaPlayer.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 switch (args.Button)
                 {
@@ -284,11 +276,15 @@ namespace DI.FM.ViewModel
         private async void LoadFavoriteChannels()
         {
             FavoriteChannels = new ObservableCollection<ChannelItem>();
-
             StorageFile file = null;
 
-            try { file = await ApplicationData.Current.LocalFolder.GetFileAsync("favorites.txt"); }
-            catch { }
+            try
+            {
+                file = await ApplicationData.Current.LocalFolder.GetFileAsync("favorites.txt");
+            }
+            catch (Exception ex)
+            {
+            }
 
             if (file != null)
             {
@@ -325,7 +321,7 @@ namespace DI.FM.ViewModel
 
         #endregion
 
-        #region RefreshStates
+        #region MediaPlayer Events
 
         private void NowPlayingRefresh_Tick(object sender, object e)
         {
@@ -368,7 +364,7 @@ namespace DI.FM.ViewModel
                 }
                 else
                 {
-                    var msg = new MessageDialog("Could not connect on any of available streams!", "Cannot play channel");
+                    var msg = new MessageDialog(e.ErrorMessage);
                     await msg.ShowAsync();
                 }
             }
@@ -398,7 +394,7 @@ namespace DI.FM.ViewModel
 
         #endregion
 
-        #region Public
+        #region Playing
 
         public void PlayChannel(ChannelItem channel)
         {
@@ -413,7 +409,6 @@ namespace DI.FM.ViewModel
                 updater.MusicProperties.AlbumArtist = channel.NowPlaying.Track;
                 updater.MusicProperties.Title = channel.Name;
                 updater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(channel.Image));
-
                 updater.Update();
                 SetLiveTile(channel);
             }
@@ -479,15 +474,20 @@ namespace DI.FM.ViewModel
 
         public async Task UpdateChannels()
         {
-            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+            var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
 
             var format = GetStreamFormat();
             var url = string.Format(ChannelsHelper.BATCH_UPDATE_URL, format);
-
             string data = null;
-            try { data = await client.GetStringAsync(url); }
-            catch { }
+
+            try
+            {
+                data = await client.GetStringAsync(new Uri(url));
+            }
+            catch (Exception)
+            {
+            }
 
             if (data != null)
             {
@@ -507,34 +507,22 @@ namespace DI.FM.ViewModel
             {
                 if (format == null) return ChannelsHelper.PremiumStreamFormats[0][1];
 
-                foreach (var i in ChannelsHelper.PremiumStreamFormats)
+                if (ChannelsHelper.PremiumStreamFormats.Any(i => i[1] == format.ToString()))
                 {
-                    if (i[1] == format.ToString())
-                    {
-                        found = true;
-                        break;
-                    }
+                    found = true;
                 }
 
-                if (found) return format.ToString();
-                return ChannelsHelper.PremiumStreamFormats[0][1];
+                return found ? format.ToString() : ChannelsHelper.PremiumStreamFormats[0][1];
             }
-            else
+
+            if (format == null) return ChannelsHelper.FreeStreamFormats[0][1];
+
+            if (ChannelsHelper.FreeStreamFormats.Any(i => i[1] == format.ToString()))
             {
-                if (format == null) return ChannelsHelper.FreeStreamFormats[0][1];
-
-                foreach (var i in ChannelsHelper.FreeStreamFormats)
-                {
-                    if (i[1] == format.ToString())
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (found) return format.ToString();
-                return ChannelsHelper.FreeStreamFormats[0][1];
+                found = true;
             }
+
+            return found ? format.ToString() : ChannelsHelper.FreeStreamFormats[0][1];
         }
 
         private Task UpdateChannelsInfo(JToken token)
@@ -543,7 +531,7 @@ namespace DI.FM.ViewModel
             {
                 foreach (var item in AllChannels)
                 {
-                    var jChannel = token.FirstOrDefault((e) => e.Value<string>("key") == item.Key);
+                    var jChannel = token.FirstOrDefault(e => e.Value<string>("key") == item.Key);
                     if (jChannel != null)
                     {
                         item.ID = jChannel.Value<int>("id");
@@ -603,15 +591,20 @@ namespace DI.FM.ViewModel
         {
             IsUpdating = true;
 
-            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+            var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
 
             var format = GetStreamFormat();
             var url = string.Format(ChannelsHelper.BATCH_UPDATE_URL, format);
-
             string data = null;
-            try { data = await client.GetStringAsync(url); }
-            catch { }
+
+            try
+            {
+                data = await client.GetStringAsync(new Uri(url));
+            }
+            catch (Exception)
+            {
+            }
 
             if (data != null)
             {
@@ -624,8 +617,7 @@ namespace DI.FM.ViewModel
 
         public AuthenticationHeaderValue CreateBasicHeader(string username, string password)
         {
-            byte[] byteArray = Encoding.UTF8.GetBytes(username + ":" + password);
-            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + password)));
         }
 
         #endregion
@@ -641,36 +633,17 @@ namespace DI.FM.ViewModel
 
         public async Task CheckPremiumStatus()
         {
-            var key = ListenKey;
-
-            if (key == null)
+            if (ListenKey == null)
             {
                 IsPremium = false;
                 return;
             }
 
-            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
-
-            int i = 0, maxRetry = 3;
+            var client = new HttpClient();
             var rand = new Random();
-
-            while (i < maxRetry)
-            {
-                var url = PremiumURLs[rand.Next(0, PremiumURLs.Length - 1)] + "?" + key;
-
-                try
-                {
-                    var request = (HttpWebRequest)WebRequest.Create(url);
-                    var response = await request.GetResponseAsync();
-                    IsPremium = true;
-                    break;
-                }
-                catch
-                {
-                    IsPremium = false;
-                    i++;
-                }
-            }
+            var url = PremiumURLs[rand.Next(0, PremiumURLs.Length - 1)] + "?" + ListenKey;
+            HttpResponseMessage response = await client.GetAsync(new Uri(url));
+            IsPremium = response.IsSuccessStatusCode;
         }
 
         #endregion
@@ -706,44 +679,38 @@ namespace DI.FM.ViewModel
 
         private static XmlDocument SmallLiveTile(ChannelItem channel)
         {
-            try
-            {
-                var tileTemplate = TileTemplateType.TileSquarePeekImageAndText02;
-                var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
 
-                // Set notification image
-                XmlNodeList imgNodes = tileXml.GetElementsByTagName("image");
-                imgNodes[0].Attributes[1].NodeValue = channel.Image;
+            var tileTemplate = TileTemplateType.TileSquare150x150PeekImageAndText02;
+            var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
 
-                // Set notification text
-                XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
-                textNodes[0].InnerText = channel.Name;
-                textNodes[1].InnerText = channel.Description;
+            // Set notification image
+            XmlNodeList imgNodes = tileXml.GetElementsByTagName("image");
+            imgNodes[0].Attributes[1].NodeValue = channel.Image;
 
-                return tileXml;
-            }
-            catch { return null; }
+            // Set notification text
+            XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
+            textNodes[0].InnerText = channel.Name;
+            textNodes[1].InnerText = channel.Description;
+
+            return tileXml;
         }
 
         private static XmlDocument WideLiveTile(ChannelItem channel)
         {
-            try
-            {
-                var tileTemplate = TileTemplateType.TileWideSmallImageAndText04;
-                var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
 
-                // Set notification image
-                XmlNodeList imgNodes = tileXml.GetElementsByTagName("image");
-                imgNodes[0].Attributes[1].NodeValue = channel.Image;
+            var tileTemplate = TileTemplateType.TileWide310x150SmallImageAndText04;
+            var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
 
-                // Set notification text
-                XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
-                textNodes[0].InnerText = channel.Name;
-                textNodes[1].InnerText = channel.Description;
+            // Set notification image
+            XmlNodeList imgNodes = tileXml.GetElementsByTagName("image");
+            imgNodes[0].Attributes[1].NodeValue = channel.Image;
 
-                return tileXml;
-            }
-            catch { return null; }
+            // Set notification text
+            XmlNodeList textNodes = tileXml.GetElementsByTagName("text");
+            textNodes[0].InnerText = channel.Name;
+            textNodes[1].InnerText = channel.Description;
+
+            return tileXml;
         }
 
         #endregion

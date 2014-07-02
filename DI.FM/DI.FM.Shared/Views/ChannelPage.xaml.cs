@@ -3,6 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using DI.FM.Common;
 using DI.FM.Controls;
+using DI.FM.FM.Models;
 using DI.FM.ViewModel;
 using System;
 using Windows.UI.StartScreen;
@@ -173,7 +174,7 @@ namespace DI.FM.View
             else
             {
                 var logo = new Uri(SelectedItem.Image);
-                var tileActivationArguments = SelectedItem.Key + " was pinned at " + DateTime.Now.ToLocalTime().ToString();
+                var tileActivationArguments = SelectedItem.Key + " was pinned at " + DateTime.Now.ToLocalTime();
                 var secondaryTile = new SecondaryTile(SelectedItem.Key, SelectedItem.Name, SelectedItem.Name, tileActivationArguments, TileOptions.ShowNameOnLogo, logo);
                 var result = await secondaryTile.RequestCreateForSelectionAsync(rect, Placement.Above);
 
@@ -182,7 +183,7 @@ namespace DI.FM.View
                     try
                     {
                         // Template
-                        var tileTemplate = TileTemplateType.TileSquarePeekImageAndText04;
+                        var tileTemplate = TileTemplateType.TileSquare150x150PeekImageAndText04;
                         var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
 
                         // Create notification.

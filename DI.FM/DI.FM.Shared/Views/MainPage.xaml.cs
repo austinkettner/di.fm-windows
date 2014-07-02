@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Windows.UI.Xaml.Navigation;
 using DI.FM.Controls;
+using DI.FM.FM.Models;
 using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -239,7 +240,6 @@ namespace DI.FM.View
             {
                 Content = new VolumeControl(),
                 Placement = FlyoutPlacementMode.Top,
-
             };
             flyout.ShowAt(sender as FrameworkElement);
         }
@@ -252,7 +252,12 @@ namespace DI.FM.View
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            App.ShowLoginWindow();
+            Popup window = new Popup();
+            window.Child = new LoginPage();
+            window.VerticalOffset = ActualHeight / 4;
+            window.HorizontalOffset = ActualWidth / 4;
+            window.IsLightDismissEnabled = true;
+            window.IsOpen = true;
         }
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
@@ -269,7 +274,12 @@ namespace DI.FM.View
 
         private void ButtonAccount_Click(object sender, RoutedEventArgs e)
         {
-            App.ShowAccountWindow();
+            Popup window = new Popup();
+            window.VerticalOffset = ActualHeight / 4;
+            window.HorizontalOffset = ActualWidth / 4;
+            window.Child = new AccountPage();
+            window.IsLightDismissEnabled = true;
+            window.IsOpen = true;
         }
     }
 }

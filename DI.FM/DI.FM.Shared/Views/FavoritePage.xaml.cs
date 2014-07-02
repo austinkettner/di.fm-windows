@@ -1,4 +1,5 @@
-﻿using DI.FM.ViewModel;
+﻿using DI.FM.FM.Models;
+using DI.FM.ViewModel;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -12,22 +13,12 @@ namespace DI.FM.View
         public FavoritePage()
         {
             InitializeComponent();
-            // Get the model
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
-            // Bind the model
-            //this.DefaultViewModel.Add("Favorites", Model.FavoriteChannels);
-            //this.DefaultViewModel.Add("NowPlaying", App.PlayingMedia);
 
-            Loaded += (sender, e) =>
-            {
-                Model.LiveUpdateList.Clear();
-                foreach (var item in Model.FavoriteChannels) Model.LiveUpdateList.Add(item);
-            };
-        }
+            Model.LiveUpdateList.Clear();
 
-        private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
-        {
-            /*App.PlayingMedia.TogglePlayStop();*/
+            foreach (var item in Model.FavoriteChannels)
+                Model.LiveUpdateList.Add(item);
         }
 
         private void GridViewFavorites_ItemClick(object sender, ItemClickEventArgs e)
@@ -60,10 +51,7 @@ namespace DI.FM.View
         {
             List<ChannelItem> items = new List<ChannelItem>();
 
-
-                foreach (ChannelItem item in GridViewFavorites1.SelectedItems) items.Add(item);
-
-                foreach (ChannelItem item in GridViewFavorites.SelectedItems) items.Add(item);
+            foreach (ChannelItem item in GridViewFavorites.SelectedItems) items.Add(item);
 
             foreach (var item in items) Model.FavoriteChannels.Remove(item);
             await Model.SaveFavoriteChannels();
@@ -71,13 +59,11 @@ namespace DI.FM.View
 
         private void ButtonSelectAll_Click(object sender, RoutedEventArgs e)
         {
-             GridViewFavorites1.SelectAll();
-             GridViewFavorites.SelectAll();
+            GridViewFavorites.SelectAll();
         }
 
         private void ButtonSelectNone_Click(object sender, RoutedEventArgs e)
         {
-           GridViewFavorites1.SelectedItems.Clear();
             GridViewFavorites.SelectedItems.Clear();
         }
 

@@ -1,5 +1,7 @@
 ﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml.Navigation;
 using DI.FM.Common;
+using DI.FM.FM.Models;
 using DI.FM.ViewModel;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
@@ -23,33 +25,21 @@ namespace DI.FM.View
         public SearchPage()
         {
             InitializeComponent();
-            // Get model
             Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
-            // Init the initial result list
             Results = new ObservableCollection<ChannelItem>(Model.AllChannels);
-            // Bind the model
-            DefaultViewModel.Add("Results", Results);
-            // Hook up events
-          //  SearchPane.GetForCurrentView().QueryChanged += SearchPage_QueryChanged;
         }
 
-        ////protected override void OnNavigatedTo(NavigationEventArgs e)
-        ////{
-        ////    base.OnNavigatedTo(e);
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
 
-        ////    string queryText;
-        ////    if (queryText != null)
-        ////    {
-        ////        this.DefaultViewModel["QueryText"] = queryText;
-        ////        Search(queryText.ToLower());
-        ////    }
-        ////}
+            string queryText = e.Parameter as string;
 
-        //private void SearchPage_QueryChanged(SearchPane sender, SearchPaneQueryChangedEventArgs args)
-        //{
-        //    this.DefaultViewModel["QueryText"] = args.QueryText;
-        //    Search(args.QueryText.ToLower());
-        //}
+            if (queryText != null)
+            {
+                Search(queryText.ToLower());
+            }
+        }
 
         private void Search(string query)
         {
