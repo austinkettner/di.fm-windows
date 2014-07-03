@@ -156,7 +156,7 @@ namespace DI.FM.View
             }
         }
 
-        private async void ButtonFavorite_Click(object sender, RoutedEventArgs e)
+        private void ButtonFavorite_Click(object sender, RoutedEventArgs e)
         {
             if (ButtonFavorite.Tag == null) return;
 
@@ -179,7 +179,7 @@ namespace DI.FM.View
             GridViewChannels.SelectedItems.Clear();
             GridViewFavorites1.SelectedItems.Clear();
             GridViewChannels1.SelectedItems.Clear();
-            await Model.SaveFavoriteChannels();
+            Model.SaveFavoriteChannels();
         }
 
         #endregion

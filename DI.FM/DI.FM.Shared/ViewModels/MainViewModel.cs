@@ -142,7 +142,6 @@ namespace DI.FM.ViewModel
             {
                 _isPremium = value;
                 OnPropertyChanged();
-                UpdateChannelsAsync();
             }
         }
 
@@ -297,7 +296,7 @@ namespace DI.FM.ViewModel
             }
         }
 
-        public async Task SaveFavoriteChannels()
+        public async void SaveFavoriteChannels()
         {
             var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("favorites.txt", CreationCollisionOption.ReplaceExisting);
 
@@ -464,18 +463,12 @@ namespace DI.FM.ViewModel
             }
         }
 
-        public async void UpdateChannelsAsync()
-        {
-            await UpdateChannels();
-        }
-
-        private async Task UpdateChannels()
+        public async Task UpdateChannels()
         {
             IsUpdating = true;
 
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER,
-                ChannelsHelper.BATCH_PASS);
+            client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
 
             var format = GetStreamFormat();
             var url = string.Format(ChannelsHelper.BATCH_UPDATE_URL, format);

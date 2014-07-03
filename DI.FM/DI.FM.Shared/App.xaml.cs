@@ -33,7 +33,7 @@ namespace DI.FM
             deferral.Complete();
         }
 
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        protected async override void OnLaunched(LaunchActivatedEventArgs args)
         {
             var rootFrame = Window.Current.Content as Frame;
 
@@ -44,7 +44,7 @@ namespace DI.FM
 
                 // Init and update the model
                 Main.CheckPremiumStatusSync();
-                Main.UpdateChannelsAsync();
+               await Main.UpdateChannels();
 
                 // When the frame is loaded set the model media player
                 rootFrame.Loaded += (sender, e) =>

@@ -149,7 +149,7 @@ namespace DI.FM.View
             }
         }
 
-        private async void ButtonFavorite_Click(object sender, RoutedEventArgs e)
+        private void ButtonFavorite_Click(object sender, RoutedEventArgs e)
         {
             BottomAppBar.IsOpen = false;
 
@@ -159,7 +159,7 @@ namespace DI.FM.View
                 Model.FavoriteChannels.Insert(0, SelectedItem);
 
             UpdateFavoriteStatus();
-            await Model.SaveFavoriteChannels();
+            Model.SaveFavoriteChannels();
         }
 
         private async void ButtonPin_Click(object sender, RoutedEventArgs e)

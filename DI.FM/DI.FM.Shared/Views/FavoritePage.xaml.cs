@@ -8,7 +8,7 @@ namespace DI.FM.View
 {
     public sealed partial class FavoritePage : Page
     {
-         MainViewModel Model;
+        MainViewModel Model;
 
         public FavoritePage()
         {
@@ -47,14 +47,17 @@ namespace DI.FM.View
             }
         }
 
-        private async void ButtonUnfavorite_Click(object sender, RoutedEventArgs e)
+        private void ButtonUnfavorite_Click(object sender, RoutedEventArgs e)
         {
             List<ChannelItem> items = new List<ChannelItem>();
 
-            foreach (ChannelItem item in GridViewFavorites.SelectedItems) items.Add(item);
+            foreach (ChannelItem item in GridViewFavorites.SelectedItems)
+                items.Add(item);
 
-            foreach (var item in items) Model.FavoriteChannels.Remove(item);
-            await Model.SaveFavoriteChannels();
+            foreach (var item in items)
+                Model.FavoriteChannels.Remove(item);
+
+            Model.SaveFavoriteChannels();
         }
 
         private void ButtonSelectAll_Click(object sender, RoutedEventArgs e)

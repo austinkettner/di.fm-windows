@@ -86,9 +86,9 @@ namespace DI.FM.Controls
             }
         }
 
-        private void ButtonApply_Click(object sender, RoutedEventArgs e)
+        private async void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
-            Model.UpdateChannelsAsync();
+           await Model.UpdateChannels();
         }
     }
 }
