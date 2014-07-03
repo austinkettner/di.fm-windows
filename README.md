@@ -1,5 +1,5 @@
 # DI.FM
-### A Digital Imported Radio App for Windows 8.1 and Windows Phone 8.1
+### A Digitally Imported Radio App for Windows 8.1 and Windows Phone 8.1
 
 ##Features
 ---
