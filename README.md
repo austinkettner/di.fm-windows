@@ -1,18 +1,18 @@
 # DI.FM
-### A Digital Imported Radio App for Windows 8
+### A Digital Imported Radio App for Windows 8.1 and Windows Phone 8.1
 
 ##Features
 ---
-- Stream any Digitally Imported Radio channel
-- Ability to favorite any channel
+- Stream any Digitally Imported Radio channel.
+- Ability to favorite any channel.
 - Roaming profile support, so cloud-synced settings.
-- Semantic Zoom Support
+- Semantic Zoom Support.
  
 ##Application Layout & Pages
 ---
 
-###Main View
-Users start in DI.FM on the Main View. This view is distributed into a few sections 'Now Playing', 'Favorite Channels', and 'All Radio Channels'.
+###Main Page
+Users start in DI.FM on the Main View. This view is distributed into sections 'Login', 'Now Playing', 'Favorite Channels', and 'All Radio Channels'.
  
 Now Playing showcases whatever is the currently playing channel in DI.FM. When no channel is currently active, then this should show the most recently played channel.
 
@@ -31,7 +31,3 @@ Track History is a section that simply lists the previous tracks that have playe
  
 ###Snap View
 At any given time the user should be able to load a Snap View of DI.FM. This is simple a constrained view of the Channel and Main View, but should not limit functionality.
-
-###References
-http://msdn.microsoft.com/en-us/windows/apps/hh852650.aspx
-
