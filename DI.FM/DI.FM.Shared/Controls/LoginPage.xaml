@@ -6,87 +6,28 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="800">
-    
-    <UserControl.Resources>
-        <!-- Storyboards -->
-        <Storyboard x:Name="AnimateInStory">
-            <DoubleAnimation From="0" To="1" Duration="0:0:0.500" Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Opacity">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseOut" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation From="0.75" To="1" Duration="0:0:0.500" Storyboard.TargetName="ScaleBox" Storyboard.TargetProperty="ScaleX">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseOut" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation From="0.75" To="1" Duration="0:0:0.500" Storyboard.TargetName="ScaleBox" Storyboard.TargetProperty="ScaleY">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseOut" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation From="-10" To="0" Duration="0:0:0.500" Storyboard.TargetName="PlaneBox" Storyboard.TargetProperty="RotationX">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseOut" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-        </Storyboard>
-        <Storyboard x:Name="AnimateOutStory">
-            <DoubleAnimation To="0" Duration="0:0:0.500" Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Opacity">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation To="0.75" Duration="0:0:0.500" Storyboard.TargetName="ScaleBox" Storyboard.TargetProperty="ScaleX">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation To="0.75" Duration="0:0:0.500" Storyboard.TargetName="ScaleBox" Storyboard.TargetProperty="ScaleY">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation To="-30" Duration="0:0:0.500" Storyboard.TargetName="PlaneBox" Storyboard.TargetProperty="RotationX">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-        </Storyboard>
-    </UserControl.Resources>
 
-    <Grid x:Name="RootGrid">
-        <Border Width="650" Height="400" Background="#0fa7ff" BorderThickness="1" BorderBrush="#48b9fb" RenderTransformOrigin="0.5,0.5">
-            <Border.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform x:Name="ScaleBox" />
-                </TransformGroup>
-            </Border.RenderTransform>
-            <Border.Projection>
-                <PlaneProjection x:Name="PlaneBox" CenterOfRotationY="1" />
-            </Border.Projection>
-            <Grid Margin="30">
-                <StackPanel>
-                    <TextBlock Margin="0,0,0,10" Text="Sign In" FontSize="40" Foreground="White" FontWeight="SemiLight" />
-                    <TextBlock Margin="0,0,0,50" Text="Sign In to your existing account or create a new one to get started." FontSize="16" Foreground="White" FontWeight="SemiLight" />
-                    <StackPanel Width="300">
-                        <TextBlock Text="Username" FontSize="16" Foreground="White" FontWeight="SemiLight" />
-                        <TextBox x:Name="TextEmail" Margin="0,0,0,20" />
-                        <TextBlock Text="Password" FontSize="16" Foreground="White" FontWeight="SemiLight" />
-                        <PasswordBox x:Name="TextPass" IsPasswordRevealButtonEnabled="True" />
-                        <TextBlock x:Name="TextError" Margin="0,10,0,0" Text="Could not log in!" FontSize="16" Foreground="Red" FontWeight="SemiBold" Visibility="Collapsed" />
-                    </StackPanel>
+    <Grid Width="650" Height="400" Background="#0fa7ff" >
+        <Button VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ButtonClosePopupStyle}"/>
+        <Grid Margin="30">
+            <StackPanel>
+                <TextBlock Margin="0,0,0,10" Text="Sign In" FontSize="40" Foreground="White" FontWeight="SemiLight" />
+                <TextBlock Margin="0,0,0,10" Text="Please sign in." FontSize="16" Foreground="White" FontWeight="SemiLight" />
+                <StackPanel Width="300">
+                    <TextBox x:Name="TextEmail" Margin="0,0,0,20" Header="Username" PlaceholderText="Enter Email Address" InputScope="EmailSmtpAddress" />
+                    <PasswordBox x:Name="TextPass" Margin="0,0,0,20" Header="Password" IsPasswordRevealButtonEnabled="True" PlaceholderText="Enter Password" />
+                    <CheckBox Content="Keep me logged in" IsChecked="True" />
+                    <TextBlock x:Name="TextError" Margin="0,10,0,0" Text="Could not log in!" FontSize="16" Foreground="Red" FontWeight="SemiBold" Visibility="Collapsed" />
                 </StackPanel>
-                <Grid VerticalAlignment="Bottom">
-                    <HyperlinkButton Content="Don't Have An Account" Foreground="White" Click="HyperlinkButton_Click" />
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                        <ProgressRing x:Name="Progress" Margin="0,0,60,0" Width="32" Height="32" Foreground="White" IsActive="False"/>
-                        <Button x:Name="ButtonCancel" Margin="0,0,10,0" Width="100" Content="Cancel" Click="ButtonCancel_Click" />
-                        <Button x:Name="ButtonLogin" Width="100" Content="Sign In" Click="ButtonLogin_Click" />
-                    </StackPanel>
-                </Grid>
+            </StackPanel>
+            <Grid VerticalAlignment="Bottom">
+                <HyperlinkButton Content="Don't Have An Account" Foreground="White" Click="HyperlinkButton_Click" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <ProgressRing x:Name="Progress" Width="32" Height="32" Foreground="White" IsActive="False"/>
+                    <Button x:Name="ButtonLogin" Width="100" Content="Sign In" Click="ButtonLogin_Click" />
+                </StackPanel>
             </Grid>
-        </Border>
+        </Grid>
     </Grid>
-    
+
 </UserControl>

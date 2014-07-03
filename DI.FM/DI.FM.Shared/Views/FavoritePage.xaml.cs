@@ -8,12 +8,12 @@ namespace DI.FM.View
 {
     public sealed partial class FavoritePage : Page
     {
-        private MainViewModel Model;
+         MainViewModel Model;
 
         public FavoritePage()
         {
             InitializeComponent();
-            Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+            Model = App.Main;
 
             Model.LiveUpdateList.Clear();
 

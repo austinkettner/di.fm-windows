@@ -13,12 +13,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Common\BindableBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\BooleanNegationConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\BooleanToVisibilityConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\PlayStopButtonConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\DurationConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\ObjectToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\RelayCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\RichTextColumns.cs" />
@@ -35,6 +30,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\VolumeControl.xaml.cs">
       <DependentUpon>VolumeControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanNegationConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanNegationToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\DurationConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ObjectToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\PlayStopButtonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ChannelItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\TrackItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChannelsHelper.cs" />

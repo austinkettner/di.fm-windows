@@ -8,15 +8,11 @@
     xmlns:controls="using:DI.FM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-
-    <Page.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="Main" />
-    </Page.DataContext>
+    mc:Ignorable="d"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <Page.Resources>
-        <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
-        <common:BooleanNegationToVisibilityConverter x:Key="BooleanNegationToVisibilityConverter" />
+        <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <common:DurationConverter x:Key="DurationConverter" />
     </Page.Resources>
     
@@ -64,12 +60,8 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack" />
-                                <TextBlock Grid.Column="1" Text="Favorite Channels" Foreground="White" FontSize="42" FontWeight="SemiLight">
-                                    <TextBlock.RenderTransform>
-                                        <TranslateTransform Y="4" />
-                                    </TextBlock.RenderTransform>
-                                </TextBlock>
+                                <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack"  />
+                                <TextBlock Grid.Column="1" Text="Favorite Channels" Style="{StaticResource HeaderTextStyle}"/>
                             </Grid>
                         </Grid>
                         <Path Grid.Column="1" Fill="#121212" Data="M 0 0 L 50 0 L 0 50 Z" Stretch="Uniform" HorizontalAlignment="Right" />
@@ -81,7 +73,7 @@
             <!-- Content -->
             <Grid Grid.Row="1">
                 <!-- Content -->
-                <TextBlock Margin="118,65,0,0" Text="There are no favorites yet..." Foreground="White" FontSize="22" FontWeight="Light" Opacity="0.5" Visibility="{Binding Path=HasFavorites, Converter={StaticResource BooleanNegationToVisibilityConverter}}" />
+                <TextBlock Margin="118,65,0,0" Text="There are no favorites yet..." Foreground="White" FontSize="22" FontWeight="Light" Opacity="0.5" Visibility="{Binding HasFavorites, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" SelectionChanged="GridView_SelectionChanged" ItemClick="GridViewFavorites_ItemClick">
                     <GridView.ItemTemplate>
                         <DataTemplate>

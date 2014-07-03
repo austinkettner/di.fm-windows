@@ -39,7 +39,7 @@ namespace DI.FM.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+            Model = App.Main;
             SelectedItem = e.Parameter as ChannelItem;
 
             DefaultViewModel.Add("Model", Model);
@@ -64,7 +64,7 @@ namespace DI.FM.View
 
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
         {
-            SelectedItem = SelectedItem.Prev;
+            SelectedItem = SelectedItem.Previous;
             IsRightDirection = false;
             FadeOutRightStory.Begin();
         }
@@ -78,7 +78,7 @@ namespace DI.FM.View
 
         private void ButtonPrev1_Click(object sender, RoutedEventArgs e)
         {
-            SelectedItem = SelectedItem.Prev;
+            SelectedItem = SelectedItem.Previous;
             DefaultViewModel["Channel"] = SelectedItem;
 
             UpdatePlayStatus();
@@ -108,11 +108,13 @@ namespace DI.FM.View
         {
             if (Model.FavoriteChannels.Contains(SelectedItem))
             {
-                ButtonFavorite.Style = App.Current.Resources["UnfavoriteAppBarButtonStyle"] as Style;
+                ButtonFavorite.Icon = new SymbolIcon(Symbol.UnFavorite);
+                ButtonFavorite.Label = "UnFavorite";
             }
             else
             {
-                ButtonFavorite.Style = App.Current.Resources["FavoriteAppBarButtonStyle"] as Style;
+                ButtonFavorite.Icon = new SymbolIcon(Symbol.Favorite);
+                ButtonFavorite.Label = "Favorite";
             }
         }
 
@@ -120,11 +122,13 @@ namespace DI.FM.View
         {
             if (SecondaryTile.Exists(SelectedItem.Key))
             {
-                ButtonPin.Style = App.Current.Resources["UnPinAppBarButtonStyle"] as Style;
+                ButtonPin.Icon = new SymbolIcon(Symbol.UnPin);
+                ButtonPin.Label = "UnPin";
             }
             else
             {
-                ButtonPin.Style = App.Current.Resources["PinAppBarButtonStyle"] as Style;
+                ButtonPin.Icon = new SymbolIcon(Symbol.Pin);
+                ButtonPin.Label = "Pin";
             }
         }
 
@@ -149,10 +153,12 @@ namespace DI.FM.View
         {
             BottomAppBar.IsOpen = false;
 
-            if (Model.FavoriteChannels.Contains(SelectedItem)) Model.FavoriteChannels.Remove(SelectedItem);
-            else Model.FavoriteChannels.Insert(0, SelectedItem);
-            UpdateFavoriteStatus();
+            if (Model.FavoriteChannels.Contains(SelectedItem))
+                Model.FavoriteChannels.Remove(SelectedItem);
+            else
+                Model.FavoriteChannels.Insert(0, SelectedItem);
 
+            UpdateFavoriteStatus();
             await Model.SaveFavoriteChannels();
         }
 
@@ -175,31 +181,23 @@ namespace DI.FM.View
             {
                 var logo = new Uri(SelectedItem.Image);
                 var tileActivationArguments = SelectedItem.Key + " was pinned at " + DateTime.Now.ToLocalTime();
-                var secondaryTile = new SecondaryTile(SelectedItem.Key, SelectedItem.Name, SelectedItem.Name, tileActivationArguments, TileOptions.ShowNameOnLogo, logo);
+                var secondaryTile = new SecondaryTile(SelectedItem.Key, SelectedItem.Name, tileActivationArguments, logo, TileSize.Default);
                 var result = await secondaryTile.RequestCreateForSelectionAsync(rect, Placement.Above);
 
                 if (result)
                 {
-                    try
-                    {
-                        // Template
-                        var tileTemplate = TileTemplateType.TileSquare150x150PeekImageAndText04;
-                        var tileXml = TileUpdateManager.GetTemplateContent(tileTemplate);
+                    var tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquare150x150PeekImageAndText04);
+                    var notification = new TileNotification(tileXml);
 
-                        // Create notification.
-                        var notification = new TileNotification(tileXml);
+                    // Set notification text.
+                    XmlNodeList nodes = tileXml.GetElementsByTagName("image");
+                    nodes[0].Attributes[1].NodeValue = SelectedItem.Image;
+                    nodes = tileXml.GetElementsByTagName("text");
+                    nodes[0].InnerText = SelectedItem.Name;
 
-                        // Set notification text.
-                        XmlNodeList nodes = tileXml.GetElementsByTagName("image");
-                        nodes[0].Attributes[1].NodeValue = SelectedItem.Image;
-                        nodes = tileXml.GetElementsByTagName("text");
-                        nodes[0].InnerText = SelectedItem.Name;
-
-                        // Update Live Tile.
-                        var upd = TileUpdateManager.CreateTileUpdaterForSecondaryTile(SelectedItem.Key);
-                        upd.Update(notification);
-                    }
-                    catch { }
+                    // Update Live Tile.
+                    var upd = TileUpdateManager.CreateTileUpdaterForSecondaryTile(SelectedItem.Key);
+                    upd.Update(notification);
                 }
             }
 
@@ -225,8 +223,10 @@ namespace DI.FM.View
             UpdatePlayStatus();
             UpdateChannelStatus();
 
-            if (IsRightDirection) FadeInLeftStory.Begin();
-            else FadeInRightStory.Begin();
+            if (IsRightDirection)
+                FadeInLeftStory.Begin();
+            else
+                FadeInRightStory.Begin();
         }
 
         private void GoBack(object sender, RoutedEventArgs e)

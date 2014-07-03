@@ -5,7 +5,6 @@
     xmlns:controls="using:DI.FM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ViewModel="using:DI.FM.ViewModel"
     x:Class="DI.FM.View.MainPage"
     mc:Ignorable="d"
     DataContext="{Binding Main, Source={StaticResource Locator}}">
@@ -21,29 +20,18 @@
     </Page.Resources>
 
     <Page.BottomAppBar>
-        <AppBar Background="#161616" BorderBrush="{x:Null}">
-            <Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <StackPanel x:Name="StackControls" Orientation="Horizontal">
-                        <Button Style="{StaticResource SkipBackAppBarButtonStyle}" AutomationProperties.Name="Prev" Click="ButtonPrev_Click" />
-                        <Button Style="{StaticResource SkipAheadAppBarButtonStyle}" AutomationProperties.Name="Next" Click="ButtonNext_Click" />
-                        <ToggleButton x:Name="ToggleShuffle" Style="{StaticResource ShuffleAppBarButtonStyle}" Click="ToggleShuffle_Click" />
-                    </StackPanel>
-                    <StackPanel x:Name="StackSelectedOptions" Orientation="Horizontal" Visibility="Collapsed">
-                        <Rectangle x:Name="RectangleSeparator" Margin="20" Width="2" Fill="#64FFFFFF" />
-                        <Button x:Name="ButtonFavorite" Style="{StaticResource FavoriteAppBarButtonStyle}" Click="ButtonFavorite_Click" />
-                        <Button Style="{StaticResource ClearSelectionAppBarButtonStyle}" Click="ButtonSelectNone_Click" />
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel x:Name="StackRefresh" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:Name="ButtonLogin" Style="{StaticResource HomeAppBarButtonStyle}" Click="ButtonLogin_Click" Visibility="Collapsed" AutomationProperties.Name="Login" />
-                    <Button Style="{StaticResource VolumeAppBarButtonStyle}" Click="ButtonVolume_Click" />
-                    <Rectangle Margin="20" Width="2" Fill="#64FFFFFF" />
-                    <Button Style="{StaticResource RefreshAppBarButtonStyle}" Click="ButtonRefresh_Click" />
-                    <Button Style="{StaticResource PeopleAppBarButtonStyle}" Click="ButtonAccount_Click" />
-                </StackPanel>
-            </Grid>
-        </AppBar>
+        <CommandBar>
+            <AppBarButton Icon="Previous" Label="Previous" Click="ButtonPrev_Click" />
+            <AppBarButton Icon="Next" Label="Next" Click="ButtonNext_Click" />
+            <AppBarToggleButton x:Name="ToggleShuffle" Icon="Shuffle"  Label="Shuffle" Click="ToggleShuffle_Click" />
+            <AppBarSeparator  />
+            <AppBarButton x:Name="ButtonFavorite" Label="Favorite" Icon="Favorite" Click="ButtonFavorite_Click" Visibility="Visible"/>
+            <AppBarButton Label="Clear Selection" Icon="ClearSelection" Click="ButtonSelectNone_Click" />
+            <AppBarButton Label="Volume" Icon="Volume"  Click="ButtonVolume_Click" />
+            <AppBarSeparator  />
+            <AppBarButton x:Name="ButtonLogin" Label="Sign In" Icon="Permissions" Click="ButtonLogin_Click" Visibility="Collapsed" />
+            <AppBarButton Label="Account" Click="ButtonAccount_Click" Icon="Contact" />
+        </CommandBar>
     </Page.BottomAppBar>
 
     <Grid>
@@ -60,15 +48,6 @@
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SnappedGrid" Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="StackControls" Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
-                        </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RectangleSeparator" Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
-                        </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="StackRefresh" Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
-                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
@@ -84,8 +63,27 @@
                 </LinearGradientBrush.GradientStops>
             </LinearGradientBrush>
         </Grid.Background>
+        
         <!-- Background -->
         <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
+
+        <Popup x:Name="LoginPopup" IsLightDismissEnabled="True" HorizontalOffset="200" VerticalOffset="200">
+            <Popup.ChildTransitions>
+                <TransitionCollection>
+                    <PopupThemeTransition/>
+                </TransitionCollection>
+            </Popup.ChildTransitions>
+            <controls:LoginPage/>
+        </Popup>
+
+        <Popup x:Name="AccountPopup" IsLightDismissEnabled="True" HorizontalOffset="200" VerticalOffset="100">
+            <Popup.ChildTransitions>
+                <TransitionCollection>
+                    <PopupThemeTransition/>
+                </TransitionCollection>
+            </Popup.ChildTransitions>
+            <controls:AccountPage/>
+        </Popup>
 
         <!-- Filled View -->
         <Grid x:Name="FilledGrid">
@@ -93,6 +91,7 @@
                 <RowDefinition Height="110" />
                 <RowDefinition />
             </Grid.RowDefinitions>
+
             <!-- Header -->
             <Border Background="#212121">
                 <Grid Margin="0,0,56,0">
@@ -142,8 +141,8 @@
                                 <Grid Grid.Row="1" Background="#0fa7ff">
                                     <Grid Margin="30">
                                         <StackPanel>
-                                            <TextBlock Margin="0,0,0,25" Text="Login to DI.FM" FontSize="32" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
-                                            <TextBlock Margin="0,0,0,15" Text="Login to your existing account or create a new one to get started." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                            <TextBlock Margin="0,0,0,25" Text="Sign In to DI.FM" FontSize="32" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                            <TextBlock Margin="0,0,0,15" Text="Sign In to your existing account or create a new one to get started." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
                                             <TextBlock Margin="0,0,0,15" Text="Premium members have the flexibility to listen to crystal-clear audio using the most popular audio formats. No matter how you choose to connect to your favorite channels, higher quality audio streaming is just a click away." FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
                                             <TextBlock Text="You can access account information anytime via the Charms Bar" FontSize="16" Foreground="White" FontWeight="SemiLight" TextWrapping="Wrap" />
                                         </StackPanel>
@@ -197,7 +196,7 @@
 										<LineBreak />
 										<Run Text=" 3. Finished! Quick access to your favorite channels."/>
                                     </TextBlock>
-                                    <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding TopFavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
+                                    <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" IsItemClickEnabled="True" Style="{StaticResource GroupGridView}"
 										ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollMode="Disabled"
 										ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Enabled"
 										ItemClick="GridViewChannels_ItemClick" SelectionChanged="GridViewChannels_SelectionChanged">

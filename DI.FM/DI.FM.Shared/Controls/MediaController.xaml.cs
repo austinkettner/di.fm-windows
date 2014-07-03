@@ -15,11 +15,7 @@ namespace DI.FM.Controls
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
         {
-            var model = DataContext as MainViewModel;
-            if (model != null)
-            {
-                model.TogglePlay();
-            }
+            App.Main.TogglePlay();
         }
 
         private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)

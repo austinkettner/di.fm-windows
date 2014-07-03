@@ -11,9 +11,15 @@ using Windows.UI.Xaml.Media;
 
 namespace DI.FM
 {
-    sealed partial class App : Application
+   public sealed partial class App : Application
     {
-        private MainViewModel Model;
+        public static MainViewModel Main
+        {
+            get
+            {
+                return (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+            }
+        }
 
         public App()
         {
@@ -27,7 +33,7 @@ namespace DI.FM
             deferral.Complete();
         }
 
-        protected override async void OnLaunched(LaunchActivatedEventArgs args)
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             var rootFrame = Window.Current.Content as Frame;
 
@@ -37,15 +43,14 @@ namespace DI.FM
                 rootFrame.Style = Resources["RootFrameStyle"] as Style;
 
                 // Init and update the model
-                Model = (Resources["Locator"] as ViewModelLocator).Main;
-                await Model.CheckPremiumStatus();
-                await Model.UpdateChannels();
+                Main.CheckPremiumStatusSync();
+                Main.UpdateChannelsAsync();
 
                 // When the frame is loaded set the model media player
                 rootFrame.Loaded += (sender, e) =>
                 {
                     var rootGrid = VisualTreeHelper.GetChild(Window.Current.Content, 0);
-                    Model.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
+                    Main.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
                 };
 
                 Window.Current.Content = rootFrame;
@@ -63,40 +68,9 @@ namespace DI.FM
 
             if (!args.TileId.Equals("App"))
             {
-                var channel = Model.AllChannels.FirstOrDefault(item => item.Key == args.TileId);
+                var channel = Main.AllChannels.FirstOrDefault(item => item.Key == args.TileId);
                 if (channel != null) rootFrame.Navigate(typeof(ChannelPage), channel);
             }
-        }
-
-        protected override async void OnSearchActivated(SearchActivatedEventArgs args)
-        {
-            var frame = Window.Current.Content as Frame;
-
-            if (frame == null)
-            {
-                // Init and update the model
-                Model = (Resources["Locator"] as ViewModelLocator).Main;
-                await Model.CheckPremiumStatus();
-                await Model.UpdateChannels();
-
-                frame = new Frame();
-                frame.Style = Resources["RootFrameStyle"] as Style;
-
-                // When the frame is loaded set the model media player
-                frame.Loaded += (sender, e) =>
-                {
-                    var rootGrid = VisualTreeHelper.GetChild(Window.Current.Content, 0);
-                    Model.MediaPlayer = (MediaElement)VisualTreeHelper.GetChild(rootGrid, 0);
-                };
-            }
-
-            if (!(frame.Content is SearchPage))
-            {
-                frame.Navigate(typeof(SearchPage), args.QueryText);
-            }
-
-            Window.Current.Content = frame;
-            Window.Current.Activate();
         }
     }
 }

@@ -12,10 +12,7 @@ namespace DI.FM.Controls
         public VolumeControl()
         {
             InitializeComponent();
-
-            var model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
-            MediaPlayer = model.MediaPlayer;
-
+            MediaPlayer = App.Main.MediaPlayer;
             CheckMuteState();
             CheckVolumeState();
         }

@@ -17,7 +17,7 @@
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="DI.FM.App">
       <Extensions>
         <Extension Category="windows.search" />
-        <Extension Category="windows.backgroundTasks" StartPage="View/MainPage.xaml">
+        <Extension Category="windows.backgroundTasks" StartPage="Views/MainPage.xaml">
           <BackgroundTasks>
             <Task Type="audio" />
           </BackgroundTasks>

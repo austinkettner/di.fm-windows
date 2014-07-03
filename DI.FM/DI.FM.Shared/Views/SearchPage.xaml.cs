@@ -25,7 +25,7 @@ namespace DI.FM.View
         public SearchPage()
         {
             InitializeComponent();
-            Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+            Model = App.Main;
             Results = new ObservableCollection<ChannelItem>(Model.AllChannels);
         }
 

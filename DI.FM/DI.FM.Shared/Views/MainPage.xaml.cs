@@ -10,19 +10,21 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media.Animation;
+using System.Collections.ObjectModel;
 
 namespace DI.FM.View
 {
     public sealed partial class MainPage : Page
     {
-        private MainViewModel Model;
+        MainViewModel Model;
 
         public MainPage()
         {
             InitializeComponent();
 
             // Main model
-            Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+            Model = App.Main;
 
             Model.PropertyChanged += Model_PropertyChanged;
 
@@ -52,13 +54,11 @@ namespace DI.FM.View
             Model.LiveUpdateList.Add(Model.NowPlayingItem);
         }
 
-        #region Next/Prev/Shuffle
+        #region Next/Previous/Shuffle
 
         private void ToggleShuffle_Click(object sender, RoutedEventArgs e)
         {
-            var button = (ToggleButton)sender;
-            VisualStateManager.GoToState(button, button.IsChecked.Value ? "Checked" : "Unchecked", false);
-            ApplicationData.Current.RoamingSettings.Values["ShuffleChannels"] = button.IsChecked;
+            ApplicationData.Current.RoamingSettings.Values["ShuffleChannels"] = ToggleShuffle.IsChecked;
         }
 
         private void ButtonPrev_Click(object sender, RoutedEventArgs e)
@@ -69,9 +69,9 @@ namespace DI.FM.View
             }
             else
             {
-                if (Model.NowPlayingItem != null && Model.NowPlayingItem.Prev != null)
+                if (Model.NowPlayingItem != null && Model.NowPlayingItem.Previous != null)
                 {
-                    Model.PlayChannel(Model.NowPlayingItem.Prev);
+                    Model.PlayChannel(Model.NowPlayingItem.Previous);
                 }
             }
         }
@@ -105,8 +105,8 @@ namespace DI.FM.View
 
         #region ButtonFavorite
 
-        private List<ChannelItem> TempFavorite = new List<ChannelItem>();
-        private List<ChannelItem> TempUnFavorite = new List<ChannelItem>();
+        private IList<ChannelItem> TempFavorite = new List<ChannelItem>();
+        private IList<ChannelItem> TempUnFavorite = new List<ChannelItem>();
 
         private void GridViewChannels_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -130,24 +130,27 @@ namespace DI.FM.View
 
             if (TempFavorite.Count > 0)
             {
-                ButtonFavorite.Style = App.Current.Resources["FavoriteAppBarButtonStyle"] as Style;
+                ButtonFavorite.Icon = new SymbolIcon(Symbol.Favorite);
+                ButtonFavorite.Visibility = Visibility.Visible;
+                ButtonFavorite.Label = "Favorite";
                 ButtonFavorite.Tag = true;
             }
             else if (TempUnFavorite.Count > 0)
             {
-                ButtonFavorite.Style = App.Current.Resources["UnfavoriteAppBarButtonStyle"] as Style;
+                ButtonFavorite.Icon = new SymbolIcon(Symbol.UnFavorite);
+                ButtonFavorite.Label = "UnFavorite";
                 ButtonFavorite.Tag = false;
             }
 
             if (TempFavorite.Count + TempUnFavorite.Count > 0)
             {
-                StackSelectedOptions.Visibility = Visibility.Visible;
+                ButtonFavorite.Visibility = Visibility.Visible;
                 BottomAppBar.IsSticky = true;
                 BottomAppBar.IsOpen = true;
             }
             else
             {
-                StackSelectedOptions.Visibility = Visibility.Collapsed;
+                ButtonFavorite.Visibility = Visibility.Collapsed;
                 BottomAppBar.IsSticky = false;
                 BottomAppBar.IsOpen = false;
             }
@@ -166,27 +169,16 @@ namespace DI.FM.View
             }
             else
             {
-                List<ChannelItem> temp = new List<ChannelItem>();
-                foreach (var unFavItem in TempUnFavorite)
-                {
-                    temp.Add(unFavItem);
-                }
-                foreach (var unFavItem in temp)
-                {
-                    Model.FavoriteChannels.Remove(unFavItem);
-                }
+                Model.FavoriteChannels.Remove(TempUnFavorite[0]);
             }
 
             ButtonFavorite.Tag = null;
-
             TempFavorite.Clear();
             TempUnFavorite.Clear();
-
             GridViewFavorites.SelectedItems.Clear();
             GridViewChannels.SelectedItems.Clear();
             GridViewFavorites1.SelectedItems.Clear();
             GridViewChannels1.SelectedItems.Clear();
-
             await Model.SaveFavoriteChannels();
         }
 
@@ -236,28 +228,15 @@ namespace DI.FM.View
 
         private void ButtonVolume_Click(object sender, RoutedEventArgs e)
         {
-            var flyout = new Flyout
-            {
-                Content = new VolumeControl(),
-                Placement = FlyoutPlacementMode.Top,
-            };
+            var flyout = new Flyout();
+            flyout.Content = new VolumeControl();
+            flyout.Placement = FlyoutPlacementMode.Top;
             flyout.ShowAt(sender as FrameworkElement);
-        }
-
-        private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            BottomAppBar.IsOpen = false;
-            await Model.UpdateChannels();
         }
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            Popup window = new Popup();
-            window.Child = new LoginPage();
-            window.VerticalOffset = ActualHeight / 4;
-            window.HorizontalOffset = ActualWidth / 4;
-            window.IsLightDismissEnabled = true;
-            window.IsOpen = true;
+            LoginPopup.IsOpen = true;
         }
 
         private void ButtonPlayStop_Click(object sender, RoutedEventArgs e)
@@ -274,12 +253,7 @@ namespace DI.FM.View
 
         private void ButtonAccount_Click(object sender, RoutedEventArgs e)
         {
-            Popup window = new Popup();
-            window.VerticalOffset = ActualHeight / 4;
-            window.HorizontalOffset = ActualWidth / 4;
-            window.Child = new AccountPage();
-            window.IsLightDismissEnabled = true;
-            window.IsOpen = true;
+            AccountPopup.IsOpen = true;
         }
     }
 }

@@ -16,65 +16,50 @@ namespace DI.FM.Controls
         public AccountPage()
         {
             InitializeComponent();
-            AnimateInStory.Begin();
 
-            Model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
+            Model = App.Main;
 
-            Loaded += (sender, e) =>
+            bool isSignedIn = Model.ListenKey != null;
+
+            if (isSignedIn)
             {
-                bool isSignedIn = Model.ListenKey != null;
-
-                if (isSignedIn)
+                if (ApplicationData.Current.LocalSettings.Values["AccountEmail"] != null)
                 {
-                    if (ApplicationData.Current.LocalSettings.Values["AccountEmail"] != null)
-                    {
-                        TextEmail.Text = ApplicationData.Current.LocalSettings.Values["AccountEmail"].ToString();
-                    }
-
-                    if (ApplicationData.Current.LocalSettings.Values["FullName"] != null)
-                    {
-                        TextFullName.Text = ApplicationData.Current.LocalSettings.Values["FullName"].ToString();
-                    }
-
-                    TextIsPremium.Text = Model.IsPremium ? "Yes, premium experience" : "No, free experience";
-
-                    Stack1.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    Stack2.Visibility = Visibility.Visible;
+                    TextEmail.Text = ApplicationData.Current.LocalSettings.Values["AccountEmail"].ToString();
                 }
 
-                var list = Model.IsPremium ? ChannelsHelper.PremiumStreamFormats : ChannelsHelper.FreeStreamFormats;
-                ComboFormats.ItemsSource = list;
-
-                if (ApplicationData.Current.LocalSettings.Values["StreamFormat"] != null)
+                if (ApplicationData.Current.LocalSettings.Values["FullName"] != null)
                 {
-                    var item = list.FirstOrDefault(i => i[1] == ApplicationData.Current.LocalSettings.Values["StreamFormat"].ToString());
-                    if (item != null) ComboFormats.SelectedItem = item;
-                    else ComboFormats.SelectedIndex = 0;
+                    TextFullName.Text = ApplicationData.Current.LocalSettings.Values["FullName"].ToString();
                 }
+
+                TextIsPremium.Text = Model.IsPremium ? "Yes, premium experience" : "No, free experience";
+
+                Stack1.Visibility = Visibility.Visible;
+                Stack2.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                Stack2.Visibility = Visibility.Visible;
+                Stack1.Visibility = Visibility.Collapsed;
+            }
+
+            var list = Model.IsPremium ? ChannelsHelper.PremiumStreamFormats : ChannelsHelper.FreeStreamFormats;
+            ComboFormats.ItemsSource = list;
+
+            if (ApplicationData.Current.LocalSettings.Values["StreamFormat"] != null)
+            {
+                var item = list.FirstOrDefault(i => i[1] == ApplicationData.Current.LocalSettings.Values["StreamFormat"].ToString());
+                if (item != null) ComboFormats.SelectedItem = item;
                 else ComboFormats.SelectedIndex = 0;
-            };
+            }
+            else ComboFormats.SelectedIndex = 0;
         }
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
             var parent = Parent as Popup;
             parent.IsOpen = false;
-
-            var frame = Window.Current.Content as Frame;
-
-            if (frame != null)
-            {
-                var page = frame.Content as Page;
-
-                if (page != null)
-                {
-                    var grid = page.Content as Grid;
-                    grid.Children.Add(new LoginPage());
-                }
-            }
         }
 
         private async void ButtonLogout_Click(object sender, RoutedEventArgs e)
@@ -83,15 +68,11 @@ namespace DI.FM.Controls
             dialog.Commands.Add(new UICommand("Sign out") { Id = 1 });
             dialog.Commands.Add(new UICommand("Stay") { Id = 2 });
             dialog.DefaultCommandIndex = 1;
-
             var result = await dialog.ShowAsync();
 
             if ((int)result.Id == 1)
             {
-                // Clear the key
                 Model.ListenKey = null;
-
-                // Clear user info
                 ApplicationData.Current.LocalSettings.Values.Remove("AccountEmail");
                 ApplicationData.Current.LocalSettings.Values.Remove("FullName");
             }
@@ -107,7 +88,7 @@ namespace DI.FM.Controls
 
         private void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
-            Model.UpdateChannelsStreams();
+            Model.UpdateChannelsAsync();
         }
     }
 }

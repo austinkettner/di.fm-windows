@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using DI.FM.Common;
-using DI.FM.ViewModel;
 
 namespace DI.FM.FM.Models
 {
@@ -84,13 +83,13 @@ namespace DI.FM.FM.Models
             }
         }
 
-        private ChannelItem _prev;
-        public ChannelItem Prev
+        private ChannelItem _previous;
+        public ChannelItem Previous
         {
-            get { return _prev; }
+            get { return _previous; }
             set
             {
-                _prev = value;
+                _previous = value;
                 OnPropertyChanged();
             }
         }

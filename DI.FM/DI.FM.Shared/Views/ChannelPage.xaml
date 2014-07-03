@@ -15,7 +15,7 @@
         <common:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
         <common:BooleanNegationConverter x:Key="BooleanNegationConverter" />
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        
+
         <Storyboard x:Name="FadeOutLeftStory" Completed="FadeOutStory_Completed">
             <DoubleAnimation From="1" To="0" BeginTime="0:0:0.200" Duration="0:0:0.400" Storyboard.TargetName="GridContent" Storyboard.TargetProperty="Opacity">
                 <DoubleAnimation.EasingFunction>
@@ -105,20 +105,13 @@
             </DoubleAnimation>
         </Storyboard>
     </Page.Resources>
-    
+
     <Page.BottomAppBar>
-        <AppBar BorderBrush="{x:Null}">
-            <AppBar.Background>
-                <SolidColorBrush Color="{Binding Channel.Color2}" Opacity="0.9" />
-            </AppBar.Background>
-            <Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button x:Name="ButtonFavorite" Style="{StaticResource FavoriteAppBarButtonStyle}" Click="ButtonFavorite_Click" />
-                    <Button x:Name="ButtonPin" Style="{StaticResource PinAppBarButtonStyle}" Click="ButtonPin_Click" />
-                </StackPanel>
-                <Button HorizontalAlignment="Right" Style="{StaticResource VolumeAppBarButtonStyle}" Click="ButtonVolume_Click" />
-            </Grid>
-        </AppBar>
+        <CommandBar Background="{Binding Channel.Color2}">
+            <AppBarButton x:Name="ButtonFavorite" Icon="Favorite" Label="Favorite" Click="ButtonFavorite_Click" />
+            <AppBarButton x:Name="ButtonPin" Icon="Pin" Label="Pin" Click="ButtonPin_Click" />
+            <AppBarButton Icon="Volume" Label="Volume" Click="ButtonVolume_Click" />
+        </CommandBar>
     </Page.BottomAppBar>
 
     <Grid>
@@ -139,7 +132,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        
+
         <!-- Filled View -->
         <Grid x:Name="FilledGrid" Background="#212121">
             <Grid.ChildrenTransitions>
@@ -235,11 +228,11 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <Path Margin="0,0,8,0" StrokeThickness="2" Stroke="White" Data="M 10 1 L 2 9 L 10 16" VerticalAlignment="Center" />                         
+                                    <Path Margin="0,0,8,0" StrokeThickness="2" Stroke="White" Data="M 10 1 L 2 9 L 10 16" VerticalAlignment="Center" />
                                     <TextBlock Grid.Column="1" TextAlignment="Left" LineStackingStrategy="BlockLineHeight" LineHeight="18" >
-                                        <Run Text="PREV" FontSize="16.2" FontWeight="Bold" />
+                                        <Run Text="PREVIOUS" FontSize="16.2" FontWeight="Bold" />
                                         <LineBreak/>
-                                        <Run Text="{Binding Channel.Prev.Name}" FontSize="16.2" FontWeight="Normal" />
+                                        <Run Text="{Binding Channel.Previous.Name}" FontSize="16.2" FontWeight="Normal" />
                                     </TextBlock>
                                 </Grid>
                             </Button>
@@ -286,7 +279,7 @@
                                                             <ColumnDefinition Width="Auto" />
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock FontSize="14.63" FontWeight="SemiLight" TextTrimming="WordEllipsis">
-                                                            <Run Text="{Binding Index}" />. <Run Text="{Binding Track}" />
+                                                            <Run Text="{Binding Index}" /> <Run Text="{Binding Track}" />
                                                         </TextBlock>
                                                         <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="{Binding Path=Duration, Converter={StaticResource DurationConverter}}" FontSize="14.63" FontWeight="SemiLight" />
                                                     </Grid>
@@ -301,7 +294,7 @@
                 </Grid>
             </Grid>
         </Grid>
-        
+
         <!-- Snapped View -->
         <Grid x:Name="SnappedGrid" Background="{Binding Channel.Color1}" Visibility="Collapsed">
             <Grid.RowDefinitions>
@@ -390,5 +383,5 @@
             </ScrollViewer>
         </Grid>
     </Grid>
-    
+
 </Page>

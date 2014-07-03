@@ -17,7 +17,6 @@ namespace DI.FM.Controls
         public LoginPage()
         {
             InitializeComponent();
-            AnimateInStory.Begin();
         }
 
         private async void ButtonLogin_Click(object sender, RoutedEventArgs e)
@@ -25,7 +24,6 @@ namespace DI.FM.Controls
             Progress.IsActive = true;
             TextEmail.IsEnabled = false;
             TextPass.IsEnabled = false;
-            ButtonCancel.IsEnabled = false;
             ButtonLogin.IsEnabled = false;
             TextError.Visibility = Visibility.Collapsed;
 
@@ -34,33 +32,24 @@ namespace DI.FM.Controls
             Progress.IsActive = false;
             TextEmail.IsEnabled = true;
             TextPass.IsEnabled = true;
-            ButtonCancel.IsEnabled = true;
             ButtonLogin.IsEnabled = true;
 
             if (data != null)
             {
-                var json = JsonConvert.DeserializeObject(data) as JContainer;
+                var json = JObject.Parse(data);
 
                 // Set the listen key
-                var model = (App.Current.Resources["Locator"] as ViewModelLocator).Main;
-                model.ListenKey = json.Value<string>("listen_key");
+                var model = App.Main;
+                model.ListenKey = (string)json["listen_key"];
 
                 // Set account details
-                ApplicationData.Current.LocalSettings.Values["AccountEmail"] = json.Value<string>("email");
-                ApplicationData.Current.LocalSettings.Values["FullName"] = json.Value<string>("first_name") + " " + json.Value<string>("last_name");
-
-                // Close the login window
-                AnimateOutStory.Begin();
+                ApplicationData.Current.LocalSettings.Values["AccountEmail"] = (string)json["email"];
+                ApplicationData.Current.LocalSettings.Values["FullName"] = (string)json["first_name"] + " " + (string)json["last_name"];
             }
             else
             {
                 TextError.Visibility = Visibility.Visible;
             }
-        }
-
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
-        {
-            AnimateOutStory.Begin();
         }
 
         private async Task<string> LogIn(string user, string pass)

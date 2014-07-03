@@ -27,7 +27,6 @@ namespace DI.FM.ViewModel
 {
     public class MainViewModel : BindableBase
     {
-
         public List<ChannelItem> LiveUpdateList = new List<ChannelItem>();
         private SystemMediaTransportControls systemMediaControls = SystemMediaTransportControls.GetForCurrentView();
         private int StreamIndex;
@@ -78,11 +77,6 @@ namespace DI.FM.ViewModel
             }
         }
 
-        public IEnumerable<ChannelItem> TopFavoriteChannels
-        {
-            get { return FavoriteChannels.Take(6).ToList(); }
-        }
-
         private ChannelItem _nowPlayingItem;
         public ChannelItem NowPlayingItem
         {
@@ -122,7 +116,6 @@ namespace DI.FM.ViewModel
                 {
                     _isPlaying = value;
                     OnPropertyChanged();
-                    systemMediaControls.PlaybackStatus = MediaPlaybackStatus.Playing;
                 }
             }
         }
@@ -149,7 +142,7 @@ namespace DI.FM.ViewModel
             {
                 _isPremium = value;
                 OnPropertyChanged();
-                UpdateChannelsStreams();
+                UpdateChannelsAsync();
             }
         }
 
@@ -205,12 +198,12 @@ namespace DI.FM.ViewModel
                         MediaPlayer.Stop();
                         break;
 
-                    case SystemMediaTransportControlsButton.Next:
-                        if (NowPlayingItem != null && NowPlayingItem.Prev != null)
-                            PlayChannel(NowPlayingItem.Prev);
+                    case SystemMediaTransportControlsButton.Previous:
+                        if (NowPlayingItem != null && NowPlayingItem.Previous != null)
+                            PlayChannel(NowPlayingItem.Previous);
                         break;
 
-                    case SystemMediaTransportControlsButton.Previous:
+                    case SystemMediaTransportControlsButton.Next:
                         if (NowPlayingItem != null && NowPlayingItem.Next != null)
                             PlayChannel(NowPlayingItem.Next);
                         break;
@@ -240,14 +233,14 @@ namespace DI.FM.ViewModel
 
             foreach (var track in tracks)
             {
-                if (track["type"].Value<string>() == "track")
+                if ((string)track["type"] == "track")
                 {
                     var item = new TrackItem
                     {
                         Index = index,
-                        Track = track.Value<string>("track"),
-                        Started = track.Value<long>("started"),
-                        Duration = track.Value<int>("length")
+                        Track = (string)track["track"],
+                        Started = (long)track["started"],
+                        Duration = (int)track["length"]
                     };
 
                     if (nowPl == null) nowPl = item;
@@ -282,7 +275,7 @@ namespace DI.FM.ViewModel
             {
                 file = await ApplicationData.Current.LocalFolder.GetFileAsync("favorites.txt");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
 
@@ -364,8 +357,7 @@ namespace DI.FM.ViewModel
                 }
                 else
                 {
-                    var msg = new MessageDialog(e.ErrorMessage);
-                    await msg.ShowAsync();
+                    await new MessageDialog(e.ErrorMessage).ShowAsync();
                 }
             }
         }
@@ -428,7 +420,7 @@ namespace DI.FM.ViewModel
 
         #endregion
 
-        #region Channels + API
+        #region Channels
 
         private void CreateEmptyChannels()
         {
@@ -449,7 +441,7 @@ namespace DI.FM.ViewModel
 
                 if (i > 0)
                 {
-                    chn.Prev = AllChannels[AllChannels.Count - 1];
+                    chn.Previous = AllChannels[AllChannels.Count - 1];
                     AllChannels[AllChannels.Count - 1].Next = chn;
                 }
 
@@ -472,10 +464,18 @@ namespace DI.FM.ViewModel
             }
         }
 
-        public async Task UpdateChannels()
+        public async void UpdateChannelsAsync()
         {
+            await UpdateChannels();
+        }
+
+        private async Task UpdateChannels()
+        {
+            IsUpdating = true;
+
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
+            client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER,
+                ChannelsHelper.BATCH_PASS);
 
             var format = GetStreamFormat();
             var url = string.Format(ChannelsHelper.BATCH_UPDATE_URL, format);
@@ -492,15 +492,17 @@ namespace DI.FM.ViewModel
             if (data != null)
             {
                 var token = JsonConvert.DeserializeObject(data) as JContainer;
-                await UpdateChannelsInfo(token["channel_filters"].First["channels"]);
+                UpdateChannelsInfo(token["channel_filters"].First["channels"]);
                 UpdateChannelsStreams(token["streamlists"], format);
                 UpdateChannelsTrack(token["track_history"]);
             }
+
+            IsUpdating = false;
         }
 
         private string GetStreamFormat()
         {
-            bool found = false;
+            var found = false;
             var format = ApplicationData.Current.LocalSettings.Values["StreamFormat"];
 
             if (IsPremium)
@@ -525,24 +527,21 @@ namespace DI.FM.ViewModel
             return found ? format.ToString() : ChannelsHelper.FreeStreamFormats[0][1];
         }
 
-        private Task UpdateChannelsInfo(JToken token)
+        private void UpdateChannelsInfo(JToken token)
         {
-            return Task.Factory.StartNew(() =>
+            foreach (var item in AllChannels)
             {
-                foreach (var item in AllChannels)
+                var jChannel = token.FirstOrDefault((e) => e.Value<string>("key") == item.Key);
+                if (jChannel != null)
                 {
-                    var jChannel = token.FirstOrDefault(e => e.Value<string>("key") == item.Key);
-                    if (jChannel != null)
-                    {
-                        item.ID = jChannel.Value<int>("id");
-                        item.Name = jChannel.Value<string>("name");
-                        item.Description = jChannel.Value<string>("description");
-                    }
+                    item.ID = jChannel.Value<int>("id");
+                    item.Name = jChannel.Value<string>("name");
+                    item.Description = jChannel.Value<string>("description");
                 }
-            });
+            }
         }
 
-        public void UpdateChannelsStreams(JToken token, string key)
+        private void UpdateChannelsStreams(JToken token, string key)
         {
             var jSelection = token[key];
 
@@ -554,7 +553,7 @@ namespace DI.FM.ViewModel
                 {
                     item.Streams.Clear();
 
-                    var jChannel = jChannels.FirstOrDefault((e) => e.Value<int>("id") == item.ID);
+                    var jChannel = jChannels.FirstOrDefault(e => e.Value<int>("id") == item.ID);
                     if (jChannel == null) continue;
 
                     var jUrls = jChannel["streams"];
@@ -562,8 +561,10 @@ namespace DI.FM.ViewModel
 
                     foreach (var url in jUrls)
                     {
-                        if (IsPremium) item.Streams.Add(url.Value<string>("url") + "?" + ListenKey);
-                        else item.Streams.Add(url.Value<string>("url"));
+                        if (IsPremium)
+                            item.Streams.Add(url.Value<string>("url") + "?" + ListenKey);
+                        else
+                            item.Streams.Add(url.Value<string>("url"));
                     }
                 }
             }
@@ -571,13 +572,13 @@ namespace DI.FM.ViewModel
 
         private void UpdateChannelsTrack(JToken token)
         {
-            foreach (var item in AllChannels)
+            foreach (var channel in AllChannels)
             {
-                var jChannel = token.FirstOrDefault((e) => e.First.Value<int>("channel_id") == item.ID).First;
+                var jChannel = token.FirstOrDefault(e => e.First.Value<int>("channel_id") == channel.ID).First;
 
                 if (jChannel != null)
                 {
-                    item.NowPlaying = new TrackItem
+                    channel.NowPlaying = new TrackItem
                     {
                         Track = jChannel.Value<string>("track"),
                         Started = jChannel.Value<int>("started"),
@@ -587,35 +588,7 @@ namespace DI.FM.ViewModel
             }
         }
 
-        public async void UpdateChannelsStreams()
-        {
-            IsUpdating = true;
-
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
-
-            var format = GetStreamFormat();
-            var url = string.Format(ChannelsHelper.BATCH_UPDATE_URL, format);
-            string data = null;
-
-            try
-            {
-                data = await client.GetStringAsync(new Uri(url));
-            }
-            catch (Exception)
-            {
-            }
-
-            if (data != null)
-            {
-                var token = JsonConvert.DeserializeObject(data) as JContainer;
-                UpdateChannelsStreams(token["streamlists"], format);
-            }
-
-            IsUpdating = false;
-        }
-
-        public AuthenticationHeaderValue CreateBasicHeader(string username, string password)
+        private AuthenticationHeaderValue CreateBasicHeader(string username, string password)
         {
             return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + password)));
         }
@@ -642,7 +615,7 @@ namespace DI.FM.ViewModel
             var client = new HttpClient();
             var rand = new Random();
             var url = PremiumURLs[rand.Next(0, PremiumURLs.Length - 1)] + "?" + ListenKey;
-            HttpResponseMessage response = await client.GetAsync(new Uri(url));
+            var response = await client.GetAsync(new Uri(url));
             IsPremium = response.IsSuccessStatusCode;
         }
 

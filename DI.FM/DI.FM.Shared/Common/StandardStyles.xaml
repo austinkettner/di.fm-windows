@@ -504,8 +504,8 @@
         <Setter Property="Content" Value="&#xE111;"/>
     </Style>
     <Style x:Key="PreviousAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
-        <Setter Property="AutomationProperties.AutomationId" Value="PreviousAppBarButton"/>
-        <Setter Property="AutomationProperties.Name" Value="Previous"/>
+        <Setter Property="AutomationProperties.AutomationId" Value="PreviousiousAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Previousious"/>
         <Setter Property="Content" Value="&#xE112;"/>
     </Style>
     <Style x:Key="FavoriteAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">

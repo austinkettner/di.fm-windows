@@ -5,92 +5,34 @@
     xmlns:local="using:DI.FM.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="800">
+    mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <!-- Storyboards -->
-        <Storyboard x:Name="AnimateInStory">
-            <DoubleAnimation From="0" To="1" Duration="0:0:0.500" Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Opacity">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseOut" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation From="0.75" To="1" Duration="0:0:0.500" Storyboard.TargetName="ScaleBox" Storyboard.TargetProperty="ScaleX">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseOut" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation From="0.75" To="1" Duration="0:0:0.500" Storyboard.TargetName="ScaleBox" Storyboard.TargetProperty="ScaleY">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseOut" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation From="-10" To="0" Duration="0:0:0.500" Storyboard.TargetName="PlaneBox" Storyboard.TargetProperty="RotationX">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseOut" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-        </Storyboard>
-        <Storyboard x:Name="AnimateOutStory">
-            <DoubleAnimation To="0" Duration="0:0:0.500" Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Opacity">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation To="0.75" Duration="0:0:0.500" Storyboard.TargetName="ScaleBox" Storyboard.TargetProperty="ScaleX">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation To="0.75" Duration="0:0:0.500" Storyboard.TargetName="ScaleBox" Storyboard.TargetProperty="ScaleY">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation To="-30" Duration="0:0:0.500" Storyboard.TargetName="PlaneBox" Storyboard.TargetProperty="RotationX">
-                <DoubleAnimation.EasingFunction>
-                    <CircleEase EasingMode="EaseIn" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-        </Storyboard>
-    </UserControl.Resources>
-
-    <Grid Name="RootGrid">
-        <Border Width="650" Height="470" Background="#0fa7ff" BorderThickness="1" BorderBrush="#48b9fb">
-            <Border.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform x:Name="ScaleBox" />
-                </TransformGroup>
-            </Border.RenderTransform>
-            <Border.Projection>
-                <PlaneProjection x:Name="PlaneBox" CenterOfRotationY="1" />
-            </Border.Projection>
-            <Grid Margin="30">
-                <StackPanel x:Name="Stack1" Visibility="Collapsed">
-                    <TextBlock Text="Account name:" Foreground="White" FontSize="18" FontWeight="Light" />
-                    <TextBlock x:Name="TextEmail" Foreground="White" FontSize="16" FontWeight="Light" />
-                    <TextBlock Margin="0,20,0,0" Text="Full name" Foreground="White" FontSize="18" FontWeight="Light" />
-                    <TextBlock x:Name="TextFullName" Foreground="White" FontSize="16" FontWeight="Light" />
-                    <TextBlock Margin="0,20,0,0" Text="Premium account" Foreground="White" FontSize="18" FontWeight="Light" />
-                    <TextBlock x:Name="TextIsPremium" Foreground="White" FontSize="16" FontWeight="Light" />
-                    <TextBlock Margin="0,20,0,5" Text="Select stream format" Foreground="#121212" FontSize="16" FontWeight="Light" />
-                    <ComboBox x:Name="ComboFormats" Margin="0,0,0,10" SelectionChanged="ComboFormats_SelectionChanged" Foreground="#121212" BorderBrush="#FF6C6C6C">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding [0]}" Foreground="Black" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <Button Content="Apply" Click="ButtonApply_Click" />
-                    <TextBlock Margin="0,20,0,10" Text="If you sign out from your premium account you will not have access anymore to premium streams" Foreground="White" FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
-                    <Button Content="Sign Out" Click="ButtonLogout_Click" />
-                </StackPanel>
-                <StackPanel x:Name="Stack2" Visibility="Collapsed">
-                    <TextBlock Margin="0,20,0,10" Text="Premium members have the flexibility to listen to crystal-clear audio using the most popular audio formats. No matter how you choose to connect to your favorite channels, higher quality audio streaming is just a click away." Foreground="White" FontSize="25" FontWeight="Light" TextWrapping="Wrap" />
-                    <Button Content="Sign In" Click="ButtonLogin_Click" />
-                </StackPanel>
-            </Grid>
-        </Border>
+    <Grid Width="600" Height="500" Background="#0fa7ff">
+        <Button VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ButtonClosePopupStyle}"/>
+        <Grid Margin="30">
+            <StackPanel x:Name="Stack1" >
+                <TextBlock Text="Account name:" Foreground="White" FontSize="18" FontWeight="Light" />
+                <TextBlock x:Name="TextEmail" Foreground="White" FontSize="16" FontWeight="Light" />
+                <TextBlock Margin="0,20,0,0" Text="Full name" Foreground="White" FontSize="18" FontWeight="Light" />
+                <TextBlock x:Name="TextFullName" Foreground="White" FontSize="16" FontWeight="Light" />
+                <TextBlock Margin="0,20,0,0" Text="Premium account" Foreground="White" FontSize="18" FontWeight="Light" />
+                <TextBlock x:Name="TextIsPremium" Foreground="White" FontSize="16" FontWeight="Light" />
+                <ComboBox x:Name="ComboFormats" Header="Select stream format" Margin="0,20,0,20" SelectionChanged="ComboFormats_SelectionChanged" Foreground="#121212" BorderBrush="#FF6C6C6C">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding [0]}" Foreground="Black" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Content="Apply" Click="ButtonApply_Click" />
+                <TextBlock Margin="0,20,0,10" Text="If you sign out from your premium account you will not have access anymore to premium streams" Foreground="White" FontSize="16" FontWeight="Light" TextWrapping="Wrap" />
+                <Button Content="Sign Out" Click="ButtonLogout_Click" />
+            </StackPanel>
+            <StackPanel x:Name="Stack2" Visibility="Collapsed">
+                <TextBlock Margin="0,20,0,10" Text="Premium members have the flexibility to listen to crystal-clear audio using the most popular audio formats. No matter how you choose to connect to your favorite channels, higher quality audio streaming is just a click away." Foreground="White" FontSize="25" FontWeight="Light" TextWrapping="Wrap" />
+                <Button Content="Sign In" Click="ButtonLogin_Click" />
+            </StackPanel>
+        </Grid>
     </Grid>
 
 </UserControl>

@@ -73,10 +73,9 @@ namespace DI.FM.FM.Models
             }
         }
 
-        public static double ConvertFromUnixTime(long seconds)
+        private static double ConvertFromUnixTime(long seconds)
         {
-            var unixTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            unixTime = unixTime.AddSeconds(seconds).ToLocalTime();
+            var unixTime = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(seconds).ToLocalTime();
             return DateTime.Now.Subtract(unixTime).TotalSeconds;
         }
     }
