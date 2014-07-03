@@ -469,14 +469,12 @@ namespace DI.FM.ViewModel
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = CreateBasicHeader(ChannelsHelper.BATCH_USER, ChannelsHelper.BATCH_PASS);
-
             var format = GetStreamFormat();
-            var url = string.Format(ChannelsHelper.BATCH_UPDATE_URL, format);
             string data = null;
 
             try
             {
-                data = await client.GetStringAsync(new Uri(url));
+                data = await client.GetStringAsync(new Uri(string.Format(ChannelsHelper.BATCH_UPDATE_URL, format)));
             }
             catch (Exception)
             {

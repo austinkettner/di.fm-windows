@@ -9,6 +9,7 @@ using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace DI.FM.Controls
 {
@@ -45,6 +46,8 @@ namespace DI.FM.Controls
                 // Set account details
                 ApplicationData.Current.LocalSettings.Values["AccountEmail"] = (string)json["email"];
                 ApplicationData.Current.LocalSettings.Values["FullName"] = (string)json["first_name"] + " " + (string)json["last_name"];
+                var parent = Parent as Popup;
+                parent.IsOpen = false;
             }
             else
             {

@@ -17,10 +17,10 @@
                 <TextBlock x:Name="TextFullName" Foreground="White" FontSize="16" FontWeight="Light" />
                 <TextBlock Margin="0,20,0,0" Text="Premium account" Foreground="White" FontSize="18" FontWeight="Light" />
                 <TextBlock x:Name="TextIsPremium" Foreground="White" FontSize="16" FontWeight="Light" />
-                <ComboBox x:Name="ComboFormats" Header="Select stream format" Margin="0,20,0,20" SelectionChanged="ComboFormats_SelectionChanged" Foreground="#121212" BorderBrush="#FF6C6C6C">
+                <ComboBox x:Name="ComboFormats" Header="Select stream format" Margin="0,20,0,20" SelectionChanged="ComboFormats_SelectionChanged">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding [0]}" Foreground="Black" />
+                            <ComboBoxItem Content="{Binding [0]}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>

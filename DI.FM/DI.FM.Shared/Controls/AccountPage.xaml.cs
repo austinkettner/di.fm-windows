@@ -44,16 +44,17 @@ namespace DI.FM.Controls
                 Stack1.Visibility = Visibility.Collapsed;
             }
 
-            var list = Model.IsPremium ? ChannelsHelper.PremiumStreamFormats : ChannelsHelper.FreeStreamFormats;
-            ComboFormats.ItemsSource = list;
+            var streams = Model.IsPremium ? ChannelsHelper.PremiumStreamFormats : ChannelsHelper.FreeStreamFormats;
+            ComboFormats.ItemsSource = streams;
 
             if (ApplicationData.Current.LocalSettings.Values["StreamFormat"] != null)
             {
-                var item = list.FirstOrDefault(i => i[1] == ApplicationData.Current.LocalSettings.Values["StreamFormat"].ToString());
-                if (item != null) ComboFormats.SelectedItem = item;
-                else ComboFormats.SelectedIndex = 0;
+                ComboFormats.SelectedItem = streams.FirstOrDefault(i => i[1] == ApplicationData.Current.LocalSettings.Values["StreamFormat"].ToString());
             }
-            else ComboFormats.SelectedIndex = 0;
+            else
+            {
+                ComboFormats.SelectedIndex = 0;
+            }
         }
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
@@ -88,7 +89,9 @@ namespace DI.FM.Controls
 
         private async void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
-           await Model.UpdateChannels();
+            await Model.UpdateChannels();
+            var parent = Parent as Popup;
+            parent.IsOpen = false;
         }
     }
 }
