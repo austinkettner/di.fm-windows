@@ -207,12 +207,9 @@ namespace DI.FM.View
 
         private void ButtonVolume_Click(object sender, RoutedEventArgs e)
         {
-            var flyout = new Flyout
-            {
-                Content = new VolumeControl(),
-                Placement = FlyoutPlacementMode.Top,
-            };
-
+            var flyout = new Flyout();
+            flyout.Content = new VolumeControl();
+            flyout.Placement = FlyoutPlacementMode.Top;
             flyout.ShowAt(sender as FrameworkElement);
         }
 

@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Media;
 
 namespace DI.FM
 {
-   public sealed partial class App : Application
+    public sealed partial class App : Application
     {
         public static MainViewModel Main
         {
@@ -43,8 +43,8 @@ namespace DI.FM
                 rootFrame.Style = Resources["RootFrameStyle"] as Style;
 
                 // Init and update the model
-                Main.CheckPremiumStatusSync();
-               await Main.UpdateChannels();
+                await Main.CheckPremiumStatus();
+                await Main.UpdateChannels();
 
                 // When the frame is loaded set the model media player
                 rootFrame.Loaded += (sender, e) =>

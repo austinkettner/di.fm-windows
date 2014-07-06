@@ -21,13 +21,12 @@ namespace DI.FM.Controls
         private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var frame = Window.Current.Content as Frame;
-            var model = DataContext as MainViewModel;
 
-            if (frame != null && model != null)
+            if (frame != null)
             {
                 if (!(frame.Content is ChannelPage))
                 {
-                    frame.Navigate(typeof(ChannelPage), model.NowPlayingItem);
+                    frame.Navigate(typeof(ChannelPage), App.Main.NowPlayingItem);
                 }
             }
         }

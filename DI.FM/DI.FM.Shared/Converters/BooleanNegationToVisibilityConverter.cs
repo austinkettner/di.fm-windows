@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Data;
 
 namespace DI.FM.Common
 {
-    public sealed class BooleanNegationToVisibilityConverter : IValueConverter
+    public class BooleanNegationToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

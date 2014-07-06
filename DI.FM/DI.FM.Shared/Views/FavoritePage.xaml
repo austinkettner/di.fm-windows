@@ -15,17 +15,13 @@
         <common:BooleanNegationToVisibilityConverter x:Key="BooleanNegationToVisibilityConverter" />
         <common:DurationConverter x:Key="DurationConverter" />
     </Page.Resources>
-    
+
     <Page.BottomAppBar>
-        <AppBar Background="#161616" BorderBrush="{x:Null}">
-            <Grid>
-                <Button x:Name="ButtonUnfavorite" HorizontalAlignment="Left" Visibility="Collapsed" Style="{StaticResource UnfavoriteAppBarButtonStyle}" Click="ButtonUnfavorite_Click" />
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Style="{StaticResource SelectAllAppBarButtonStyle}" Click="ButtonSelectAll_Click" />
-                    <Button x:Name="ButtonSelectNone" Visibility="Collapsed" Style="{StaticResource ClearSelectionAppBarButtonStyle}" Click="ButtonSelectNone_Click" />
-                </StackPanel>
-            </Grid>
-        </AppBar>
+        <CommandBar>
+            <AppBarButton x:Name="ButtonUnfavorite" Icon="UnFavorite" Label="UnFavorite" HorizontalAlignment="Left" Visibility="Collapsed" Click="ButtonUnfavorite_Click" />
+            <AppBarButton Icon="SelectAll" Label="Select All" Click="ButtonSelectAll_Click" />
+            <AppBarButton x:Name="ButtonSelectNone" Visibility="Collapsed" Icon="ClearSelection" Label="Clear Selection" Click="ButtonSelectNone_Click" />
+        </CommandBar>
     </Page.BottomAppBar>
 
     <Grid>
@@ -101,7 +97,7 @@
                 </GridView>
             </Grid>
         </Grid>
-        
+
     </Grid>
 
 </Page>

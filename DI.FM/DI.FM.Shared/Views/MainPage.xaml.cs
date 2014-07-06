@@ -1,17 +1,15 @@
-﻿using System.ComponentModel;
-using Windows.UI.Xaml.Navigation;
-using DI.FM.Controls;
+﻿using DI.FM.Controls;
 using DI.FM.FM.Models;
 using DI.FM.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media.Animation;
-using System.Collections.ObjectModel;
+using Windows.UI.Xaml.Navigation;
 
 namespace DI.FM.View
 {
@@ -25,18 +23,13 @@ namespace DI.FM.View
 
             // Main model
             Model = App.Main;
-
             Model.PropertyChanged += Model_PropertyChanged;
 
             // Load saved settings
             ToggleShuffle.IsChecked = (bool?)ApplicationData.Current.RoamingSettings.Values["ShuffleChannels"];
-
-            Loaded += (sender, e) =>
-            {
-                var showLogin = ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] as bool?;
-                if (!showLogin.HasValue && Model.ListenKey == null) LoginFeature.Visibility = Visibility.Visible;
-                ButtonLogin.Visibility = Model.ListenKey == null ? Visibility.Visible : Visibility.Collapsed;
-            };
+            var showLogin = ApplicationData.Current.LocalSettings.Values["ShowMainLogin"] as bool?;
+            if (!showLogin.HasValue && Model.ListenKey == null) LoginFeature.Visibility = Visibility.Visible;
+            ButtonLogin.Visibility = Model.ListenKey == null ? Visibility.Visible : Visibility.Collapsed;
         }
 
         void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)

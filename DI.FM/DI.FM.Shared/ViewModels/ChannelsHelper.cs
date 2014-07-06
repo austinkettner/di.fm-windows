@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using Windows.Web.Http;
 
 namespace DI.FM.ViewModel
 {
@@ -94,10 +95,20 @@ namespace DI.FM.ViewModel
         };
 
         public static async Task<string> DownloadJson(string url)
-        {
-            var client = new HttpClient();
-            try { return await client.GetStringAsync(url); }
-            catch { return null; }
+        {   
+            string x;
+            var clientWeb = new HttpClient();
+
+            try
+            {
+              x = await clientWeb.GetStringAsync(new Uri(url));
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+
+            return x;
         }
     }
 }

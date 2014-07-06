@@ -3,13 +3,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.Web.Http;
 
 namespace DI.FM.Controls
 {
@@ -58,7 +58,7 @@ namespace DI.FM.Controls
         private async Task<string> LogIn(string user, string pass)
         {
             var client = new HttpClient();
-            var content = new FormUrlEncodedContent(new Dictionary<string, string>
+            var content = new HttpFormUrlEncodedContent(new Dictionary<string, string>
             {
                 {"username", user},
                 {"password", pass}
@@ -66,7 +66,7 @@ namespace DI.FM.Controls
 
             try
             {
-                var result = await client.PostAsync("https://api.audioaddict.com/v1/di/members/authenticate", content);
+                var result = await client.PostAsync(new Uri("https://api.audioaddict.com/v1/di/members/authenticate"), content);
                 result.EnsureSuccessStatusCode();
                 return await result.Content.ReadAsStringAsync();
             }
