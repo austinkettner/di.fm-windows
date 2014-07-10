@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>a37a4df8-0213-4a90-857f-857376de778e</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>DI.FM</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\BindableBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\RelayCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\RichTextColumns.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\AccountPage.xaml.cs">
+      <DependentUpon>AccountPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MediaController.xaml.cs">
+      <DependentUpon>MediaController.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\VolumeControl.xaml.cs">
+      <DependentUpon>VolumeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanNegationConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanNegationToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\DurationConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ObjectToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\PlayStopButtonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ChannelItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TrackItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChannelsHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelLocator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\ChannelPage.xaml.cs">
+      <DependentUpon>ChannelPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\FavoritePage.xaml.cs">
+      <DependentUpon>FavoritePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Common\StandardStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\AccountPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\MediaController.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\VolumeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\ChannelPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\FavoritePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Background.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\bigroomhouse.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel20.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel21.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel22.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel23.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel24.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel25.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel26.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel27.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel28.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel29.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel30.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel31.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel32.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel33.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel34.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel35.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel36.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel37.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel38.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel39.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel40.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel41.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel42.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel43.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel44.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel45.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel46.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel47.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel48.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel49.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel50.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\channel51.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\chillhop.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\chillout.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\classiceurodisco.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\darkdnb.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\deeptech.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\downtempolounge.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\eclectronica.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\electro.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\eurodance.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\glitchhop.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\goapsy.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\harddance.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\house.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\liquiddubstep.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\lounge.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\mainstage.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\minimal.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\progressive.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\psychill.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\russianclubhits.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\sankeysradio.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\techhouse.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\trance.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\trap.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\umfradio.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\vocalchillout.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Channels\vocaltrance.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\HeaderLogo.png" />
+  </ItemGroup>
+</Project>

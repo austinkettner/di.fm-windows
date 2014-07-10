@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -15,8 +15,11 @@
     <PackageCertificateKeyFile>DI.FM_StoreKey.pfx</PackageCertificateKeyFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <PackageCertificateThumbprint>E0EF2CA54123370CBE08493A9C5507A73449F118</PackageCertificateThumbprint>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
+    <TargetFrameworkVersion />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -104,103 +107,14 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Common\BindableBase.cs" />
-    <Compile Include="Common\BooleanNegationConverter.cs" />
-    <Compile Include="Common\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Common\Converters.cs" />
-    <Compile Include="Common\LayoutAwarePage.cs" />
-    <Compile Include="Common\RichTextColumns.cs" />
-    <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="Controls\VolumeControl.xaml.cs">
-      <DependentUpon>VolumeControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MetroGridHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\ChannelsHelper.cs" />
-    <Compile Include="ViewModel\ItemModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\ChannelPage.xaml.cs">
-      <DependentUpon>ChannelPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\FavoritePage.xaml.cs">
-      <DependentUpon>FavoritePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\LoginPage.xaml.cs">
-      <DependentUpon>LoginPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\SearchPage.xaml.cs">
-      <DependentUpon>SearchPage.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="DI.FM_StoreKey.pfx" />
-    <None Include="DI.FM_TemporaryKey.pfx" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Background.png" />
-    <Content Include="Assets\Channels\channel1.png" />
-    <Content Include="Assets\Channels\channel10.png" />
-    <Content Include="Assets\Channels\channel11.png" />
-    <Content Include="Assets\Channels\channel12.png" />
-    <Content Include="Assets\Channels\channel13.png" />
-    <Content Include="Assets\Channels\channel14.png" />
-    <Content Include="Assets\Channels\channel15.png" />
-    <Content Include="Assets\Channels\channel16.png" />
-    <Content Include="Assets\Channels\channel17.png" />
-    <Content Include="Assets\Channels\channel18.png" />
-    <Content Include="Assets\Channels\channel19.png" />
-    <Content Include="Assets\Channels\channel2.png" />
-    <Content Include="Assets\Channels\channel20.png" />
-    <Content Include="Assets\Channels\channel21.png" />
-    <Content Include="Assets\Channels\channel22.png" />
-    <Content Include="Assets\Channels\channel23.png" />
-    <Content Include="Assets\Channels\channel24.png" />
-    <Content Include="Assets\Channels\channel25.png" />
-    <Content Include="Assets\Channels\channel26.png" />
-    <Content Include="Assets\Channels\channel27.png" />
-    <Content Include="Assets\Channels\channel28.png" />
-    <Content Include="Assets\Channels\channel29.png" />
-    <Content Include="Assets\Channels\channel3.png" />
-    <Content Include="Assets\Channels\channel30.png" />
-    <Content Include="Assets\Channels\channel31.png" />
-    <Content Include="Assets\Channels\channel32.png" />
-    <Content Include="Assets\Channels\channel33.png" />
-    <Content Include="Assets\Channels\channel34.png" />
-    <Content Include="Assets\Channels\channel35.png" />
-    <Content Include="Assets\Channels\channel36.png" />
-    <Content Include="Assets\Channels\channel37.png" />
-    <Content Include="Assets\Channels\channel38.png" />
-    <Content Include="Assets\Channels\channel39.png" />
-    <Content Include="Assets\Channels\channel4.png" />
-    <Content Include="Assets\Channels\channel40.png" />
-    <Content Include="Assets\Channels\channel41.png" />
-    <Content Include="Assets\Channels\channel42.png" />
-    <Content Include="Assets\Channels\channel43.png" />
-    <Content Include="Assets\Channels\channel44.png" />
-    <Content Include="Assets\Channels\channel45.png" />
-    <Content Include="Assets\Channels\channel46.png" />
-    <Content Include="Assets\Channels\channel47.png" />
-    <Content Include="Assets\Channels\channel48.png" />
-    <Content Include="Assets\Channels\channel49.png" />
-    <Content Include="Assets\Channels\channel5.png" />
-    <Content Include="Assets\Channels\channel50.png" />
-    <Content Include="Assets\Channels\channel51.png" />
-    <Content Include="Assets\Channels\channel6.png" />
-    <Content Include="Assets\Channels\channel7.png" />
-    <Content Include="Assets\Channels\channel8.png" />
-    <Content Include="Assets\Channels\channel9.png" />
-    <Content Include="Assets\HeaderLogo.png" />
     <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\Logo.scale-140.png" />
     <Content Include="Assets\Logo.scale-180.png" />
@@ -215,79 +129,34 @@
     <Content Include="Assets\StoreLogo.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-140.png" />
     <Content Include="Assets\StoreLogo.scale-180.png" />
-    <Content Include="Assets\TopArt.png" />
     <Content Include="Assets\WideLogo.scale-100.png" />
     <Content Include="Assets\WideLogo.scale-140.png" />
     <Content Include="Assets\WideLogo.scale-180.png" />
     <Content Include="Assets\WideLogo.scale-80.png" />
-    <Content Include="Common\ReadMe.txt" />
-    <Content Include="MVVMLight.Nuget.Readme.txt" />
-    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Page Include="Common\StandardStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\VolumeControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ChannelPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\FavoritePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\LoginPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\SearchPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Callisto">
-      <HintPath>..\packages\Callisto.1.2.6\lib\winrt45\Callisto.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight">
+      <HintPath>..\packages\MvvmLightLibs.4.4.32.1\lib\netcore45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras.Win8">
-      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\netcore45\GalaSoft.MvvmLight.Extras.Win8.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Extras">
+      <HintPath>..\packages\MvvmLightLibs.4.4.32.1\lib\netcore45\GalaSoft.MvvmLight.Extras.dll</HintPath>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Win8">
-      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\netcore45\GalaSoft.MvvmLight.Win8.dll</HintPath>
-    </Reference>
-    <Reference Include="MarkedUp">
-      <HintPath>..\packages\MarkedUp.0.6.7\lib\winrt45\MarkedUp.winmd</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\netcore45\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\winrt45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\netcore45\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="MSAdvertisingXaml, Version=6.1">
-      <Name>Microsoft Advertising SDK for Windows 8 %28Xaml%29</Name>
-    </SDKReference>
+    <None Include="packages.config" />
   </ItemGroup>
-  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
-    <VisualStudioVersion>11.0</VisualStudioVersion>
+  <Import Project="..\DI.FM.Shared\DI.FM.Shared.projitems" Label="Shared" />
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
+    <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

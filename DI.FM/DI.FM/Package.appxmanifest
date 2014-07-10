@@ -1,32 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="Quixby.DI.FM" Publisher="CN=76437BF1-5D53-4B63-93DD-322829E91931" Version="1.1.6.3" />
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="Quixby.DI.FM" Publisher="CN=76437BF1-5D53-4B63-93DD-322829E91931" Version="2.6.1.0" />
   <Properties>
     <DisplayName>DI.FM</DisplayName>
     <PublisherDisplayName>Quixby</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
-    <OSMinVersion>6.2.1</OSMinVersion>
-    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
   </Prerequisites>
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="DI.FM.App">
-      <VisualElements DisplayName="DI.FM" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="DI.FM" ForegroundText="light" BackgroundColor="#333333">
-        <DefaultTile ShowName="noLogos" WideLogo="Assets\WideLogo.png" />
-        <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#333333" />
-      </VisualElements>
       <Extensions>
         <Extension Category="windows.search" />
-        <Extension Category="windows.backgroundTasks" EntryPoint="App.xaml">
+        <Extension Category="windows.backgroundTasks" StartPage="Views/MainPage.xaml">
           <BackgroundTasks>
             <Task Type="audio" />
           </BackgroundTasks>
         </Extension>
       </Extensions>
+      <m2:VisualElements DisplayName="DI.FM" Description="DI.FM" BackgroundColor="#121212" ForegroundText="light" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png">
+        <m2:DefaultTile Wide310x150Logo="Assets\WideLogo.png">
+        </m2:DefaultTile>
+        <m2:SplashScreen BackgroundColor="#121212" Image="Assets\SplashScreen.png" />
+      </m2:VisualElements>
     </Application>
   </Applications>
   <Capabilities>

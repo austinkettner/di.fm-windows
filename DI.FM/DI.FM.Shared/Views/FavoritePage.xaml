@@ -1,0 +1,103 @@
+﻿<Page
+    x:Name="PageRoot"
+    x:Class="DI.FM.View.FavoritePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DI.FM.View"
+    xmlns:common="using:DI.FM.Common"
+    xmlns:controls="using:DI.FM.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <Page.Resources>
+        <common:BooleanNegationToVisibilityConverter x:Key="BooleanNegationToVisibilityConverter" />
+        <common:DurationConverter x:Key="DurationConverter" />
+    </Page.Resources>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="ButtonUnfavorite" Icon="UnFavorite" Label="UnFavorite" HorizontalAlignment="Left" Visibility="Collapsed" Click="ButtonUnfavorite_Click" />
+            <AppBarButton Icon="SelectAll" Label="Select All" Click="ButtonSelectAll_Click" />
+            <AppBarButton x:Name="ButtonSelectNone" Visibility="Collapsed" Icon="ClearSelection" Label="Clear Selection" Click="ButtonSelectNone_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStopCollection>
+                    <GradientStop Color="#444444" Offset="0" />
+                    <GradientStop Color="#303030" Offset="1" />
+                </GradientStopCollection>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <!-- Background -->
+        <Image Source="../Assets/Background.png" Stretch="UniformToFill" />
+
+        <!-- Filled view -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="110" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <!-- Header -->
+            <Border Background="#212121">
+                <Grid Margin="0,0,56,0">
+                    <Grid HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid Background="#121212">
+                            <Grid Margin="0,0,20,0" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Margin="34,0" IsEnabled="{Binding Frame.CanGoBack, ElementName=PageRoot}" Style="{StaticResource BackButtonStyle}" Click="GoBack"  />
+                                <TextBlock Grid.Column="1" Text="Favorite Channels" Style="{StaticResource HeaderTextStyle}"/>
+                            </Grid>
+                        </Grid>
+                        <Path Grid.Column="1" Fill="#121212" Data="M 0 0 L 50 0 L 0 50 Z" Stretch="Uniform" HorizontalAlignment="Right" />
+                        <Path Grid.Column="1" Fill="#0fa7ff" Data="M 47 0 L 50 0 L 3 50 L 0 50 Z" Stretch="Uniform" HorizontalAlignment="Right" />
+                    </Grid>
+                    <controls:MediaController />
+                </Grid>
+            </Border>
+            <!-- Content -->
+            <Grid Grid.Row="1">
+                <!-- Content -->
+                <TextBlock Margin="118,65,0,0" Text="There are no favorites yet..." Foreground="White" FontSize="22" FontWeight="Light" Opacity="0.5" Visibility="{Binding HasFavorites, Converter={StaticResource BooleanNegationToVisibilityConverter}}" />
+                <GridView x:Name="GridViewFavorites" SelectionMode="Extended" ItemsSource="{Binding FavoriteChannels}" ItemContainerStyle="{StaticResource GridViewChannelItemStyle}" IsItemClickEnabled="True" SelectionChanged="GridView_SelectionChanged" ItemClick="GridViewFavorites_ItemClick">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="365" Background="#121212">
+                                <StackPanel>
+                                    <Image Source="{Binding Image}" />
+                                    <ProgressBar Height="5" Foreground="#0fa7ff" Value="{Binding NowPlaying.Progress}" Maximum="100" />
+                                    <StackPanel>
+                                        <Grid Margin="10,5,10,12">
+                                            <TextBlock Text="{Binding Path=NowPlaying.Position, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Left" />
+                                            <TextBlock Text="{Binding Path=NowPlaying.Duration, Converter={StaticResource DurationConverter}}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" HorizontalAlignment="Right" />
+                                        </Grid>
+                                        <TextBlock Margin="10,0,20,3" Text="{Binding Name}" Foreground="White" FontSize="18" FontWeight="Bold" />
+                                        <TextBlock Margin="10,0,20,16" Text="{Binding NowPlaying.Track}" Foreground="White" FontSize="16" FontWeight="SemiLight" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Margin="112,60,60,40" Orientation="Horizontal" VerticalAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+            </Grid>
+        </Grid>
+
+    </Grid>
+
+</Page>
